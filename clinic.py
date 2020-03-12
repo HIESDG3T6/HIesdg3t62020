@@ -15,7 +15,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
  
 db = SQLAlchemy(app)
 CORS(app)
- 
+
 class Clinic(db.Model):
     __tablename__ = 'clinic'
  
@@ -55,29 +55,60 @@ class ClinicOpening(db.Model):
     def json(self):
         return {"clinicName": self.clinicName, "openingDays": self.openingDays, "openingHour": self.openingHour, "closingHour": self.closingHour}
 
+# class Map(db.Model):
+#     __tablename__ = 'map'
+#     clinicName = db.Column(db.String(100), db.ForeignKey('clinic.clinicName'), primary_key=True)
+#     ClinicOpening = db.Column(db.String(100), db.ForeignKey('clinicOpening.clinicName'), primary_key=True)
+
+#     def __init__(clinicName, ClinicOpening):
+#         self.clinicName = clinicName
+#         self.ClinicOpening = ClinicOpening
+
+#     def json(self):
+#         return {"clinicName": self.clinicName, "ClinicOpening": self.ClinicOpening}
+
 # get all clinics
 @app.route("/clinic")
 def get_all():
     # query for clinic alone
-	# return jsonify({"clinic": [clinic.json() for clinic in Clinic.query.all()]})
+	return jsonify({"clinic": [clinic.json() for clinic in Clinic.query.all()]})
 
+    # opening = db.session.query(ClinicOpening).join(Map, Map.ClinicOpening==ClinicOpening.clinicName).all()
+    # clinic = db.session.query(Clinic).join(Map, Clinic.clinicName==Map.clinicName).all()
+    # joined = db.session.query(Clinic, ClinicOpening).join(ClinicOpening, Clinic.clinicName==ClinicOpening.clinicName).first()
+    # return joined.dumps(joined)
     # query for clinic and opening hours
-    return jsonify({"clinic": [clinic.json() for clinic in Clinic.query(Clinic).join(ClinicOpening).all()]})
+
+    # query = db.session.query(Clinic, ClinicOpening).join(Map, Clinic.clinicName==Map.clinicName, Map.ClinicOpening==ClinicOpening.clinicName).all()
+    # return jsonify({"clinic": [clinic.json() for clinic in query]})
+
 
 #get clinics from name with %
 @app.route("/clinic/<string:clinicName>")
 def find_by_clinicName(clinicName):
-    clinic = Clinic.query(Clinic).join(ClinicOpening).filter(clinicName.like(f'%{clinicName}%')).all()
+    # clinic = Clinic.query(Clinic).join(ClinicOpening).filter(clinicName.like(f'%{clinicName}%')).all()
+    clinic = Clinic.query.filter_by(clinicName=clinicName).all()
+    result = []
     if clinic:
-        return jsonify(clinic.json())
+        for aClinic in clinic:
+            result.append(aClinic.json())
+        return jsonify(result)
     return jsonify({"message": "Clinic not found."}), 404
 
 # get clinics by location group
-@app.route("/clinic/<string:groupedLocation>")
+@app.route("/clinic/loc/<string:groupedLocation>")
 def find_by_groupedLocation(groupedLocation):
-    groupedLocation = Clinic.query(Clinic).join(ClinicOpening).filter_by(groupedLocation=groupedLocation).all()
+    groupedLocation = Clinic.query.join(ClinicOpening, Clinic.clinicName==ClinicOpening.clinicName).filter_by(groupedLocation=Clinic.groupedLocation).all()
+    # if groupedLocation:
+    #     return jsonify(groupedLocation.json())
+
+    # groupedLocation = Clinic.query.filter_by(groupedLocation=groupedLocation).all()
+    result = []
+    return groupedLocation
     if groupedLocation:
-        return jsonify(groupedLocation.json())
+        for aLocation in groupedLocation:
+            result.append(aLocation.json())
+        return jsonify(result)
     return jsonify({"message": "No clinics found."}), 404
 
 # Create clinic
