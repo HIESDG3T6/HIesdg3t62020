@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS Insurance_Claim;
 CREATE DATABASE Insurance_Claim;
 
 CREATE TABLE insurance_claim(
-
+    ClaimID int PRIMARY KEY,
     PatientID int,
     ClinicID int,
     ClaimDate DATE,
