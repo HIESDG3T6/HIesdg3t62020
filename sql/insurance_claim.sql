@@ -32,7 +32,7 @@ DROP TABLE IF EXISTS `Insurance_Claim`;
 CREATE TABLE IF NOT EXISTS `Insurance_Claim`(
     `ClaimID` INT NOT NULL PRIMARY KEY,
     `PatientID` INT NOT NULL,
-    `ClinicID` INT NOT NULL,
+    `ClinicName` varchar(60) NOT NULL,
     `ClaimDate` DATETIME NOT NULL,
     `Medicine` TEXT DEFAULT NULL,
     `BillAmount` decimal(10,2) NOT NULL,
@@ -47,9 +47,9 @@ CREATE TABLE IF NOT EXISTS `Insurance_Claim`(
 -- Dumping data for table `book`
 --
 
-INSERT INTO `Insurance_Claim` (`ClaimID`, `PatientID`, `ClinicID`, `ClaimDate`,`Medicine`,`BillAmount`,`ClaimedAmount`,`ClaimStatus`,`RefundStatus`) VALUES
-('1', '1', '1', '2020-01-27 12:01:00',NULL,58.1,58.1,'Close','Approved'),
-('2', '1', '3', '2020-01-30 14:01:00','panadol',28,28,'Close','Approved'),
-('3', '2', '2', '2020-01-30 13:01:00','probiotics',33.1,15,'Close','Approved'),
-('4', '3', '1', '2020-01-31 22:01:00','aspirin',33.2,33.2,'Close','Reject'),
-('5', '4', '2', '2020-02-01 10:01:00','panadol',53.2,53.2,'Open','Pending');
+INSERT INTO `Insurance_Claim` (`ClaimID`, `PatientID`, `ClinicName`, `ClaimDate`,`Medicine`,`BillAmount`,`ClaimedAmount`,`ClaimStatus`,`RefundStatus`) VALUES
+('1', '1', 'okay clinic', '2020-01-27 12:01:00',NULL,58.1,58.1,'Close','Approved'),
+('2', '1', 'which clinic', '2020-01-30 14:01:00','panadol',28,28,'Close','Approved'),
+('3', '2', 'okay clinic', '2020-01-30 13:01:00','probiotics',33.1,15,'Close','Approved'),
+('4', '3', 'ohh clinic', '2020-01-31 22:01:00','aspirin',33.2,33.2,'Close','Reject'),
+('5', '4', 'okay clinic', '2020-02-01 10:01:00','panadol',53.2,53.2,'Open','Pending');
