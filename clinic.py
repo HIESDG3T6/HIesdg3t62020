@@ -26,8 +26,9 @@ class Clinic(db.Model):
     postalCode = db.Column(db.Integer, nullable=False)
     specialty = db.Column(db.String(100), nullable=False)
     contactNumber = db.Column(db.String(15), nullable=False)
+    opening = db.Column(db.String(200), nullable=False)
  
-    def __init__(clinicName, doctorName, groupedLocation, address, postalCode, specialty, contactNumber):
+    def __init__(clinicName, doctorName, groupedLocation, address, postalCode, specialty, contactNumber, opening):
         self.clinicName = clinicName
         self.doctorName = doctorName
         self.groupedLocation = groupedLocation
@@ -35,37 +36,12 @@ class Clinic(db.Model):
         self.postalCode = postalCode
         self.specialty = specialty
         self.contactNumber = contactNumber
+        self.opening = opening
  
     def json(self):
-        return {"clinicName": self.clinicName, "doctorName": self.doctorName, "groupedLocation": self.groupedLocation, "address": self.address, "postalCode": self.postalCode, "specialty": self.specialty, "contactNumber": self.contactNumber}
-class ClinicOpening(db.Model):
-    __tablename__ = 'clinicOpening'
- 
-    clinicName = db.Column(db.String(100), primary_key=True)
-    openingDays = db.Column(db.String(20), primary_key=True)
-    openingHour = db.Column(db.String(10), primary_key=True)
-    closingHour = db.Column(db.String(10), nullable=False)
- 
-    def __init__(clinicName, openingDays, openingHour, closingHour):
-        self.clinicName = clinicName
-        self.openingDays = openingDays
-        self.openingHour = openingHour
-        self.closingHour = closingHour
- 
-    def json(self):
-        return {"clinicName": self.clinicName, "openingDays": self.openingDays, "openingHour": self.openingHour, "closingHour": self.closingHour}
+        return {"clinicName": self.clinicName, "doctorName": self.doctorName, "groupedLocation": self.groupedLocation, "address": self.address, "postalCode": self.postalCode, "specialty": self.specialty, "contactNumber": self.contactNumber, "opening": self.opening}
 
-# class Map(db.Model):
-#     __tablename__ = 'map'
-#     clinicName = db.Column(db.String(100), db.ForeignKey('clinic.clinicName'), primary_key=True)
-#     ClinicOpening = db.Column(db.String(100), db.ForeignKey('clinicOpening.clinicName'), primary_key=True)
 
-#     def __init__(clinicName, ClinicOpening):
-#         self.clinicName = clinicName
-#         self.ClinicOpening = ClinicOpening
-
-#     def json(self):
-#         return {"clinicName": self.clinicName, "ClinicOpening": self.ClinicOpening}
 
 # get all clinics
 @app.route("/clinic")
@@ -73,6 +49,7 @@ def get_all():
     # query for clinic alone
 	return jsonify({"clinic": [clinic.json() for clinic in Clinic.query.all()]})
 
+    # queries for 2 tables
     # opening = db.session.query(ClinicOpening).join(Map, Map.ClinicOpening==ClinicOpening.clinicName).all()
     # clinic = db.session.query(Clinic).join(Map, Clinic.clinicName==Map.clinicName).all()
     # joined = db.session.query(Clinic, ClinicOpening).join(ClinicOpening, Clinic.clinicName==ClinicOpening.clinicName).first()
@@ -83,7 +60,7 @@ def get_all():
     # return jsonify({"clinic": [clinic.json() for clinic in query]})
 
 
-#get clinics from name with %
+#get clinics from name
 @app.route("/clinic/<string:clinicName>")
 def find_by_clinicName(clinicName):
     # clinic = Clinic.query(Clinic).join(ClinicOpening).filter(clinicName.like(f'%{clinicName}%')).all()
@@ -98,52 +75,34 @@ def find_by_clinicName(clinicName):
 # get clinics by location group
 @app.route("/clinic/loc/<string:groupedLocation>")
 def find_by_groupedLocation(groupedLocation):
-    groupedLocation = Clinic.query.join(ClinicOpening, Clinic.clinicName==ClinicOpening.clinicName).filter_by(groupedLocation=Clinic.groupedLocation).all()
     # if groupedLocation:
     #     return jsonify(groupedLocation.json())
 
-    # groupedLocation = Clinic.query.filter_by(groupedLocation=groupedLocation).all()
+    groupedLocation = Clinic.query.filter_by(groupedLocation=groupedLocation).order_by(Clinic.clinicName).all()
     result = []
-    return groupedLocation
+
     if groupedLocation:
         for aLocation in groupedLocation:
             result.append(aLocation.json())
         return jsonify(result)
     return jsonify({"message": "No clinics found."}), 404
 
-# Create clinic
-# @app.route("/clinic/<string:clinicName>", methods=['POST'])
-# def create_clinic(clinicName):
-#     if (Clinic.query.filter_by(clinicName=clinicName).first()):
-#         return jsonify({"message": "Clinic '{}' already exists.".format(clinicName)}), 400
- 
-#     data = request.get_json()
-#     clinic = Clinic(clinicName, **data)
- 
-#     try:
-#         db.session.add(clinic)
-#         db.session.commit()
-#     except:
-#         return jsonify({"message": "An error occurred creating the clinic."}), 500
- 
-#     return jsonify(clinic.json()), 201
+# get clinics by specialty
+@app.route("/clinic/spec/<string:specialty>")
+def find_by_specialty(specialty):
+    # if groupedLocation:
+    #     return jsonify(groupedLocation.json())
 
-# Create doctor in clinic
-# @app.route("/clinic/<string:doctorName>", methods=['POST'])
-# def create_doctor(clinicName, doctorName):
-#     if (Clinic.query.filter(clinicName=clinicName).filter(doctorName=doctorName).first()):
-#         return jsonify({"message": "Doctor '{doctorName}' already exists in Clinic '{clinicName}.".format(doctorName, clinicName)}), 400
- 
-#     data = request.get_json()
-#     clinic = Clinic(clinicName, **data)
- 
-#     try:
-#         db.session.add(clinic)
-#         db.session.commit()
-#     except:
-#         return jsonify({"message": "An error occurred adding the doctor to the clinic."}), 500
- 
-#     return jsonify(clinic.json()), 201
+    specialty = Clinic.query.filter_by(specialty=specialty).order_by(Clinic.clinicName).all()
+    result = []
+
+    if specialty:
+        for aClinic in specialty:
+            result.append(aClinic.json())
+        return jsonify(result)
+    return jsonify({"message": "No clinics found."}), 404
+
+
 
 if __name__ == '__main__': # if it is the main program you run, then start flask
     # with docker
