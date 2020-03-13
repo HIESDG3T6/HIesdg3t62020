@@ -1,4 +1,32 @@
-DROP TABLE IF EXISTS `map`;
+-- phpMyAdmin SQL Dump
+-- version 4.8.3
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1:3306
+-- Generation Time: Mar 13, 2020 at 10:35 AM
+-- Server version: 5.7.23
+-- PHP Version: 7.2.10
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `clinic`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `clinic`
+--
 
 DROP TABLE IF EXISTS `clinic`;
 CREATE TABLE IF NOT EXISTS `clinic` (
@@ -9,56 +37,23 @@ CREATE TABLE IF NOT EXISTS `clinic` (
   `postalCode` int(6) NOT NULL,
   `specialty` varchar(100) NOT NULL,
   `contactNumber` varchar(15) NOT NULL,
-  PRIMARY KEY (`clinicName`, `doctorName`)
+  `opening` varchar(200) NOT NULL,
+  PRIMARY KEY (`clinicName`,`doctorName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-DROP TABLE IF EXISTS `clinicOpening`;
-CREATE TABLE IF NOT EXISTS `clinicOpening` (
-  `clinicName` varchar(100) NOT NULL,
-  `openingDays` varchar(20) NOT NULL,
-  `openingHour` varchar(10) NOT NULL,
-  `closingHour` varchar(10) NOT NULL,
-  PRIMARY KEY (`clinicName`, `openingDays`, `openingHour`),
-  FOREIGN KEY (`clinicName`) REFERENCES `clinic`(`clinicName`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- CREATE TABLE IF NOT EXISTS `map` (
---   `clinicName` varchar(100) NOT NULL,
---   `clinicOpening` varchar(100) NOT NULL,
---   PRIMARY KEY (`clinicName`, `clinicOpening`),
---   FOREIGN KEY (`clinicName`) REFERENCES `clinic`(`clinicName`),
---   FOREIGN KEY (`clinicOpening`) REFERENCES `clinicOpening`(`clinicName`)
--- ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 --
--- Inserting data for table `Clinic`
+-- Dumping data for table `clinic`
 --
 
-INSERT INTO `clinic` (`clinicName`, `doctorName`, `groupedLocation`, `address`,`postalCode`,`specialty`,`contactNumber`) VALUES
-('okay clinic', 'Bob', 'Bukit Merah', '345 Bukit Merah Central #05-32',345678, 'Orthopedics','+65 12345678'),
-('which clinic', 'Mike','Orchard', '234 Orchard Close #02-34', 234566, 'Pediatrics','+65 23456789'),
-('okay clinic', 'April','Bukit Merah', '345 Bukit Merah Central #05-32',345678, 'Orthopedics','+65 12345678'),
-('ohh clinic', 'JM','Jurong', '234 Jurong East St 13 #03-24',990984, 'Pediatrics','+65 12129090'),
-('test clinic', 'Chicken','Changi', '432 Changi Place #02-34', 123678, 'Dialysis','+65 90901234');
+INSERT INTO `clinic` (`clinicName`, `doctorName`, `groupedLocation`, `address`, `postalCode`, `specialty`, `contactNumber`, `opening`) VALUES
+('another clinic', 'Smart', 'Bukit Merah', '234 Bukit Merah Place #03-32', 345678, 'Orthopedics', '+65 12456789', 'Mon - Fri: 8AM - 1PM, Sat: 9AM - 12PM, Sun & Public Hols: Closed'),
+('ohh clinic', 'JM', 'Jurong', '234 Jurong East St 13 #03-24', 990984, 'Pediatrics', '+65 12129090', 'Mon - Sun: 8AM - 5PM'),
+('okay clinic', 'April', 'Bukit Merah', '345 Bukit Merah Central #05-32', 345678, 'Orthopedics', '+65 12345678', 'Mon - Fri: 8AM - 1PM, Sat: 9AM - 12PM, Sun & Public Hols: Closed'),
+('okay clinic', 'Bob', 'Bukit Merah', '345 Bukit Merah Central #05-32', 345678, 'Orthopedics', '+65 12345678', 'Mon - Fri: 8AM - 1PM, Sat: 9AM - 12PM, Sun & Public Hols: Closed'),
+('test clinic', 'Chicken', 'Jurong', '432 Jurong Place #02-34', 123678, 'Dialysis', '+65 90901234', 'Mon - Sun: 9AM - 6PM'),
+('which clinic', 'Mike', 'Orchard', '234 Orchard Close #02-34', 234566, 'Pediatrics', '+65 23456789', 'Mon - Sat: 8AM - 1PM & 4PM - 8PM, Sun & Public Hols: 8AM - 11AM');
+COMMIT;
 
-
---
--- Inserting data for table `clinicOpening`
---
-
-INSERT INTO `clinicOpening` (`clinicName`, `openingDays`, `openingHour`, `closingHour`) VALUES
-('okay clinic', 'Mon - Fri','08:00','13:00'),
-('okay clinic', 'Sat','09:00','12:00'),
-('okay clinic', 'Sun & Public Hols','Closed', 'Closed'),
-('which clinic', 'Mon - Sat','08:00','13:00'),
-('which clinic', 'Mon - Sat','15:00','17:00'),
-('which clinic', 'Sun & Public Hols','08:00','11:00'),
-('which clinic', 'Mon - Sat','18:00','21:00'),
-('ohh clinic', 'Mon - Sun','08:00','17:00'),
-('test clinic', 'Mon - Sun','07:00','13:00');
-
-
--- INSERT INTO `map` (`clinicName`, `clinicOpening`) VALUES
--- ('okay clinic', 'okay clinic'),
--- ('which clinic', 'which clinic'),
--- ('ohh clinic', 'ohh clinic'),
--- ('test clinic', 'test clinic');
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
