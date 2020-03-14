@@ -89,7 +89,7 @@
 			<h3 class="heading text-center mb-sm-5 mb-4">Claim</h3>
 			<div class="table-block p-4">
 				<!-- A form to update-->
-				<form action="#" method="post" >
+				<form action="#" id ="claimform"method="post" >
 					<div class="row" >
 						
 						
@@ -265,6 +265,79 @@
                 showError('There is a problem retrieving insurance claims data, please try again later.<br />'+error);
             } // error
         });
+
+
+
+
+		//POST METHODS when click the submit button => call insurance_claim MS for updating
+		async function postData(serviceURL, requestBody){
+
+			var requestParam = {
+				headers: {"content-type": "application/json" },
+				mode: 'cors', // other options: no-cors, etc.
+			        method: 'POST',
+			        body: JSON.stringify(requestBody)
+			}
+
+			try{
+				const response = await fetch(serviceURL, requestParam);
+			    data = await response.json();
+			    console.log(data);
+				
+				if( response.ok){
+					window.location.replace("home.html");
+				}
+
+			}catch(error){
+				console.error(error);
+				showError(error);
+			}
+		}
+
+		$("#claimform").submit(function(){
+            event.preventDefault();
+            
+
+			var ClaimID = $('#ClaimID_text').val();
+			var ClinicName = $('#ClinicName_text').val();
+			var BillAmount = $('#BillAmount_text').val();
+			var ClaimStatus = $('#ClaimStatus_text').val();
+			var ClaimDate = $('#ClaimDate_text').val();
+			var PatientID = $('#PatientID_text').val();
+			var ClaimedAmount = $('#ClaimedAmount_text').val();
+			var RefundStatus = $('#RefundStatus_text').val();
+			var Medicine = $('#Medication_text').val();
+
+
+/* 
+            console.log(isbn13);
+            console.log(title);
+            console.log(price);
+            console.log(availability);
+ */
+            var serviceURL = "http://127.0.0.1:5000/claims/" +ClaimID + "/";
+            var requestBody = {
+				ClaimID:ClaimID,
+				ClinicName:ClinicName,
+				BillAmount:BillAmount,
+				ClaimStatus:ClaimStatus,
+				ClaimDate:ClaimDate,
+				PatientID:PatientID,
+				ClaimedAmount:ClaimedAmount,
+				RefundStatus:RefundStatus,
+				Medicine:Medicine
+            };
+
+            console.log(serviceURL);
+            console.log(requestBody);
+            postData(serviceURL,requestBody);
+            
+        
+
+            
+
+       });
+
 
 	</script>
 
