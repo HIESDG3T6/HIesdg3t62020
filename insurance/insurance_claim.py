@@ -69,9 +69,24 @@ def create_claim(ClaimID):
     return jsonify(claim.json()), 201
 
 
+@app.route("/claims/<string:ClaimID>/", methods=['POST'])
+def update_claimstatus(ClaimID):
+    claim = Insurance_Claim.query.filter_by(ClaimID=ClaimID).first()
+    data = request.get_json()
+    claim.RefundStatus = data["RefundStatus"]
+    try:
+        db.session.commit()
+        claim = Insurance_Claim.query.filter_by(ClaimID=ClaimID).first()
+    except:
+        return jsonify({"message": "An error occurred updating the insurance claim."}),500
+    return jsonify(claim.json()),201
+
+
+
 @app.route("/claims/<string:ClaimID>")
 def find_by_ClaimID(ClaimID):
     claim = Insurance_Claim.query.filter_by(ClaimID=ClaimID).first()
+
     if claim:
         return jsonify(claim.json())
     return jsonify({"message": "Insurance Claim not found."}), 404
