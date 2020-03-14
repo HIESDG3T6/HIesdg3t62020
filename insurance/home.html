@@ -191,11 +191,12 @@
 							"<td>" + claim.ClaimedAmount + "</td>"+
 							"<td>" + claim.ClaimStatus + "</td>"+
 							"<td>" + claim.RefundStatus + "</td>"+
-							"<td>" + "<div class='login-icon2'><a class='user' href='edit.html'> Update</a></div>" + "</td>";
-                        	rows += "<tbody><tr>" + eachRow + "</tr></tbody>";
+							"<td>" + "<div class='login-icon2'><a class='user' id='updatebutton' href='edit.html?ClaimID="+claim.ClaimID+"'> Update</a></div>" + "</td>";
+                        	rows += "<tr>" + eachRow + "</tr>";
 						}
                         
                     }
+					rows = "<tbody>"+rows+"</tbody>";
                     // add all the rows to the table
                     $('#claimsTable').append(rows);
                 }
@@ -205,6 +206,8 @@
                 showError('There is a problem retrieving insurance claims data, please try again later.<br />'+error);
             } // error
         });
+
+
 
 	</script>
 
