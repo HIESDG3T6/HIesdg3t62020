@@ -188,7 +188,7 @@
 							"<td>" + claim.ClaimedAmount + "</td>"+
 							"<td>" + claim.ClaimStatus + "</td>"+
 							"<td>" + claim.RefundStatus + "</td>"+
-							"<td>" + "<div class='login-icon2'><a class='user' href='edit.html'> Update</a></div>" + "</td>";
+							"<td>" + "<div class='login-icon2'><a class='user' id='updatebutton' href='edit.html?ClaimID="+claim.ClaimID+"'> Update</a></div>" + "</td>";
                         rows += "<tr>" + eachRow + "</tr>";
                     }
 					rows = "<tbody>"+rows+"</tbody>";
