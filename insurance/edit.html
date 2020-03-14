@@ -18,6 +18,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="js/jquery.min.js"></script>
 	<!-- //jquery-->
 
 	<!-- google fonts -->
@@ -95,49 +96,49 @@
 						<div class="col-md-6 wthree_contact_left">
 							<div class="form-group">
 								<p class="col-sm-6 header-right-w3_pvt" style="color:white;" >Claim ID</p>
-								<input type="text" name="ClaimID" class="form-control" placeholder="Claim ID" required="" disabled>
+								<input type="text" id = "ClaimID_text" name="ClaimID" class="form-control" placeholder="Claim ID" required="" disabled>
 							</div>
 
 							<div class="form-group">
-								<p class="col-sm-6 header-right-w3_pvt" style="color:white;" >Clinic ID</p>
-								<input type="text" name="ClinicID" class="form-control" placeholder="Clinic ID" required="" disabled>
+								<p class="col-sm-6 header-right-w3_pvt" style="color:white;" >Clinic Name</p>
+								<input type="text" id = "ClinicName_text" name="ClinicName" class="form-control" placeholder="Clinic ID" required="" disabled>
 							</div>
 							<div class="form-group">
 								<p class="col-sm-6 header-right-w3_pvt" style="color:white;" >Bill Amount</p>
-								<input type="text" name="BillAmount" class="form-control" placeholder="Bill Amount" required=""disabled>
+								<input type="text" id = "BillAmount_text" name="BillAmount" class="form-control" placeholder="Bill Amount" required=""disabled>
 							</div>
 							<div class="form-group">
 								<p class="col-sm-6 header-right-w3_pvt" style="color:white;" >Claim Status</p>
-								<input type="text" name="ClaimStatus" class="form-control" placeholder="Claim Status" required="" disabled>
+								<input type="text" id = "ClaimStatus_text" name="ClaimStatus" class="form-control" placeholder="Claim Status" required="" disabled>
 							</div>
                             
 						</div>
 						<div class="col-md-6 wthree_contact_left_grid">
 							<div class="form-group">
 								<p class="col-sm-6 header-right-w3_pvt" style="color:white;" >Claim Date</p>
-								<input type="text" name="ClaimDate" class="form-control" placeholder="Claim Date" required="" disabled>
+								<input type="text" id = "ClaimDate_text" name="ClaimDate" class="form-control" placeholder="Claim Date" required="" disabled>
                             </div>
 
 							
 							<div class="form-group">
 								<p class="col-sm-6 header-right-w3_pvt" style="color:white;" >Patient ID</p>
-								<input type="text" name="PatientID" class="form-control" placeholder="Patient ID" required="" disabled>
+								<input type="text" id = "PatientID_text" name="PatientID" class="form-control" placeholder="Patient ID" required="" disabled>
 							</div>
 							<div class="form-group">
 								<p class="col-sm-6 header-right-w3_pvt" style="color:white;" >Claim Amount</p>
-								<input type="text" name="ClaimedAmount" class="form-control" placeholder="Claim Amount" required="" disabled>
+								<input type="text" id = "ClaimedAmount_text" name="ClaimedAmount" class="form-control" placeholder="Claim Amount" required="" disabled>
 							</div>
                             
                             
 							<div class="form-group">
 								<p class="col-sm-6 header-right-w3_pvt" style="color:white;" >Refund Status</p>
-								<input type="text" name="RefundStatus" class="form-control" placeholder="Refund Status" required="" disabled>
+								<input type="text" id = "RefundStatus_text" name="RefundStatus" class="form-control" placeholder="Refund Status" required="" disabled>
 							</div>
 						</div>
 						<div class="col-md-12">
           
 							<p class="col-sm-6 header-right-w3_pvt" style="color:white;" >Prescription</p>
-							<textarea name="message" name="Medication" class="form-control" placeholder="Medication" required=""disabled></textarea>
+							<textarea name="message" id = "Medication_text" name="Medication" class="form-control" placeholder="Medication" required=""disabled></textarea>
 
 						</div>
 
@@ -189,21 +190,39 @@
 
 	<!-- START TO DISPLAY MESSAGE FROM DATABASE-->
 	<script>
-
 		// Helper function to display error message
-        function showError(message) {
+		function showError(message) {
             // Hide the table and button in the event of error
-            $('#claimsTable').hide(); 
+           
             // Display an error under the main container
             $('#main-container')
                 .append("<label>"+message+"</label>");
         }
 
+
+
+		// get the ClaimID from the url query e.g. ?ClaimID = 5
+		function getvalue(name){
+			var reg = new RegExp("(^|&)"+name+"=([^&]*)(&|$)");
+			var r = window.location.search.substr(1).match(reg);
+			if (r!=null) return r[2]; return '';
+		}
+
+
+
+		var ClaimID = getvalue('ClaimID');
+		//alert(getvalue('ClaimID'));
+
+		
+
+
+
 		// anonymous async function 
         // - using await requires the function that calls it to be async
 		$(async() => {       
             // Change serviceURL to your own
-            var serviceURL = "http://127.0.0.1:5000/claims";
+            var serviceURL = "http://127.0.0.1:5000/claims/"+ClaimID;
+
 			console.log(serviceURL);
 			//after that can change it to only display opening 
             try {
@@ -212,38 +231,22 @@
                    serviceURL, { method: 'GET' }
                 );
                 const data = await response.json();
-                var claims = data.insurance_claims; //the arr is in data.insurance_claims of the JSON data
-				console.log(claims)
-                // array or array.length are falsy
-                if (!claims || !claims.length) {
-                    showError('Claims list empty or undefined.')
-                } else {
-                    // for loop to setup all table rows with obtained insurance_claims data
-                    var rows = "";
+                
+				console.log(data)
 
-					 
-                    for (const claim of claims) {
-						// only display the claims that need to be proccess
-						// closed tickets and waiting for refund will not show here
-						if( claim.RefundStatus =='Pending'){
-							eachRow =
-                            "<td>" + claim.ClaimID + "</td>" +
-                            "<td>" + claim.PatientID + "</td>" +
-                            "<td>" + claim.ClinicName + "</td>" +
-                            "<td>" + claim.ClaimDate + "</td>"+
-							"<td>" + claim.Medicine + "</td>"+
-							"<td>" + claim.BillAmount + "</td>"+
-							"<td>" + claim.ClaimedAmount + "</td>"+
-							"<td>" + claim.ClaimStatus + "</td>"+
-							"<td>" + claim.RefundStatus + "</td>"+
-							"<td>" + "<div class='login-icon2'><a class='user' href='edit.html'> Update</a></div>" + "</td>";
-                        	rows += "<tbody><tr>" + eachRow + "</tr></tbody>";
-						}
-                        
-                    }
-                    // add all the rows to the table
-                    $('#claimsTable').append(rows);
-                }
+
+				//set the value to the textinput
+				$("#ClaimID_text").val(ClaimID);
+				$("#ClinicName_text").val(data.ClinicName);
+				$("#BillAmount_text").val(data.BillAmount);
+				$("#ClaimStatus_text").val(data.ClaimStatus);
+				$("#ClaimDate_text").val(data.ClaimDate);
+				$("#PatientID_text").val(data.PatientID);
+				$("#ClaimedAmount_text").val(data.ClaimedAmount);
+				$("#RefundStatus_text").val(data.RefundStatus);
+				$("#Medication_text").val(data.Medicine);
+
+            
             } catch (error) {
                 // Errors when calling the service; such as network error, 
                 // service offline, etc
@@ -257,3 +260,4 @@
 
 </body>
 </html>
+
