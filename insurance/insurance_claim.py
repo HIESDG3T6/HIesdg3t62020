@@ -88,10 +88,10 @@ def update_claimstatus(ClaimID):
     claim.RefundStatus = data["RefundStatus"]
     try:
         db.session.commit()
-        claim = Insurance_Claim.query.filter_by(ClaimID=ClaimID).first()
-        send_claim(claim)
+        
     except:
         return jsonify({"message": "An error occurred updating the insurance claim."}),500
+    send_claim(claim.json())
     return jsonify(claim.json()),201
 
 
@@ -129,16 +129,16 @@ def send_claim(claim):
 
 
     message = json.dumps(claim, default=str) # convert a JSON object to a string
-
+    print(message)
 
 
     # if the claim is approved and open => notify refund service
-    if claim.RefundStatus == "Approved" and claim.ClaimStatus == "Open":
+    if claim['RefundStatus'] == "Approved" and claim['ClaimStatus'] == "Open":
 
         # Prepare the correlation id and reply_to queue and do some record keeping
         
         corrid = str(uuid.uuid4())
-        row = {"claim_id": claim.ClaimID, "correlation_id": corrid}
+        row = {"claim_id": claim['ClaimID'], "correlation_id": corrid}
         csvheaders = ["claim_id", "correlation_id", "status"]
         with open("corrids.csv", "a+", newline='') as corrid_file: # 'with' statement in python auto-closes the file when the block of code finishes, even if some exception happens in the middle
             csvwriter = csv.DictWriter(corrid_file, csvheaders)
@@ -149,9 +149,9 @@ def send_claim(claim):
         
 
         channel.queue_declare(queue='refund', durable=True) # make sure the queue used by Refund exist and durable
-        channel.queue_bind(exchange=exchangename, queue='refund', routing_key='refund.order') # make sure the queue is bound to the exchange
+        channel.queue_bind(exchange=exchangename, queue='refund', routing_key='refund.claim') # make sure the queue is bound to the exchange
 
-        channel.basic_publish(exchange=exchangename, routing_key="refund.order", body=message,
+        channel.basic_publish(exchange=exchangename, routing_key="refund.claim", body=message,
             properties=pika.BasicProperties(delivery_mode = 2, # make message persistent within the matching queues until it is received by some receiver (the matching queues have to exist and be durable and bound to the exchange, which are ensured by the previous two api calls)
                 reply_to=replyqueuename, # set the reply queue which will be used as the routing key for reply messages
                 correlation_id=corrid # set the correlation id for easier matching of replies
