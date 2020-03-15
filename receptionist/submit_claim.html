@@ -26,7 +26,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			<link href="../css/css_slider.css" type="text/css" rel="stylesheet" media="all"><!-- slider css -->
 			<link href="../css/bootstrap.css" rel='stylesheet' type='text/css' /><!-- bootstrap css -->
 			<link href="../css/style.css" rel='stylesheet' type='text/css' /><!-- custom css -->
-		
+
 			<!-- //css files -->
 			
 			<!-- google fonts -->
@@ -34,6 +34,13 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			<link href="//fonts.googleapis.com/css?family=Dosis:200,300,400,500,600,700,800&amp;subset=latin-ext" rel="stylesheet">
 			<!-- //google fonts -->
 			
+			<!-- jquery-->
+			<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			<meta http-equiv="X-UA-Compatible" content="ie=edge">
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+			<script src="js/jquery.min.js"></script>
+			<!-- //jquery-->
 		</head>
 <body>
 
@@ -56,6 +63,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 </div>
 <!-- //top header -->
 
+
 <!-- //header -->
 <header class="py-3">
 	<div class="container">
@@ -70,45 +78,48 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!-- //header -->
 
 
+
 <!-- contact -->
 <section class="mail pt-lg-5 pt-4">
 	<div class="container pt-lg-5">
 		<h2 class="heading text-center mb-sm-5 mb-4">Claim Information </h2>
 		<!-- <div class="row agileinfo_mail_grids"  >
 			<div class="col-lg-8 agileinfo_mail_grid_right"> -->
-				<form action="#" method="post" >
+				<form action="#" method="post" id="info_form">
 					<div class="row" >
 						<div class="col-md-6 wthree_contact_left">
 							<div class="form-group">
-								<input type="text" name="name" class="form-control" placeholder="Claim ID" required="">
+								<input type="text" id="claim_id" name="claim_id" class="form-control" placeholder="Claim ID" required="">
 							</div>
 							<div class="form-group">
-								<input type="email" name="email" class="form-control" placeholder="Claim Date" required="">
+								<input type="text" id="claim_date" name="claim_date" class="form-control" placeholder="Claim Date" required="">
                             </div>
                             <div class="form-group">
-								<input type="email" name="email" class="form-control" placeholder="Medication" required="">
+								<input type="text" id="medication" name="medication" class="form-control" placeholder="Medication" required="">
                             </div>
                             <div class="form-group">
-								<input type="email" name="email" class="form-control" placeholder="Claim Amount" required="">
+								<input type="text" id="claim_amt" name="claim_amt" class="form-control" placeholder="Claim Amount" required="">
 							</div>
 						</div>
 						<div class="col-md-6 wthree_contact_left_grid">
 							<div class="form-group">
-								<input type="text" name="phone number" class="form-control" placeholder="Clinic ID" required="">
+								<input type="text" id="clinic_id" name="clinic_id" class="form-control" placeholder="Clinic ID" required="">
 							</div>
 							<div class="form-group">
-								<input type="text" name="subject" class="form-control" placeholder="Patient ID" required="">
+								<input type="text" id="patient_id" name="patient_id" class="form-control" placeholder="Patient ID" required="">
                             </div>
                             <div class="form-group">
-								<input type="email" name="email" class="form-control" placeholder="Bill Amount" required="">
+								<input type="text" id="bill_amt" name="bill_amt" class="form-control" placeholder="Bill Amount" required="">
                             </div>
                             <div class="form-group">
-								<input type="email" name="email" class="form-control" value = "Claim submitted" required="" disabled>
+								<input type="text" id="claim_status" name="claim_status" class="form-control" value = "Open" required="" disabled>
 							</div>
                         </div>
 						<div class="col-md-12">
 							<div class="submit-buttons" style="text-align: center;">
-								<button type="submit" class="btn">Submit</button>
+								<button type="submit" class="btn btn-banner my-sm-3 mb-3" name="claim">Submit a New Claim</button>
+
+								<!-- <button type="submit" class="btn btn-banner1 my-sm-3 mb-3" name="history">Submit a New Patient Record</button> -->
                             </div>
                             <div class="col-md-12">
                             </div>
@@ -120,62 +131,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		</div>
 
 </section>
-<!-- //contact -->
 
-<!-- footer -->
-<footer class="py-5">
-	<div class="container py-sm-3">
-		<div class="row footer-grids">
-			<div class="col-lg-3 col-sm-6 mb-lg-0 mb-sm-5 mb-4">
-				<h4 class="mb-sm-4 mb-3"><span class="fa fa-stethoscope"></span> Health Insurance</h4>
-				<p class="mb-3">Onec Consequat sapien ut cursus rhoncus. Nullam dui mi, vulputate ac metus semper quis luctus sed.</p>
-				<h5>Trusted by <span>500+ People</span> </h5>
-			</div>
-			<div class="col-lg-3 col-sm-6 mb-lg-0 mb-sm-5 mb-4">
-				<h4 class="mb-sm-4 mb-3">Address Info</h4>
-				<p><span class="fa mr-2 fa-map-marker"></span>64d canal street TT 3356 <span>Newyork, NY.</span></p>
-				<p class="phone py-2"><span class="fa mr-2 fa-phone"></span> +1(12) 123 456 789 </p>
-				<p><span class="fa mr-2 fa-envelope"></span><a href="mailto:info@example.com">info@example.com</a></p>
-			</div>
-			<div class="col-lg-2 col-sm-6 mb-sm-0 mb-4">
-				<h4 class="mb-sm-4 mb-3">Quick Links</h4>
-				<ul>
-					<li><a href="#">Terms & Conditions</a></li>
-					<li class="my-2"><a href="#">Support Helpline</a></li>
-					<li><a href="#">Healthy Tips</a></li>
-					<li class="mt-2"><a href="#">Privacy Ploicy</a></li>
-				</ul>
-			</div>
-			<div class="col-lg-4 col-sm-6">
-				<h4 class="mb-sm-4 mb-3">Subscribe Us</h4>
-				<p class="mb-3">Subscribe to our newsletter</p>
-				<form action="#" method="post" class="d-flex">
-					<input type="email" id="email" name="EMAIL" placeholder="Enter your email here" required="">
-					<button type="submit" class="btn">Subscribe</button>
-				</form>
-				<div class="icon-social mt-3">
-					<a href="#" class="button-footr">
-						<span class="fa mx-2 fa-facebook"></span>
-					</a>
-					<a href="#" class="button-footr">
-						<span class="fa mx-2 fa-twitter"></span>
-					</a>
-					<a href="#" class="button-footr">
-						<span class="fa mx-2 fa-dribbble"></span>
-					</a>
-					<a href="#" class="button-footr">
-						<span class="fa mx-2 fa-pinterest"></span>
-					</a>
-					<a href="#" class="button-footr">
-						<span class="fa mx-2 fa-google-plus"></span>
-					</a>
-
-				</div>
-			</div>
-		</div>
-	</div>
-</footer>
-<!-- //footer -->
 
 <!-- copyright -->
 <div class="copyright">
@@ -196,4 +152,63 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!-- move top -->
 
 </body>
+
+<!-- send message to Claim MS and PH MS -->
+<script>
+// Helper function to display error message
+function showError(message) {
+        // Display an error under the the predefined label with error as the id
+        $('#main-container')
+                .append("<label>"+message+"</label>");
+    }
+
+    $("#info_form").submit(async (event) => {
+        //Prevents screen from refreshing when submitting
+        event.preventDefault();
+
+        var serviceURL = "http://127.0.0.1:5000/claims/";
+        
+        //Get form data 
+        var ClaimID = $('#claim_id').val();
+        var ClaimDate = $('#claim_date').val();
+		var Medication = $('#medication').val();
+		var ClinicID = $('#clinic_id').val();
+		var PatientID = $('#patient_id').val();
+		var ClaimStatus = $('#claim_status').val();
+        var BillAmount = $('#bill_amt').val();
+		var ClaimAmount = $('#claim_amt').val();
+        
+
+        // form the POST url which includes the dynamic isbnNumber
+        serviceURL1 += ClaimID;
+		
+        try {
+            const response =
+                await fetch(
+                    serviceURL, {
+                    method: 'POST',
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ PatientID: PatientID, ClinicID: ClinicID, ClaimID: ClaimID, ClaimDate: ClaimDate, Medication: Medication, BillAmount: BillAmount, ClaimAmount: ClaimAmount, ClaimStatus: ClaimStatus,  })
+                });
+            const data = await response.json();
+			console.log(data);
+
+            if (response.ok) {
+                // relocate to home page
+                window.location.replace("main.html");
+                return false;
+            } else {
+                console.log(data);
+                showError(data.message);
+            }
+        } catch (error) {
+            // Errors when calling the service; such as network error, 
+            // service offline, etc
+            showError
+                ("There is a problem submitting this record, please try again later. " + error);
+
+        } // error
+    });
+</script>
 </html>
+
