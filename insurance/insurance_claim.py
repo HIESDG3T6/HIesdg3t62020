@@ -1,4 +1,16 @@
-# insurance claim microservices HTTP
+import json
+import sys
+import os
+import random
+import datetime
+
+# Communication patterns:
+# Use a message-broker with 'direct' exchange to enable interaction
+import pika
+import uuid
+import csv
+
+# ------ ----- ----- ----- ----- ----- ----- insurance claim microservices HTTP ------ ----- ----- ----- ----- ----- ----- 
 from flask import Flask,request,jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
@@ -77,6 +89,7 @@ def update_claimstatus(ClaimID):
     try:
         db.session.commit()
         claim = Insurance_Claim.query.filter_by(ClaimID=ClaimID).first()
+        send_claim(claim)
     except:
         return jsonify({"message": "An error occurred updating the insurance claim."}),500
     return jsonify(claim.json()),201
@@ -92,73 +105,67 @@ def find_by_ClaimID(ClaimID):
     return jsonify({"message": "Insurance Claim not found."}), 404
 
 
+
+
+# ------ ----- ----- ----- ----- ----- ----- insurance claim microservices AMQP ------ ----- ----- ----- ----- ----- ----- 
+
+
+
+""" If the claim is just approved by the agent, use this function"""
+""" should be used in update_claim status? """ 
+def send_claim(claim):
+    
+    """inform Refund MS as needed"""
+    # default username / password to the borker are both 'guest'
+    hostname = "localhost" # default broker hostname. Web management interface default at http://localhost:15672
+    port = 5672 
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host=hostname, port=port))
+        # Note: various network firewalls, filters, gateways (e.g., SMU VPN on wifi), may hinder the connections;
+        # If "pika.exceptions.AMQPConnectionError" happens, may try again after disconnecting the wifi and/or disabling firewalls
+    channel = connection.channel()
+
+    exchangename="claim_direct"
+    channel.exchange_declare(exchange=exchangename, exchange_type='direct')
+
+
+    message = json.dumps(claim, default=str) # convert a JSON object to a string
+
+
+
+    # if the claim is approved and open => notify refund service
+    if claim.RefundStatus == "Approved" and claim.ClaimStatus == "Open":
+
+        # Prepare the correlation id and reply_to queue and do some record keeping
+        
+        corrid = str(uuid.uuid4())
+        row = {"claim_id": claim.ClaimID, "correlation_id": corrid}
+        csvheaders = ["claim_id", "correlation_id", "status"]
+        with open("corrids.csv", "a+", newline='') as corrid_file: # 'with' statement in python auto-closes the file when the block of code finishes, even if some exception happens in the middle
+            csvwriter = csv.DictWriter(corrid_file, csvheaders)
+            csvwriter.writerow(row)
+        replyqueuename = "refund.reply"
+
+        # prepare the channel and send a message to Refund
+        
+
+        channel.queue_declare(queue='refund', durable=True) # make sure the queue used by Refund exist and durable
+        channel.queue_bind(exchange=exchangename, queue='refund', routing_key='refund.order') # make sure the queue is bound to the exchange
+
+        channel.basic_publish(exchange=exchangename, routing_key="refund.order", body=message,
+            properties=pika.BasicProperties(delivery_mode = 2, # make message persistent within the matching queues until it is received by some receiver (the matching queues have to exist and be durable and bound to the exchange, which are ensured by the previous two api calls)
+                reply_to=replyqueuename, # set the reply queue which will be used as the routing key for reply messages
+                correlation_id=corrid # set the correlation id for easier matching of replies
+            )
+        )
+        print("Claim sent to refund service.")
+    
+    # close the connection to the broker
+    connection.close()
+
+
+
+
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
-    
-
-
-
-# insurance claim microservices AMQP
-
-import json
-import sys
-import os
-import random
-import datetime
-
-import pika
-import uuid
-
-from sqlalchemy import Column, String, create_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
-
-Base = declarative_base()
-
-
-class Claim(Base):
-    __tablename__ = 'insurance_claim'
-    ClaimID = Column(String, nullable=False,primary_key=True)
-    PatientID = Column(String,nullable=False)
-    ClinicName = Column(String,nullable=False)
-    
-    ClaimDate = Column(String,nullable=False)
-    Medicine = Column(String(640))
-    BillAmount = Column(String, nullable=False)
-    ClaimedAmount = Column(String, nullable=False)
-    
-    ClaimStatus = Column(String(64), nullable=False)
-    RefundStatus = Column(String(64), nullable=False)
-
-
-    def __init__(self, ClaimID, PatientID, ClinicName, ClaimDate,Medicine,BillAmount,ClaimedAmount,ClaimStatus,RefundStatus):
-        self.ClaimID = ClaimID
-        self.PatientID = PatientID
-        self.ClinicName = ClinicName
-        self.ClaimDate = ClaimDate
-        self.Medicine = Medicine
-        self.BillAmount = BillAmount
-        self.ClaimedAmount = ClaimedAmount
-        self.ClaimStatus = ClaimStatus
-        self.RefundStatus = RefundStatus
-
-    # return an insurance item as a JSON object
-    def json(self):
-        return {
-            'ClaimID': self.ClaimID, 'PatientID': self.PatientID, 'ClinicName': self.ClinicName, 
-            'ClaimDate': self.ClaimDate, 'Medicine': self.Medicine, 'BillAmount': self.BillAmount, 
-            'ClaimedAmount': self.ClaimedAmount,'ClaimStatus': self.ClaimStatus, 'RefundStatus': self.RefundStatus}
-
-
-#connect to mysql database mamp's psw is root, if using windows, pls remove the psw
-engine = create_engine('mysql+mysqlconnector://root:root@localhost:3306/insurance_claim')
-DBSession = sessionmaker(bind=engine)
-
-# instantiate a session
-""" session = DBSession()
-claims = session.query(Claim).all()
-for each in claims:
-    print('name:',each.ClinicName)
-print(claims) """
 
 
