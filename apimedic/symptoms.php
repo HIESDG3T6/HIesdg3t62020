@@ -1,87 +1,222 @@
 <?php
-    // require_once 'config.py';
-    // require_once 'PriaidDiagnosisClient.py';
+
+require 'token_generator.php';
+require 'priaid_client.php';
+
+class Symptoms
+{
+    public $config;
+    public $diagnosisClient;
+    
+    function __construct()
+    {
+        $this->config = parse_ini_file("config.ini");
+    }
+    
+    public function checkRequiredParameters()
+    {
+        $pass = true;
+        
+        if (!isset($this->config['username']))
+        {
+            $pass = false;
+            print "You didn't set username in config.ini" ;
+        }
+
+        if (!isset($this->config['password']))
+        {
+            $pass = false;
+            print "You didn't set password in config.ini" ;
+        }
+            
+        if (!isset($this->config['authServiceUrl']))
+        {
+            $pass = false;
+            print "You didn't set authServiceUrl in config.ini" ;
+        }
+
+        if (!isset($this->config['healthServiceUrl']))
+        {
+            $pass = false;
+            print "You didn't set healthserviceUrl in config.ini" ;
+        }
+         
+        return $pass;
+    }
+    
+    public function authorize()
+    {
+        if (!$this->checkRequiredParameters())
+            return;
+        
+        $tokenGenerator = new TokenGenerator($this->config['username'],$this->config['password'],$this->config['authServiceUrl']);
+        $token = $tokenGenerator->loadToken();
+        
+        if (!isset($token))
+            exit();
+
+        $this->diagnosisClient = new DiagnosisClient($token, $this->config['healthServiceUrl'], 'en-gb');
+
+    }
+  }
+//         // get random body location
+//         $locRandomIndex = rand(0, count($bodyLocations)-1);
+//         $locRandomId = $bodyLocations[$locRandomIndex]['ID'];
+//         $locRandomName = $bodyLocations[$locRandomIndex]['Name'];
+//         $bodySublocations = $this->diagnosisClient->loadBodySublocations($locRandomId);
+//         if (!isset($bodySublocations))
+//             exit();
+//         print("<h3>Body Subocations for $locRandomName($locRandomId)</h3>");
+//         $this->printSimpleObject($bodySublocations);
+        
+//         // get random body sublocation
+//         $sublocRandomIndex = rand(0, count($bodySublocations)-1);
+//         $sublocRandomId = $bodySublocations[$sublocRandomIndex]['ID'];
+//         $sublocRandomName = $bodySublocations[$sublocRandomIndex]['Name'];
+//         $symptoms = $this->diagnosisClient->loadSublocationSymptoms($sublocRandomId,'man');
+//         print("<h3>Symptoms in body sublocation $sublocRandomName($sublocRandomId)</h3>");
+//         if (!isset($symptoms))
+//             exit();
+//         if (count($symptoms) == 0)
+//             die("No symptoms for selected body sublocation");
+        
+//         $this->printSimpleObject($symptoms);
+        
+//         // get diagnosis
+//         $randomSymptomIndex = rand(0, count($symptoms)-1);
+//         $randomSymptomId = $symptoms[$randomSymptomIndex]['ID'];
+//         $randomSymptomName = $symptoms[$randomSymptomIndex]['Name'];
+//         $selectedSymptoms = array($randomSymptomId);
+//         $diagnosis = $this->diagnosisClient->loadDiagnosis($selectedSymptoms, 'male', 1988);
+//         if (!isset($diagnosis))
+//             exit();
+//         print("<h3>Calculated diagnosis for $randomSymptomName($randomSymptomId)</h3>");
+//         $this->printDiagnosis($diagnosis);
+        
+//         // get specialisations
+//         $specialisations = $this->diagnosisClient->loadSpecialisations($selectedSymptoms, 'male', 1988);
+//         if (!isset($specialisations))
+//             exit();
+//         print("<h3>Calculated specialisations for $randomSymptomName($randomSymptomId)</h3>");
+//         $this->printSpecialisations($specialisations);
+        
+//         // get proposed symptoms
+//         $proposedSymptoms = $this->diagnosisClient->loadProposedSymptoms($selectedSymptoms, 'male', 1988);
+//         if (!isset($proposedSymptoms))
+//             exit();
+//         print("<h3>Proposed symptoms for selected $randomSymptomName($randomSymptomId)</h3>");
+//         $this->printSimpleObject($proposedSymptoms);
+        
+//         // get red flag text
+//         $redFlagText = $this->diagnosisClient->loadRedFlag($randomSymptomId);
+//         if (!isset($redFlagText))
+//             exit();
+//         print("<h3>Red flag text for selected $randomSymptomName($randomSymptomId)</h3>");
+//         print($redFlagText);
+        
+//         // get issue info
+//         reset($diagnosis);
+//         while (list($key, $val) = each($diagnosis)) {
+//             $this->loadIssueInfo($val['Issue']['ID']);
+//         }        
+//         print('</body></html>');
+//     }
+    
+//     private function loadIssueInfo($issueId)
+//     {
+//         $issueInfo = $this->diagnosisClient->loadIssueInfo($issueId);
+//         if (!isset($issueInfo))
+//             exit();
+//         $issueName = $issueInfo['Name'];
+//         print("<h3>Info for $issueName</h3>");
+//         print "<pre>";
+//         echo "\n","<b>Name:</b>\t",$issueName;
+//         echo "\n","<b>Professional Name:</b>\t",$issueInfo['ProfName'];
+//         echo "\n","<b>Synonyms:</b>\t",$issueInfo['Synonyms'];
+//         echo "\n","<b>Short Description:</b>\t",$issueInfo['DescriptionShort'];
+//         echo "\n","<b>Description:</b>\t",$issueInfo['Description'];
+//         echo "\n","<b>Medical Condition:</b>\t",$issueInfo['MedicalCondition'];
+//         echo "\n","<b>Treatment Description:</b>\t",$issueInfo['TreatmentDescription'];
+//         echo "\n","<b>Possible symptoms:</b>\t",$issueInfo['PossibleSymptoms'];
+//         print "</pre>";
+//     }
+    
+//     private function printDiagnosis($object)
+//     {
+//         print "<pre>" ;
+//         print "<b>ID\tName</b>";
+//         array_map(function ($issue) {
+//             echo "\n", $issue['Issue']['ID'], "\t", $issue['Issue']['Name']," (", $issue['Issue']['Accuracy'],"%)\n";
+//             echo "<b>Specialisations</b> -> ";
+//             array_map(function ($spec)
+//             {
+//               echo $spec['Name'],"(",$spec['ID'],")", "\t";
+//             }, $issue['Specialisation']);
+//             echo "\n";
+//         }, $object);
+//         print "</pre>" ; 
+//     }
+    
+//     private function printSpecialisations($object)
+//     {
+//         print "<pre>" ;
+//         print "<b>ID\tName</b>";
+//         array_map(function ($specialisation) {
+//             echo "\n", $specialisation['ID'], "\t", $specialisation['Name']," (", $specialisation['Accuracy'],"%)";
+//         }, $object);
+//         print "</pre>" ; 
+//     }
+    
+//     private function printSimpleObject($object)
+//     {
+//         print "<pre>";
+//         print "<b>ID\tName</b>";
+//         array_map(function ($var) {
+//             echo "\n", $var['ID'], "\t", $var['Name'];
+//         }, $object);
+//         print "</pre>" ; 
+//     }
+// }
+
+$Symptoms = new Symptoms();
+$Symptoms->authorize();
+
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-                        
-    <script src="js/hmac-md5.js"></script>                        
-    <script src="js/enc-base64-min.js"></script>
-    <script>
-        var uri = "https://authservice.priaid.ch/login";
-        var secret_key = "mysecretkey";
-        var computedHash = CryptoJS.HmacMD5(uri, secret_key);
-        var computedHashString = computedHash.toString(CryptoJS.enc.Base64);     
-    </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
 </head>
 <body>
-    
-    Select Affected Body Location:
-    <select id="locality-dropdown" name="locality">
-    </select><br><br>
-
-    Select Symptoms:
-    <select id="symptoms-dropdown" name="symptoms">
+  Select affected Body Location:
+    <select name='bodylocation'>
+      <?php
+        $bodyLocations = $Symptoms->diagnosisClient->loadBodyLocations();
+        // var_dump($bodyLocations);
+        foreach ($bodyLocations as $location){
+          $id = $location['ID'];
+          $body = $location['Name'];
+          
+          echo "<option value=$id>$body</option>";
+        }
+      ?>
     </select>
-
-    <script>
-        var token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Imh1aWZlbi5vbmcuMjAxOEBzbXUuZWR1LnNnIiwicm9sZSI6IlVzZXIiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zaWQiOiI2NjIyIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIwLTAzLTEzIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE1ODQyOTMyNDUsIm5iZiI6MTU4NDI4NjA0NX0.4HDwVs0OWCqM0dzEhvvlI92BEOj3m-qYFknRnae2chE';
-
-// body location
-        var url = 'https://sandbox-healthservice.priaid.ch/body/locations?token=' + token + '&language=en-gb';
-        obj = { table: "bodylocation", limit: 20 };
-        dbParam = JSON.stringify(obj);
-        xmlhttp = new XMLHttpRequest();
-        txt = '';
-        xmlhttp.onreadystatechange = function() {
-          if (this.readyState == 4 && this.status == 200) {
-            var myObj = JSON.parse(this.responseText);
-            console.log(myObj);
-            txt += "<select>"
-            for (x in myObj) {
-              txt += "<option>" + myObj[x].Name;
-            }
-            txt += "</select>"
-            document.getElementById("locality-dropdown").innerHTML = txt;
-          }
+<br><br>
+    Select symptoms:
+    <select name='symptoms'>
+      <?php
+        $symptomlist = $Symptoms->diagnosisClient->loadSymptoms();
+        // var_dump($bodyLocations);
+        foreach ($symptomlist as $aSymptom){
+          $id = $aSymptom['ID'];
+          $symptomName = $aSymptom['Name'];
+          
+          echo "<option value=$id>$symptomName</option>";
         }
-        xmlhttp.open("GET", url, true);
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send("x=" + dbParam);
-
-        // console.log(myObj);
-
-
-// symptoms
-        var url2 = 'https://sandbox-healthservice.priaid.ch/symptoms?token=' + token + '&language=en-gb';
-        obj2 = { table: "symptoms", limit: 20 };
-        dbParam2 = JSON.stringify(obj2);
-        xmlhttp2 = new XMLHttpRequest();
-        txt = '';
-        xmlhttp2.onreadystatechange = function() {
-          if (this.readyState == 4 && this.status == 200) {
-            var myObj2 = JSON.parse(this.responseText);
-            console.log(myObj2);
-            txt += "<select>"
-            for (x in myObj2) {
-              txt += "<option>" + myObj2[x].Name;
-            }
-            txt += "</select>"
-            document.getElementById("symptoms-dropdown").innerHTML = txt;
-          }
-        }
-        xmlhttp2.open("GET", url2, true);
-        xmlhttp2.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp2.send("x=" + dbParam2);
-
-    </script>
-    
+      ?>
+    </select>
 </body>
 </html>
-
-
