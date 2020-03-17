@@ -58,165 +58,173 @@ class Symptoms
         $this->diagnosisClient = new DiagnosisClient($token, $this->config['healthServiceUrl'], 'en-gb');
 
     }
-  }
-//         // get random body location
-//         $locRandomIndex = rand(0, count($bodyLocations)-1);
-//         $locRandomId = $bodyLocations[$locRandomIndex]['ID'];
-//         $locRandomName = $bodyLocations[$locRandomIndex]['Name'];
-//         $bodySublocations = $this->diagnosisClient->loadBodySublocations($locRandomId);
-//         if (!isset($bodySublocations))
-//             exit();
-//         print("<h3>Body Subocations for $locRandomName($locRandomId)</h3>");
-//         $this->printSimpleObject($bodySublocations);
-        
-//         // get random body sublocation
-//         $sublocRandomIndex = rand(0, count($bodySublocations)-1);
-//         $sublocRandomId = $bodySublocations[$sublocRandomIndex]['ID'];
-//         $sublocRandomName = $bodySublocations[$sublocRandomIndex]['Name'];
-//         $symptoms = $this->diagnosisClient->loadSublocationSymptoms($sublocRandomId,'man');
-//         print("<h3>Symptoms in body sublocation $sublocRandomName($sublocRandomId)</h3>");
-//         if (!isset($symptoms))
-//             exit();
-//         if (count($symptoms) == 0)
-//             die("No symptoms for selected body sublocation");
-        
-//         $this->printSimpleObject($symptoms);
-        
-//         // get diagnosis
-//         $randomSymptomIndex = rand(0, count($symptoms)-1);
-//         $randomSymptomId = $symptoms[$randomSymptomIndex]['ID'];
-//         $randomSymptomName = $symptoms[$randomSymptomIndex]['Name'];
-//         $selectedSymptoms = array($randomSymptomId);
-//         $diagnosis = $this->diagnosisClient->loadDiagnosis($selectedSymptoms, 'male', 1988);
-//         if (!isset($diagnosis))
-//             exit();
-//         print("<h3>Calculated diagnosis for $randomSymptomName($randomSymptomId)</h3>");
-//         $this->printDiagnosis($diagnosis);
-        
-//         // get specialisations
-//         $specialisations = $this->diagnosisClient->loadSpecialisations($selectedSymptoms, 'male', 1988);
-//         if (!isset($specialisations))
-//             exit();
-//         print("<h3>Calculated specialisations for $randomSymptomName($randomSymptomId)</h3>");
-//         $this->printSpecialisations($specialisations);
-        
-//         // get proposed symptoms
-//         $proposedSymptoms = $this->diagnosisClient->loadProposedSymptoms($selectedSymptoms, 'male', 1988);
-//         if (!isset($proposedSymptoms))
-//             exit();
-//         print("<h3>Proposed symptoms for selected $randomSymptomName($randomSymptomId)</h3>");
-//         $this->printSimpleObject($proposedSymptoms);
-        
-//         // get red flag text
-//         $redFlagText = $this->diagnosisClient->loadRedFlag($randomSymptomId);
-//         if (!isset($redFlagText))
-//             exit();
-//         print("<h3>Red flag text for selected $randomSymptomName($randomSymptomId)</h3>");
-//         print($redFlagText);
-        
-//         // get issue info
-//         reset($diagnosis);
-//         while (list($key, $val) = each($diagnosis)) {
-//             $this->loadIssueInfo($val['Issue']['ID']);
-//         }        
-//         print('</body></html>');
-//     }
-    
-//     private function loadIssueInfo($issueId)
-//     {
-//         $issueInfo = $this->diagnosisClient->loadIssueInfo($issueId);
-//         if (!isset($issueInfo))
-//             exit();
-//         $issueName = $issueInfo['Name'];
-//         print("<h3>Info for $issueName</h3>");
-//         print "<pre>";
-//         echo "\n","<b>Name:</b>\t",$issueName;
-//         echo "\n","<b>Professional Name:</b>\t",$issueInfo['ProfName'];
-//         echo "\n","<b>Synonyms:</b>\t",$issueInfo['Synonyms'];
-//         echo "\n","<b>Short Description:</b>\t",$issueInfo['DescriptionShort'];
-//         echo "\n","<b>Description:</b>\t",$issueInfo['Description'];
-//         echo "\n","<b>Medical Condition:</b>\t",$issueInfo['MedicalCondition'];
-//         echo "\n","<b>Treatment Description:</b>\t",$issueInfo['TreatmentDescription'];
-//         echo "\n","<b>Possible symptoms:</b>\t",$issueInfo['PossibleSymptoms'];
-//         print "</pre>";
-//     }
-    
-//     private function printDiagnosis($object)
-//     {
-//         print "<pre>" ;
-//         print "<b>ID\tName</b>";
-//         array_map(function ($issue) {
-//             echo "\n", $issue['Issue']['ID'], "\t", $issue['Issue']['Name']," (", $issue['Issue']['Accuracy'],"%)\n";
-//             echo "<b>Specialisations</b> -> ";
-//             array_map(function ($spec)
-//             {
-//               echo $spec['Name'],"(",$spec['ID'],")", "\t";
-//             }, $issue['Specialisation']);
-//             echo "\n";
-//         }, $object);
-//         print "</pre>" ; 
-//     }
-    
-//     private function printSpecialisations($object)
-//     {
-//         print "<pre>" ;
-//         print "<b>ID\tName</b>";
-//         array_map(function ($specialisation) {
-//             echo "\n", $specialisation['ID'], "\t", $specialisation['Name']," (", $specialisation['Accuracy'],"%)";
-//         }, $object);
-//         print "</pre>" ; 
-//     }
-    
-//     private function printSimpleObject($object)
-//     {
-//         print "<pre>";
-//         print "<b>ID\tName</b>";
-//         array_map(function ($var) {
-//             echo "\n", $var['ID'], "\t", $var['Name'];
-//         }, $object);
-//         print "</pre>" ; 
-//     }
-// }
-
+}
 $Symptoms = new Symptoms();
 $Symptoms->authorize();
 
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+
+    <title>Symptoms</title>
+
+    <link rel="stylesheet" href="">
+    <!--[if lt IE 9]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!-- Bootstrap libraries -->
+    <meta name="viewport" 
+        content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" 
+    crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script 
+    src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    
+    <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+    integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+    crossorigin="anonymous"></script>
+
 </head>
 <body>
-  Select affected Body Location:
-    <select name='bodylocation'>
-      <?php
-        $bodyLocations = $Symptoms->diagnosisClient->loadBodyLocations();
-        // var_dump($bodyLocations);
-        foreach ($bodyLocations as $location){
-          $id = $location['ID'];
-          $body = $location['Name'];
+  <div id="symptomchecker" class="container">
+    <form id="symptomsForm">
+      Year of Birth <input name="yearofbirth" type="text" id="yearofbirth" class="form-control" required><br><br>
+
+      Gender:
+      <input type="radio" id="gender" name="gender" value="Male" required>Male</input>
+      <input type="radio" id="gender" name="gender" value="Female" required>Female</input><br><br>
+
+      <!-- Select affected Body Location:
+      <select name='bodylocation' class="form-control">
+        <?php
+          // $bodyLocations = $Symptoms->diagnosisClient->loadBodyLocations();
+          // // var_dump($bodyLocations);
+          // foreach ($bodyLocations as $location){
+          //   $id = $location['ID'];
+          //   $body = $location['Name'];
+            
+          //   echo "<option value=$id>$body</option>";
+          // }
+        ?>
+      </select><br><br> -->
+
+      Select symptoms:
+      <select name='symptoms' id="symptom" class="form-control" multiple>
+        <?php
+          $symptomlist = $Symptoms->diagnosisClient->loadSymptoms();
+          // var_dump($bodyLocations);
+          foreach ($symptomlist as $aSymptom){
+            $id = $aSymptom['ID'];
+            $symptomName = $aSymptom['Name'];
+            
+            echo "<option value=$id>$symptomName</option>";
+          }
+
           
-          echo "<option value=$id>$body</option>";
-        }
-      ?>
-    </select>
-<br><br>
-    Select symptoms:
-    <select name='symptoms'>
-      <?php
-        $symptomlist = $Symptoms->diagnosisClient->loadSymptoms();
-        // var_dump($bodyLocations);
-        foreach ($symptomlist as $aSymptom){
-          $id = $aSymptom['ID'];
-          $symptomName = $aSymptom['Name'];
-          
-          echo "<option value=$id>$symptomName</option>";
-        }
-      ?>
-    </select>
+        ?>
+      </select>
+
+      <!-- <?php
+
+          // $test = $Symptoms->diagnosisClient->loadDiagnosis([16], 'male', 2009);
+
+          // var_dump($test);
+      ?> -->
+      <button id="searchBtn" type="button" class="btn btn-primary" > Submit </button>
+    </form>
+    <!-- <table id="resultsTable" class='table table-striped' border='1'>
+        <thead class='thead-dark'>
+            <tr>
+                <th>Title</th>
+                <th>ISBN 13</th>
+                <th>Price</th>
+                <th>Availability</th>
+            </tr>
+        </thead>
+    </table> -->
+  </div>
+
+
+  <script>
+    // $('#resultsTable').hide();
+    // // Helper function to display error message
+    // function showError(message) {
+    //     // Hide the table and button in the event of error
+    //     $('#resultsTable').hide();
+
+    //     // Display an error under the main container
+    //     $('#symptomchecker')
+    //         .append("<label>"+message+"</label>");
+    // }
+    // $("#searchBtn").submit(async (event) => {
+
+      console.log('hello');
+    $('#searchBtn').click(async(event) => {  
+    //Prevents screen from refreshing when submitting  
+        event.preventDefault();
+
+        var yearofbirth = $('#yearofbirth').val();
+        var gender = $('#gender').val();
+        var symptom = $('#symptom').val();
+
+        $.ajax({
+          method: "POST",
+          data: { "yearofbirth": yearofbirth, "gender": gender, "symptom": symptom }
+        })
+        const diagnosis = 
+          <?php
+              $getSymptom = [$_GET['symptom']];
+              $getGender = $_GET['gender'];
+              $getYr = $_GET['yearofbirth'];
+          return $Symptoms->diagnosisClient->loadDiagnosis($getSymptom, $getGender, $getYr);?>;
+        console.log(diagnosis);
+        try {
+            // const response =
+            // await fetch(
+            //     serviceURL, { method: 'GET' }
+            // );
+            const data = await diagnosis.json();
+            // var books = data.books; //the arr is in data.books of the JSON data
+
+            // array or array.length are falsy
+            if (response.ok) {
+                console.log(data);
+                // for loop to setup all table rows with obtained book data
+                // var rows = "";
+                //     eachRow =
+                //         "<td>" + data.title + "</td>" +
+                //         "<td>" + data.isbn13 + "</td>" +
+                //         "<td>" + data.price + "</td>" +
+                //         "<td>" + data.availability + "</td>";
+                //     rows += "<tbody><tr>" + eachRow + "</tr></tbody>";
+                // // add all the rows to the table
+                // $('#booksTable').append(rows);
+                // $('#booksTable').show();
+            } 
+        } catch (error) {
+            // Errors when calling the service; such as network error, 
+            // service offline, etc
+            showError
+          ('There is a problem retrieving books data, please try again later.<br />'+error);
+            
+        } // error
+    });
+
+  </script>
+
+
 </body>
 </html>
