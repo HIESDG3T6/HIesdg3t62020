@@ -15,23 +15,28 @@ class Patient_history(db.Model):
  
     PID = db.Column(db.Integer, primary_key=True)
     AID = db.Column(db.Integer, primary_key=True)
-    clinicName = db.Column(db.String(100), nullable=False)
-    Pname = db.Column(db.String(1000), nullable=False)
-    contact = db.Column(db.String(1000), nullable=True)
-    location = db.Column(db.String(1000), nullable=True)
-    treatmentDetails = db.Column(db.String(10000), nullable=True)
+    # clinicName = db.Column(db.String(100), nullable=False)
+    # Pname = db.Column(db.String(1000), nullable=False)
+    # contact = db.Column(db.String(1000), nullable=True)
+    # location = db.Column(db.String(1000), nullable=True)
+    Medication = db.Column(db.String(100), nullable=True)
+    BillAmount = db.Column(db.String(100), nullable=True)
+    ClaimAmount = db.Column(db.String(100), nullable=True)
  
-    def __init__(self, PID, AID, clinicName, Pname, contact, location, treatmentDetails):
+    def __init__(self, PID, AID, Medication, BillAmount, ClaimAmount):
         self.PID = PID
         self.AID = AID
-        self.clinicName = clinicName
-        self.Pname = Pname
-        self.contact = contact
-        self.location = location
-        self.treatmentDetails = treatmentDetails
+        # self.clinicName = clinicName
+        # self.Pname = Pname
+        # self.contact = contact
+        # self.location = location
+        self.Medication = Medication
+        self.BillAmount = BillAmount
+        self.ClaimAmount = ClaimAmount
+
  
     def json(self):
-        return {"Patient ID": self.PID, "Appointment ID": self.AID, "Clinic Name": self.clinicName, "Patient Name": self.Pname, "Contact Number": self.contact, "Location": self.location, "Treatment Details": self.treatmentDetails}
+        return {"Patient ID": self.PID, "Appointment ID": self.AID, "Treatment Details": self.Medication, "Bill Amount": self.BillAmount, "Claim Amount": self.ClaimAmount,}
 
 # get all 
 @app.route("/patient_history")
@@ -49,16 +54,8 @@ def find_by_PID(PID):
             result.append(ahistory.json())
         return jsonify(result)
     return jsonify({"message": "Patient History not found."}), 404
-
-# get patient history with appointment ID
-# @app.route("/patient_history/<string:AID>")
-# def find_by_AID(AID):
-#     history = Patient_history.query.filter_by(AID=AID).first()
-#     if history:
-#         return jsonify(history.json())
-#     return jsonify({"message": "Appointment History not found."}), 404
-    
-@app.route("/patient_history/<string:AID>", methods=['POST'])
+  
+@app.route("/patient_history/<string:AID>/", methods=['POST'])
 def create_history(AID):
     if (Patient_history.query.filter_by(AID=AID).first()):
         return jsonify({"message": "An patient history with AppointmentID '{}' already exists.".format(AID)}), 400

@@ -36,22 +36,14 @@ DROP TABLE IF EXISTS `patient_history`;
 CREATE TABLE IF NOT EXISTS `patient_history` (
   `PID` int(11) NOT NULL,
   `AID` int(11) NOT NULL,
-  `clinicName` varchar(100) NOT NULL,
-  `PName` varchar(1000) NOT NULL,
-  `contact` varchar(1000) DEFAULT NULL,
-  `location` varchar(1000) DEFAULT NULL,
-  `treatmentDetails` varchar(10000) DEFAULT NULL,
-  PRIMARY KEY (`PID`,`AID`,`clinicName`)
+  `Medication` varchar(1000) DEFAULT NULL,
+  `BillAmount` varchar(1000) DEFAULT NULL,
+  `claimAmount` varchar(10000) DEFAULT NULL,
+  PRIMARY KEY (`PID`,`AID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `patient_history`
---
 
-INSERT INTO `patient_history` (`PID`, `AID`, `clinicName`, `PName`, `contact`, `location`, `treatmentDetails`) VALUES
-(1001, 8032020, 'famous Clinic', 'Amy', '12345678', 'Boon Lay', NULL),
-(1002, 8032020, 'happy Clinic', 'Bob', '12345679', 'Boon Lay', NULL);
-COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
