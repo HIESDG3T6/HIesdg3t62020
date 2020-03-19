@@ -89,29 +89,44 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					<div class="row" >
 						<div class="col-md-6 wthree_contact_left">
 							<div class="form-group">
+								Patient ID<br>
+								<input type="text" id="pid" name="pid" class="form-control" placeholder="Patient ID" required="">
+							</div>
+							<div class="form-group">
+								Claim ID<br>
 								<input type="text" id="claim_id" name="claim_id" class="form-control" placeholder="Claim ID" required="">
 							</div>
 							<div class="form-group">
+								Claim Date<br>
 								<input type="text" id="claim_date" name="claim_date" class="form-control" placeholder="Claim Date" required="">
                             </div>
                             <div class="form-group">
+								Medication<br>
 								<input type="text" id="medication" name="medication" class="form-control" placeholder="Medication" required="">
                             </div>
                             <div class="form-group">
+								Claim Amount<br>
 								<input type="text" id="claim_amt" name="claim_amt" class="form-control" placeholder="Claim Amount" required="">
 							</div>
 						</div>
 						<div class="col-md-6 wthree_contact_left_grid">
 							<div class="form-group">
-								<input type="text" id="clinic_id" name="clinic_id" class="form-control" placeholder="Clinic ID" required="">
+								Appointment ID<br>
+								<input type="text" id="aid" name="aid" class="form-control" placeholder="Appointment ID" required="">
 							</div>
 							<div class="form-group">
+								Clinic ID<br>
+								<input type="text" id="clinic_id" name="clinic_id" class="form-control" placeholder="Clinic ID" value="" required="">
+							</div>
+							<!-- <div class="form-group">
 								<input type="text" id="patient_id" name="patient_id" class="form-control" placeholder="Patient ID" required="">
-                            </div>
+                            </div> -->
                             <div class="form-group">
+								Bill Amount<br>
 								<input type="text" id="bill_amt" name="bill_amt" class="form-control" placeholder="Bill Amount" required="">
                             </div>
                             <div class="form-group">
+								Claim Status<br>
 								<input type="text" id="claim_status" name="claim_status" class="form-control" value = "Open" required="" disabled>
 							</div>
                         </div>
@@ -156,38 +171,104 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!-- send message to Claim MS and PH MS -->
 <script>
 // Helper function to display error message
-function showError(message) {
-        // Display an error under the the predefined label with error as the id
-        $('#main-container')
-                .append("<label>"+message+"</label>");
-    }
+	function getvalue(name){
+				var reg = new RegExp("(^|&)"+name+"=([^&]*)(&|$)");
+				var r = window.location.search.substr(1).match(reg);
+				if (r!=null) return r[2]; return '';
+			}
 
-async function postData(serviceURL, requestBody) {
-    var requestParam = {
-        headers: { "content-type": "charset=UTF-8; application/json;" },
-        mode: 'cors', // other options: no-cors, etc.
-        method: 'POST',
-        body: JSON.stringify(requestBody)
-    }
-    try {
-        const response = await fetch(serviceURL, requestParam);
-        data = await response.json();
-        console.log(data);
-    } catch (error) {
-		showError(error)
-        console.error(error);
-    }
-}
+	function showError(message) {
+			// Display an error under the the predefined label with error as the id
+			$('#main-container')
+					.append("<label>"+message+"</label>");
+		}
+	
+	//Get form data
+		// PID and Clinic ID passed through URL 
+		var PID = getvalue('pid');
+		var ClinicID = getvalue('clinicid');
 
+		//set the value to the textinput from URL
+		$("#clinic_id").val(ClinicID);
+		$("#pid").val(PID);
+
+		// set date as current
+		var now = new Date();
+		var day = ('0'+now.getDate()).slice(-2);
+		var month = ('0' + (now.getMonth()+1)).slice(-2);
+		var today = now.getFullYear()+'-'+(month)+'-'+(day);
+		$("#claim_date").val(today);
+
+		console.log(PID);
+		console.log(ClinicID);
+
+
+	// send claim data to claim MS
+	async function postDataToClaim(serviceURL_claim, requestBody_claim) {
+	    var requestParam = {
+	        headers: { "content-type": "charset=UTF-8; application/json;" },
+	        mode: 'cors', // other options: no-cors, etc.
+	        method: 'POST',
+	        body: JSON.stringify(requestBody_claim)
+	    }
+	    try {
+	        const response = await fetch(serviceURL_claim, requestParam);
+	        data_claim = await response.json();
+	        console.log(data_claim);
+
+			if (response.ok) {
+						// relocate to home page
+						window.location.replace("patient_history.html");
+						return false;
+					} else {
+						console.log(data);
+						showError(data.message);
+				}
+	    } catch (error) {
+			showError(error)
+	        console.error(error);
+	    }
+	}
+	// send claim data to Patient History DB for updates
+	async function postDataToPatientHistory(serviceURL_ph, requestBody_ph) {
+	    var requestParam = {
+	        headers: { "content-type": "charset=UTF-8; application/json;" },
+	        mode: 'cors', // other options: no-cors, etc.
+	        method: 'POST',
+	        body: JSON.stringify(requestBody_ph)
+	    }
+	    try {
+	        const response = await fetch(serviceURL_ph, requestParam);
+	        data_ph = await response.json();
+	        console.log(data_ph);
+
+			if (response.ok) {
+						// relocate to home page
+						window.location.replace("patient_history.html");
+						return false;
+					} else {
+						console.log(data);
+						showError(data.message);
+				}
+				
+	    } catch (error) {
+			showError(error)
+	        console.error(error);
+	    }
+	}
+
+	// Pass information to 
     $("#info_form").submit(function() {
         //Prevents screen from refreshing when submitting
         event.preventDefault();
-        
-        //Get form data 
+
+
+		// var PID = $('#pid').val();
+		var AID = $('#aid').val();
         var ClaimID = $('#claim_id').val();
         var ClaimDate = $('#claim_date').val();
 		var Medication = $('#medication').val();
-		var ClinicID = $('#clinic_id').val();
+		//var ClinicID = $('#clinic_id').val();
 		var PatientID = $('#patient_id').val();
 		var ClaimStatus = $('#claim_status').val();
         var BillAmount = $('#bill_amt').val();
@@ -195,11 +276,14 @@ async function postData(serviceURL, requestBody) {
 
         // form the POST url which includes the dynamic isbnNumber
 		console.log(ClaimID)
+		console.log(AID)
 
-		var serviceURL = "http://127.0.0.1:5000/claims/"+ClaimID;
-		console.log(serviceURL);
+		var serviceURL_claim = "http://127.0.0.1:5000/claims/"+ClaimID;
+		var serviceURL_ph = "http://127.0.0.1:5000/patient_history"+AID+"/";
+		console.log(serviceURL_claim);
+		console.log(serviceURL_ph)
 
-		var requestBody = {
+		var requestBody_claim = {
 			ClaimID:ClaimID,
 			ClinicName:ClinicID,
 			BillAmount:BillAmount,
@@ -209,11 +293,19 @@ async function postData(serviceURL, requestBody) {
 			ClaimedAmount:ClaimAmount,
 			RefundStatus: 'Pending',
 			Medicine:Medication
-	}
-		console.log(requestBody);
+		}
+		console.log(requestBody_claim);
 
-         
-    });
+		var requestBody_ph = {
+			PID:PID,
+			AID:AID,
+			BillAmount:BillAmount,
+			ClaimedAmount:ClaimAmount,
+			Medication:Medication
+		}
+		console.log(requestBody_ph);
+	});
+
 </script>
 </html>
 
