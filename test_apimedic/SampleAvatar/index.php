@@ -69,7 +69,7 @@
         });
     </script>
 
-	
+    <base target="_parent">
 </head>
 <body>
 
