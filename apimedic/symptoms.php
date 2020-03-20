@@ -62,6 +62,8 @@ class Symptoms
 $Symptoms = new Symptoms();
 $Symptoms->authorize();
 
+// $test = $Symptoms->diagnosisClient->loadDiagnosis([10], 'Male', 2001);
+// var_dump($test);
 ?>
 
 <!DOCTYPE html>
@@ -101,42 +103,47 @@ $Symptoms->authorize();
 <body>
   <div id="symptomchecker" class="container">
     <form id="symptomsForm">
-      Year of Birth <input name="yearofbirth" type="text" id="yearofbirth" class="form-control" required><br><br>
+      <strong>Year of Birth</strong> <input name="yearofbirth" type="text" id="yearofbirth" class="form-control" required><br><br>
 
-      Gender:
-      <input type="radio" id="gender" name="gender" value="Male" required>Male</input>
-      <input type="radio" id="gender" name="gender" value="Female" required>Female</input><br><br>
+      <strong>Gender: </strong>&nbsp
+      <input type="radio" id="male" name="gender" class ="gender" value="Male" required><label for='male'>&nbspMale</label></input>&nbsp&nbsp
+      <input type="radio" id="female" name="gender" class ="gender" value="Female" required><label for='female'>&nbspFemale</label></input><br><br>
 
-      <!-- Select affected Body Location:
-      <select name='bodylocation' class="form-control">
-        <?php
-          // $bodyLocations = $Symptoms->diagnosisClient->loadBodyLocations();
-          // // var_dump($bodyLocations);
-          // foreach ($bodyLocations as $location){
-          //   $id = $location['ID'];
-          //   $body = $location['Name'];
-            
-          //   echo "<option value=$id>$body</option>";
-          // }
-        ?>
-      </select><br><br> -->
+      <strong>Select symptoms:</strong>
+      <div class="form-check">
+        <table id='symptoms'>
+          <?php
+            $symptomlist = $Symptoms->diagnosisClient->loadSymptoms();
+            // var_dump($bodyLocations);
+            for ($i=0; $i<count($symptomlist); $i+=4){
+              $row = '';
+              $id = $symptomlist[$i]['ID'];
+              $symptomName = ucfirst($symptomlist[$i]['Name']);
+              $row .= "<td width=300><input type='checkbox' name='symptoms[]' id=$id class='symptom' value=$id><label for=$id>$symptomName</label></td>";
 
-      Select symptoms:
-      <select name='symptoms' id="symptom" class="form-control" multiple>
-        <?php
-          $symptomlist = $Symptoms->diagnosisClient->loadSymptoms();
-          // var_dump($bodyLocations);
-          foreach ($symptomlist as $aSymptom){
-            $id = $aSymptom['ID'];
-            $symptomName = $aSymptom['Name'];
-            
-            echo "<option value=$id>$symptomName</option>";
-          }
+              if ($i+1<count($symptomlist)){
+                $id = $symptomlist[$i+1]['ID'];
+                $symptomName = ucfirst($symptomlist[$i+1]['Name']);
+                $row .= "<td width=300><input type='checkbox' name='symptoms[]' id=$id class='symptom' value=$id><label for=$id>$symptomName</label></td>";
+              }
+              
+              if ($i+2<count($symptomlist)){
+                $id = $symptomlist[$i+2]['ID'];
+                $symptomName = ucfirst($symptomlist[$i+2]['Name']);
+                $row .= "<td width=300><input type='checkbox' name='symptoms[]' id=$id class='symptom' value=$id><label for=$id>$symptomName</label></td>";
+              }
 
-          
-        ?>
-      </select>
-
+              if ($i+3<count($symptomlist)){
+                $id = $symptomlist[$i+3]['ID'];
+                $symptomName = ucfirst($symptomlist[$i+3]['Name']);
+                $row .= "<td width=300><input type='checkbox' name='symptoms[]' id=$id class='symptom' value=$id><label for=$id>$symptomName</label></td>";
+              }
+              
+              echo "<tr> $row </tr>";
+            }
+          ?>
+        </table>
+      </div>
       <!-- <?php
 
           // $test = $Symptoms->diagnosisClient->loadDiagnosis([16], 'male', 2009);
@@ -145,6 +152,8 @@ $Symptoms->authorize();
       ?> -->
       <button id="searchBtn" type="button" class="btn btn-primary" > Submit </button>
     </form>
+
+    
     <!-- <table id="resultsTable" class='table table-striped' border='1'>
         <thead class='thead-dark'>
             <tr>
@@ -159,61 +168,96 @@ $Symptoms->authorize();
 
 
   <script>
-    // $('#resultsTable').hide();
-    // // Helper function to display error message
-    // function showError(message) {
-    //     // Hide the table and button in the event of error
-    //     $('#resultsTable').hide();
+    console.log(1);
+    document.write('hi');
+    
+    // // $('#resultsTable').hide();
+    // // // Helper function to display error message
+    // // function showError(message) {
+    // //     // Hide the table and button in the event of error
+    // //     $('#resultsTable').hide();
 
-    //     // Display an error under the main container
-    //     $('#symptomchecker')
-    //         .append("<label>"+message+"</label>");
-    // }
-    // $("#searchBtn").submit(async (event) => {
+    // //     // Display an error under the main container
+    // //     $('#symptomchecker')
+    // //         .append("<label>"+message+"</label>");
+    // // }
+    // // $("#searchBtn").submit(async (event) => {
 
-      console.log('hello');
-    $('#searchBtn').click(async(event) => {  
+
+    $('#searchBtn').click((event) => {  
     //Prevents screen from refreshing when submitting  
-        event.preventDefault();
+        console.log('hello');
 
+        event.preventDefault();
         var yearofbirth = $('#yearofbirth').val();
-        var gender = $('#gender').val();
-        var symptom = $('#symptom').val();
+        var gender = $('.gender').val();
+        var symptom = [];
+            $.each($("input[name='symptoms[]']:checked"), function(){
+                symptom.push($(this).val());
+            });
+        // document.write(symptom);
+        // function createCookie(name, value, days) {
+        //   var expires;
+        //   if (days) {
+        //     var date = new Date();
+        //     date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        //     expires = "; expires=" + date.toGMTString();
+        //   }
+        //   else {
+        //     expires = "";
+        //   }
+        //   document.cookie = escape(name) + "=" + escape(value) + expires + "; path=/";
+        // }
+        
+        // $(document).ready(function () {
+        //   createCookie("yearofbirth", yearofbirth, "10");
+        //   createCookie("gender", gender, "10");
+        //   createCookie("symptom", symptom, "10");
+        //   console.log(1);
+        // });
+
+        
 
         $.ajax({
           method: "POST",
           data: { "yearofbirth": yearofbirth, "gender": gender, "symptom": symptom }
         })
-        const diagnosis = 
-          <?php
-              $getSymptom = [$_GET['symptom']];
-              $getGender = $_GET['gender'];
-              $getYr = $_GET['yearofbirth'];
-          return $Symptoms->diagnosisClient->loadDiagnosis($getSymptom, $getGender, $getYr);?>;
-        console.log(diagnosis);
+        
         try {
+            const diagnosis = 
+            <?php
+                $getSymptom = $_POST['symptom'];
+                var_dump($getSymptom);
+                $getGender = $_POST['gender'];
+                $getYr = $_POST['yearofbirth'];
+                // $getSymptom = "<script>document.writeIn(symptom);</script>";
+                // $getGender = "<script>document.writeIn(gender);</script>";
+                // $getYr = "<script>document.writeIn(yearofbirth);</script>";
+                return $getYr;
+                return $Symptoms->diagnosisClient->loadDiagnosis($getSymptom, $getGender, $getYr);?>;
+            console.log(diagnosis);
             // const response =
             // await fetch(
             //     serviceURL, { method: 'GET' }
             // );
-            const data = await diagnosis.json();
+            const data = diagnosis.json();
             // var books = data.books; //the arr is in data.books of the JSON data
 
             // array or array.length are falsy
-            if (response.ok) {
-                console.log(data);
-                // for loop to setup all table rows with obtained book data
-                // var rows = "";
-                //     eachRow =
-                //         "<td>" + data.title + "</td>" +
-                //         "<td>" + data.isbn13 + "</td>" +
-                //         "<td>" + data.price + "</td>" +
-                //         "<td>" + data.availability + "</td>";
-                //     rows += "<tbody><tr>" + eachRow + "</tr></tbody>";
-                // // add all the rows to the table
-                // $('#booksTable').append(rows);
-                // $('#booksTable').show();
-            } 
+            // if (response.ok) {
+            //     console.log(data);
+            //     // for loop to setup all table rows with obtained book data
+            //     // var rows = "";
+            //     //     eachRow =
+            //     //         "<td>" + data.title + "</td>" +
+            //     //         "<td>" + data.isbn13 + "</td>" +
+            //     //         "<td>" + data.price + "</td>" +
+            //     //         "<td>" + data.availability + "</td>";
+            //     //     rows += "<tbody><tr>" + eachRow + "</tr></tbody>";
+            //     // // add all the rows to the table
+            //     // $('#booksTable').append(rows);
+            //     // $('#booksTable').show();
+            // } 
         } catch (error) {
             // Errors when calling the service; such as network error, 
             // service offline, etc

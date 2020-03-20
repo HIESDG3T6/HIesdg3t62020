@@ -185,4 +185,18 @@ class Demo
 $demo = new Demo();
 $demo->simulate();
 
+// Select affected Body Location:
+// <select name='bodylocation' class="form-control">
+//   <?php
+//     // $bodyLocations = $Symptoms->diagnosisClient->loadBodyLocations();
+//     // // var_dump($bodyLocations);
+//     // foreach ($bodyLocations as $location){
+//     //   $id = $location['ID'];
+//     //   $body = $location['Name'];
+      
+//     //   echo "<option value=$id>$body</option>";
+//     // }
+//   ?>
+// </select><br><br>
+
 ?>
