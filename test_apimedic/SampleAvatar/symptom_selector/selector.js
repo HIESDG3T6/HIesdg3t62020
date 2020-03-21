@@ -2101,8 +2101,10 @@ var mode = "diagnosis";
                     //"href": specUrl + "/" + this.Name + "/" + this.ID
                     //"href": specUrl + "?specId=" + this.SpecialistID
                     // "href": specUrl  + "/" + "specId" + this.SpecialistID + ".html"
-                    // "href": "../../patient/search.html" + "/" + this.Name
-                    "href": "http://127.0.0.1:5000/clinic/spec" + "/" + this.Name
+                    // "href": "../../patient/search.php" + "/" + this.Name
+                    // "href": "http://127.0.0.1:5000/clinic/spec" + "/" + this.Name
+                    "href": "../../patient/search.php",
+                    "specialty": this.Name
                 });
 
                 specListElement.append(spec);
