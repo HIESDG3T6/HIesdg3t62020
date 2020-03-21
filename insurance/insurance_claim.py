@@ -143,17 +143,21 @@ def send_claim(claim):
         with open("corrids.csv", "a+", newline='') as corrid_file: # 'with' statement in python auto-closes the file when the block of code finishes, even if some exception happens in the middle
             csvwriter = csv.DictWriter(corrid_file, csvheaders)
             csvwriter.writerow(row)
-        replyqueuename = "refund.reply"
+        
+        
+       
 
         # prepare the channel and send a message to Refund
-        
+        replyqueuename = "refund.reply"
+
 
         channel.queue_declare(queue='refund', durable=True) # make sure the queue used by Refund exist and durable
+
         channel.queue_bind(exchange=exchangename, queue='refund', routing_key='refund.claim') # make sure the queue is bound to the exchange
 
         channel.basic_publish(exchange=exchangename, routing_key="refund.claim", body=message,
             properties=pika.BasicProperties(delivery_mode = 2, # make message persistent within the matching queues until it is received by some receiver (the matching queues have to exist and be durable and bound to the exchange, which are ensured by the previous two api calls)
-                reply_to=replyqueuename, # set the reply queue which will be used as the routing key for reply messages
+                reply_to=replyqueuename, # replyqueuename set the reply queue which will be used as the routing key for reply messages 
                 correlation_id=corrid # set the correlation id for easier matching of replies
             )
         )
@@ -161,9 +165,36 @@ def send_claim(claim):
     
     # close the connection to the broker
     connection.close()
+    receiveReply()
+
+# receive the reply from refund.reply
+def receiveReply():
+
+    # default username / password to the borker are both 'guest'
+    hostname = "localhost" # default broker hostname. Web management interface default at http://localhost:15672
+    port = 5672 
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host=hostname, port=port))
+        # Note: various network firewalls, filters, gateways (e.g., SMU VPN on wifi), may hinder the connections;
+        # If "pika.exceptions.AMQPConnectionError" happens, may try again after disconnecting the wifi and/or disabling firewalls
+    channel = connection.channel()
+
+    exchangename="claim_direct"
+    channel.exchange_declare(exchange=exchangename, exchange_type='direct')
 
 
+    # prepare a queue for receiving messages
+    channelqueue = channel.queue_declare(queue="refund.reply", durable=True) # 'durable' makes the queue survive broker restarts so that the messages in it survive broker restarts too
+    queue_name = channelqueue.method.queue
+    channel.queue_bind(exchange=exchangename, queue=queue_name, routing_key='refund.reply') # bind the queue to the exchange via the key
 
+    # set up a consumer and start to wait for coming messages
+    channel.basic_qos(prefetch_count=1) # The "Quality of Service" setting makes the broker distribute only one message to a consumer if the consumer is available (i.e., having finished processing and acknowledged all previous messages that it receives)
+    channel.basic_consume(queue=queue_name, on_message_callback=callback)
+    channel.start_consuming()
+
+def callback(channel, method, properties, body): 
+    print("Received an reply from Refund Service: ")
+    print(body)
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
