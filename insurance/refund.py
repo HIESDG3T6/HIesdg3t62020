@@ -67,6 +67,7 @@ def createRefund(claim):
 
     stripe.api_key = 'sk_test_cO2Ogpe9pGbxUkPX7XT4608p00VqIxakqr'
 
+    ''' later need to change the payment_intent from payment'''
     #create a refund data ; must specify a Charge or a PaymentIntent object
     try:
         response = stripe.Refund.create(payment_intent="pi_1GOxccFFJtJhKnRrJ2nYe8XM")

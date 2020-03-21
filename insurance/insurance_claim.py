@@ -191,10 +191,14 @@ def receiveReply():
     channel.basic_qos(prefetch_count=1) # The "Quality of Service" setting makes the broker distribute only one message to a consumer if the consumer is available (i.e., having finished processing and acknowledged all previous messages that it receives)
     channel.basic_consume(queue=queue_name, on_message_callback=callback)
     channel.start_consuming()
+    
 
 def callback(channel, method, properties, body): 
     print("Received an reply from Refund Service: ")
     print(body)
+    #after receive the message, stop the loop
+    channel.stop_consuming()
+
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
