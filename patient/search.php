@@ -90,7 +90,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			<ul class="menu mt-2 ml-auto">
 				<li class="active"><a href="index.html">Home</a></li>
 				<li class=""><a href="precheck.html">PreCheck</a></li>
-				<li class=""><a href="search.html">Search Clinics </a></li>
+				<li class=""><a href="search.php">Search Clinics </a></li>
 				<li class=""><a href="patient_history.html">Patient History</a></li>
 			<!-- 	<li class=""><a href="billing.html">Billing</a></li>-->
 				<li class=""><a href="account.html">Account Details</a></li>
@@ -162,18 +162,42 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 	<table id="clinicsSearch" class='table' border='1'>
 	</table>
 </section>
+<p>Got Message:</p>
+    <div id="results"></div>
 		
 	<script>
 		$('#clinics').hide();
+		// function receiveMessage(event)
+		// {
+		// // Do we trust the sender of this message?  (might be
+		// // different from what we originally opened, for example).
+		// if (event.origin !== "http://example.com")
+		// 	return;
+
+		// // event.source is popup
+		// // event.data is "hi there yourself!  the secret response is: rheeeeet!"
+		// }
+		// window.addEventListener("message", receiveMessage, false);
+
+		// console.log(window.addEventListener("message", receiveMessage, false));
+		
+
         $(document).ready(async() => {  
-			var serviceURL = "http://localhost:5000/clinic";
+			// console.log(sessionStorage.getItem("symptom"));
+			if (sessionStorage.getItem("symptom") !== null){
+				var specialtyrefer = sessionStorage.getItem("symptom");
+				console.log(specialtyrefer);
+				var serviceURL = "http://localhost:5000/clinic/spec" + "/" + specialtyrefer;
+			}
+			else{
+				var serviceURL = "http://localhost:5000/clinic";
+			}
             try {
                 const response =
                 await fetch(
                    serviceURL, { method: 'GET' }
                 );
                 const data = await response.json();
-                // var books = data.books; //the arr is in data.books of the JSON data
 
 				// array or array.length are falsy
                 if (response.ok) {
@@ -193,7 +217,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 								"S(" + value2.postalCode + ")<br>" +
 								"Contact: " + value2.contactNumber + "<br>" +
 								"Opening Hours: " + value2.opening + "<br>" +
-								"<td><a href='appointment.html'>Book Appointment</a></td>";
+								"<td align='center'><iframe src='../clinicsearch/distance.html?location=" + value.postalCode + "'></iframe><br><a href='appointment.html'>Book Appointment</a></td>";
 							rows += "<tbody><tr>" + eachRow + "</tr></tbody>";
 							if (jQuery.inArray(value2.specialty, specarr) == -1){
 								specarr.push(value2.specialty);
@@ -202,7 +226,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 							if (jQuery.inArray(value2.groupedLocation, locarr) == -1){
 								locarr.push(value2.groupedLocation);
 							}
-							console.log(value2.groupedLocation);
+							// console.log(value2.groupedLocation);
 
 						});
 					});
@@ -253,9 +277,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 				var groupedlocation = $('#location').val();
 				var serviceURL = "http://localhost:5000/clinic/loc" + "/" + groupedlocation;
 			}
-			else if (specialtyrefer!== ""){
-				var serviceURL = "http://localhost:5000/clinic/spec" + "/" + specialtyrefer;
-			}
 			else{
 				alert('Please Fill in a Field');
 			}
@@ -284,7 +305,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 							"S(" + value.postalCode + ")<br>" +
 							"Contact: " + value.contactNumber + "<br>" +
 							"Opening Hours: " + value.opening + "<br>" +
-							"<td><a href='appointment.html'>Book Appointment</a></td>";
+							"<td><iframe src='../clinicsearch/distance.html?location=" + value.postalCode + "'></iframe><br><a href='appointment.html'>Book Appointment</a></td>";
 						rows += "<tbody><tr>" + eachRow + "</tr></tbody>";
 
 					});
