@@ -34,6 +34,14 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			<link href="//fonts.googleapis.com/css?family=Dosis:200,300,400,500,600,700,800&amp;subset=latin-ext" rel="stylesheet">
 			<!-- //google fonts -->
 			
+			<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+			<script 
+				src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+				
+				<script
+				src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+				integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+				crossorigin="anonymous"></script>
 		</head>
 <body>
 
@@ -113,20 +121,19 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					<div class="row">
 						<div class="col-md-6 wthree_contact_left_grid pr-md-0">
 							<div class="form-group">
-								<input type="text" name="name" class="form-control" placeholder="Clinic Name" >
+								<input type="text" name="name" id="clinicName" class="form-control" placeholder="Clinic Name" >
 							</div>
 						</div>
 						<div class="col-md-6 wthree_contact_left_grid">
 							<div class="form-group">
-								<select name="specialty" class="form-control">
-									<option value="1">Select a Specialty</option>
+								<select name="specialty" class="form-control" id="specialty">
+									<option value="">Select a Specialty</option>
 								</select>							
 							</div>
 						</div>
-
-						<div class="col-lg-4 col-md-6 mt-lg-0 mt-4 contact-info">
+						<div class="col-lg-4 col-md-6 mt-lg-0 mt-4">
 							<div class="form-group">
-								<select name="groupedlocation" class="form-control" >
+								<select name="groupedlocation" class="form-control" id="location">
 									<option value="">Select an Area</option>
 								</select>								
 							</div>
@@ -138,23 +145,217 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 							<h4 class="my-4">Book Your Appointment</h4>
 							<p class="phone"><span class="fa mr-2 fa-phone"></span>Call us at +1 123 456 789 </p> -->
 						</div>
-						
 						<div class="col-md-12">
 							<div class="submit-buttons">
-								<button type="submit" class="btn">Submit</button>
+								<button type="submit" id="searchBtn" class="btn">Submit</button>
 							</div>
 						</div>
 					</div>
 				</form>
 			</div>
-			
 		</div>
 	</div>
-	<div class="map mt-5">
+<hr>
+	<table id="clinics" class='table' border='1'>
+	</table>
+
+	<table id="clinicsSearch" class='table' border='1'>
+	</table>
+</section>
+
+    <div id="results"></div>
+		
+	<script>
+		$('#clinics').hide();
+		// function receiveMessage(event)
+		// {
+		// // Do we trust the sender of this message?  (might be
+		// // different from what we originally opened, for example).
+		// if (event.origin !== "http://example.com")
+		// 	return;
+
+		// // event.source is popup
+		// // event.data is "hi there yourself!  the secret response is: rheeeeet!"
+		// }
+		// window.addEventListener("message", receiveMessage, false);
+
+		// console.log(window.addEventListener("message", receiveMessage, false));
+		
+
+        $(document).ready(async() => {  
+			// console.log(sessionStorage.getItem("symptom"));
+			if (sessionStorage.getItem("symptom") !== null){
+				var specialtyrefer = sessionStorage.getItem("symptom");
+				console.log(specialtyrefer);
+				var serviceURL = "http://localhost:5000/clinic/spec" + "/" + specialtyrefer;
+			}
+			else{
+				var serviceURL = "http://localhost:5000/clinic";
+			}
+            try {
+                const response =
+                await fetch(
+                   serviceURL, { method: 'GET' }
+                );
+                const data = await response.json();
+
+				// array or array.length are falsy
+                if (response.ok) {
+                    // console.log(data);
+					// for loop to setup all table rows with obtained book data
+					var rows = "";
+					var specarr = [];
+					var locarr = [];
+					$.each(data, function(index, value){
+						$.each(value, function(index, value2){
+							// console.log(value2);
+							eachRow =
+								"<td><h6>" + value2.clinicName + "</h6><br>" +
+								"Doctor: Dr " + value2.doctorName + "<br>" +
+								"Specialty: " + value2.specialty + "<br>" +
+								"Address: " + value2.address + "<br>" +
+								"S(" + value2.postalCode + ")<br>" +
+								"Contact: " + value2.contactNumber + "<br>" +
+								"Opening Hours: " + value2.opening + "<br>" +
+								"<td align='center'><iframe src='../clinicsearch/distance.html?location=" + value.postalCode + "'></iframe><br><a href='appointment.html'>Book Appointment</a></td>";
+							rows += "<tbody><tr>" + eachRow + "</tr></tbody>";
+							if (jQuery.inArray(value2.specialty, specarr) == -1){
+								specarr.push(value2.specialty);
+							}
+							// console.log(specarr);
+							if (jQuery.inArray(value2.groupedLocation, locarr) == -1){
+								locarr.push(value2.groupedLocation);
+							}
+							// console.log(value2.groupedLocation);
+
+						});
+					});
+					// add all the rows to the table
+					// console.log(rows);
+					$('#clinics').append(rows);
+					$('#clinics').show();
+
+					var specrows = "";
+					specarr.sort();
+					$.each(specarr, function(index, value){
+						specrows += "<option value='" + value + "'>" + value + "</option>";
+					});
+					// console.log(specrows);
+					$('#specialty').append(specrows);
+
+					var locrows = "";
+					locarr.sort();
+					$.each(locarr, function(index, value){
+						locrows += "<option value='" + value + "'>" + value + "</option>";
+					});
+					// console.log(locrows);
+					$('#location').append(locrows);
+                } 
+            } catch (error) {
+                // Errors when calling the service; such as network error, 
+                // service offline, etc
+            //     showError
+            //   ('There is a problem retrieving books data, please try again later.<br />'+error);
+               
+            } // error
+		});	// for loop to setup all table rows with obtained book data
+		
+		$('#searchBtn').click(async(event) => {  
+        //Prevents screen from refreshing when submitting  
+            event.preventDefault();
+			$('#clinics').hide();
+
+			if ($('#clinicName').val()!== "" && $('#specialty').val()!== "" && $('#location').val()!== ""){
+				var clinicName = $('#clinicName').val();
+				var specialty = $('#specialty').val();
+				var groupedlocation = $('#location').val();
+				var serviceURL = "http://localhost:5000/clinic" + "/" + clinicName + "/" + groupedlocation + "/" + specialty;
+			}
+			else if ($('#clinicName').val()!== "" && $('#location').val()!== ""){
+				var clinicName = $('#clinicName').val();
+				var groupedlocation = $('#location').val();
+				var serviceURL = "http://localhost:5000/clinic/nameloc" + "/" + clinicName + "/" + groupedlocation;
+			}
+			else if ($('#clinicName').val()!== "" && $('#specialty').val()!== ""){
+				var clinicName = $('#clinicName').val();
+				var specialty = $('#specialty').val();
+				var serviceURL = "http://localhost:5000/clinic/namespec" + "/" + clinicName + "/" + specialty;
+			}
+			else if ($('#specialty').val()!== "" && $('#location').val()!== ""){
+				var specialty = $('#specialty').val();
+				var groupedlocation = $('#location').val();
+				var serviceURL = "http://localhost:5000/clinic/specloc" + "/" + groupedlocation + "/" + specialty;
+			}
+			else if ($('#clinicName').val()!== ""){
+				var clinicName = $('#clinicName').val();
+				var serviceURL = "http://localhost:5000/clinic" + "/" + clinicName;
+			}
+			else if ($('#specialty').val()!== ""){
+				var specialty = $('#specialty').val();
+				var serviceURL = "http://localhost:5000/clinic/spec" + "/" + specialty;
+			}
+			else if ($('#location').val()!== ""){
+				var groupedlocation = $('#location').val();
+				var serviceURL = "http://localhost:5000/clinic/loc" + "/" + groupedlocation;
+			}
+			else{
+				alert('Please Fill in a Field');
+			}
+			
+            try {
+                const response =
+                await fetch(
+                   serviceURL, { method: 'GET' }
+                );
+                const data = await response.json();
+				// var books = data.books; //the arr is in data.books of the JSON data
+				console.log(data);
+
+				// array or array.length are falsy
+                if (response.ok) {
+                    // console.log(data);
+					// for loop to setup all table rows with obtained book data
+					var rows = "";
+					$.each(data, function(index, value){
+							// console.log(value2);
+						eachRow =
+							"<td><h6>" + value.clinicName + "</h6><br>" +
+							"Doctor: Dr " + value.doctorName + "<br>" +
+							"Specialty: " + value.specialty + "<br>" +
+							"Address: " + value.address + "<br>" +
+							"S(" + value.postalCode + ")<br>" +
+							"Contact: " + value.contactNumber + "<br>" +
+							"Opening Hours: " + value.opening + "<br>" +
+							"<td><iframe src='../clinicsearch/distance.html?location=" + value.postalCode + "'></iframe><br><a href='appointment.html'>Book Appointment</a></td>";
+						rows += "<tbody><tr>" + eachRow + "</tr></tbody>";
+
+					});
+					// add all the rows to the table
+					console.log(rows);
+					$('#clinicsSearch').empty().append(rows);
+					$('#clinicsSearch').show();
+				} 
+				else{
+					$('#clinicsSearch').empty().append('No Clinics Found');
+				}
+            } catch (error) {
+                // Errors when calling the service; such as network error, 
+                // service offline, etc
+            //     showError
+            //   ('There is a problem retrieving books data, please try again later.<br />'+error);
+               
+            } // error
+		});	// for loop to setup all table rows with obtained book data
+		
+
+	</script>
+
+	<!-- Map -->
+	<!-- <div class="map mt-5">
 		<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d50996.31320435244!2d-122.06676498187694!3d36.97949802442312!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808e441b7c36d549%3A0x52ca104b2ad7f985!2sSanta+Cruz%2C+CA%2C+USA!5e0!3m2!1sen!2sin!4v1469096018666"
 			style="border:0"></iframe>
-	</div>
-</section>
+	</div> -->
+
 <!-- //contact -->
 
 <!-- footer -->
