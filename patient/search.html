@@ -162,7 +162,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 	<table id="clinicsSearch" class='table' border='1'>
 	</table>
 </section>
-<p>Got Message:</p>
+
     <div id="results"></div>
 		
 	<script>
@@ -264,8 +264,29 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         //Prevents screen from refreshing when submitting  
             event.preventDefault();
 			$('#clinics').hide();
-			
-			if ($('#clinicName').val()!== ""){
+
+			if ($('#clinicName').val()!== "" && $('#specialty').val()!== "" && $('#location').val()!== ""){
+				var clinicName = $('#clinicName').val();
+				var specialty = $('#specialty').val();
+				var groupedlocation = $('#location').val();
+				var serviceURL = "http://localhost:5000/clinic" + "/" + clinicName + "/" + groupedlocation + "/" + specialty;
+			}
+			else if ($('#clinicName').val()!== "" && $('#location').val()!== ""){
+				var clinicName = $('#clinicName').val();
+				var groupedlocation = $('#location').val();
+				var serviceURL = "http://localhost:5000/clinic/nameloc" + "/" + clinicName + "/" + groupedlocation;
+			}
+			else if ($('#clinicName').val()!== "" && $('#specialty').val()!== ""){
+				var clinicName = $('#clinicName').val();
+				var specialty = $('#specialty').val();
+				var serviceURL = "http://localhost:5000/clinic/namespec" + "/" + clinicName + "/" + specialty;
+			}
+			else if ($('#specialty').val()!== "" && $('#location').val()!== ""){
+				var specialty = $('#specialty').val();
+				var groupedlocation = $('#location').val();
+				var serviceURL = "http://localhost:5000/clinic/specloc" + "/" + groupedlocation + "/" + specialty;
+			}
+			else if ($('#clinicName').val()!== ""){
 				var clinicName = $('#clinicName').val();
 				var serviceURL = "http://localhost:5000/clinic" + "/" + clinicName;
 			}

@@ -102,7 +102,61 @@ def find_by_specialty(specialty):
         return jsonify(result)
     return jsonify({"message": "No clinics found."}), 404
 
+@app.route("/clinic/<string:clinicName>/<string:groupedLocation>/<string:specialty>")
+def find_by_all(clinicName, groupedLocation, specialty):
+    # if groupedLocation:
+    #     return jsonify(groupedLocation.json())
 
+    clinics = Clinic.query.filter_by(clinicName=clinicName).filter_by(groupedLocation=groupedLocation).filter_by(specialty=specialty).order_by(Clinic.clinicName).all()
+    result = []
+
+    if clinics:
+        for aClinic in clinics:
+            result.append(aClinic.json())
+        return jsonify(result)
+    return jsonify({"message": "No clinics found."}), 404
+
+@app.route("/clinic/specloc/<string:groupedLocation>/<string:specialty>")
+def find_by_spec_loc(groupedLocation, specialty):
+    # if groupedLocation:
+    #     return jsonify(groupedLocation.json())
+
+    clinics = Clinic.query.filter_by(groupedLocation=groupedLocation).filter_by(specialty=specialty).order_by(Clinic.clinicName).all()
+    result = []
+
+    if clinics:
+        for aClinic in clinics:
+            result.append(aClinic.json())
+        return jsonify(result)
+    return jsonify({"message": "No clinics found."}), 404
+
+@app.route("/clinic/nameloc/<string:clinicName>/<string:groupedLocation>")
+def find_by_nameloc(clinicName, groupedLocation):
+    # if groupedLocation:
+    #     return jsonify(groupedLocation.json())
+
+    clinics = Clinic.query.filter_by(clinicName=clinicName).filter_by(groupedLocation=groupedLocation).order_by(Clinic.clinicName).all()
+    result = []
+
+    if clinics:
+        for aClinic in clinics:
+            result.append(aClinic.json())
+        return jsonify(result)
+    return jsonify({"message": "No clinics found."}), 404
+
+@app.route("/clinic/namespec/<string:clinicName>/<string:specialty>")
+def find_by_namespec(clinicName, specialty):
+    # if groupedLocation:
+    #     return jsonify(groupedLocation.json())
+
+    clinics = Clinic.query.filter_by(clinicName=clinicName).filter_by(specialty=specialty).order_by(Clinic.clinicName).all()
+    result = []
+
+    if clinics:
+        for aClinic in clinics:
+            result.append(aClinic.json())
+        return jsonify(result)
+    return jsonify({"message": "No clinics found."}), 404
 
 if __name__ == '__main__': # if it is the main program you run, then start flask
     # with docker
