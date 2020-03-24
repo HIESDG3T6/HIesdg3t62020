@@ -1,0 +1,20 @@
+{
+  "projects": {
+    "default": "health-service-2680a"
+  },
+  "targets": {
+    "health-service-2680a": {
+      "hosting": {
+        "patientesd": [
+          "patientesd"
+        ],
+        "esdinsurance": [
+          "esdinsurance"
+        ],
+        "receptionistesd": [
+          "receptionistesd"
+        ]
+      }
+    }
+  }
+}

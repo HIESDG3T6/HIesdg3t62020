@@ -33,7 +33,27 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			<link href="//fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i&amp;subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese" rel="stylesheet">
 			<link href="//fonts.googleapis.com/css?family=Dosis:200,300,400,500,600,700,800&amp;subset=latin-ext" rel="stylesheet">
 			<!-- //google fonts -->
-			
+
+			<!-- Latest compiled and minified CSS -->
+			<link rel="stylesheet"
+			href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+			integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" 
+			crossorigin="anonymous">
+
+			<!-- Latest compiled and minified JavaScript -->
+			<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+			<script 
+			src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+			<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+			integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+			crossorigin="anonymous"></script>
+
+			<script 
+			src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+			integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+			crossorigin="anonymous"></script>
 		</head>
 <body>
 <!-- top header -->
@@ -46,13 +66,13 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						<p> Welcome! Patient Wong</p>
 						
 					</li>
-					<li>
+					<!-- <li>
 						<span class="fa fa-phone"></span>
 						<p class="d-inline">Call Us +12 345 678</p>
-					</li>
+					</li> -->
 				</ul>
 			</div>
-			<div class="col-sm-6 header-right-w3_pvt">
+			<!-- <div class="col-sm-6 header-right-w3_pvt">
 				<ul class="d-lg-flex header-w3_pvt justify-content-lg-end">
 					<li class="mr-lg-3">
 						<span class=""><span class="fa fa-clock-o"></span>Mon - Fri : 8:30am to 9:30pm</span>
@@ -61,7 +81,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						<span class=""><span class="fa fa-clock-o"></span>Sat & Sun : 9:00am to 6:00pm</span>
 					</li>
 				</ul>
-			</div>
+			</div> -->
 		</div>
 	</div>
 </div>
@@ -81,10 +101,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			<ul class="menu mt-2 ml-auto">
 				<li class="active"><a href="index.html">Home</a></li>
 				<li class=""><a href="precheck.html">PreCheck</a></li>
+				<li class=""><a href="search.html">Search Clinics </a></li>
 				<li class=""><a href="patient_history.html">Patient History</a></li>
 			<!-- 	<li class=""><a href="billing.html">Billing</a></li>-->
 				<li class=""><a href="account.html">Account Details</a></li>
-				<li class=""><a href="search.html">Search Clinics </a></li>
 			</ul>
 			<div class="login-icon ml-2">
 				<a class="user" href="appointment.html"> Book Appointment Now</a>
@@ -92,7 +112,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		</nav>
 		<div class="clear"></div>
 		<!-- //nav -->
-	</div>
 </header>
 <!-- //header -->
 
@@ -104,54 +123,72 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!-- //banner -->
 
 <!-- blog -->
-<section class="blog py-5">
-	<div class="container py-md-3">
-		<h2 class="heading text-center mb-sm-5 mb-4">Dental blog </h2>
-		<div class="row blog-grids head">
-			<div class="col-lg-7 mb-lg-5 blog-img1">
-				<img src="images/blog1.jpg" alt="" class="img-fluid"/>
-				<a href="single.html">Blog #1</a>
+<section class="table" id="claims">
+	<div class="table-layer py-5">
+		<div class="container py-lg-5">
+		<h2 class="heading text-center mb-sm-5 mb-4">Upcoming Appointment </h2>
+		<div id = main-container class="table-block p-4" border=1>
+			<div>
+				<table id=AppointmentTable class='table table-striped'>
+					<thead>
+						<tr>
+							<th>ClinicID</th>
+							<th>DoctorID</th>
+							<th>Appointment Date</th>
+							<th>Appointment Time</th>
+							<th> Directions </th>
+						</tr>
+					</thead>
+				</table>
 			</div>
-			<div class="col-lg-5 mb-lg-5 mb-4">
-				<h5>March 3, 2019.</h5>
-				<h4 class="my-3">Nullam dui mi, vulputate ac</h4>
-				<p class="my-3">onec consequat sapien ut leo cursus rhoncus. Nullam dui mi, vulputate ac metus semper Nullam dui mi.
-				 Vestibulum ante ipsum primis in faucibus orci luctus et ultrices morbi posuere cubilia Curae; Curabitur quis luctus lectus.</p>
-				<a href="single.html" class="btn-banner"> View Post </a>
-			</div>
-			<div class="col-lg-5 mb-lg-5 mb-4">
-				<h5>March 3, 2019.</h5>
-				<h4 class="my-3">Nullam dui mi, vulputate ac</h4>
-				<p class="my-3">onec consequat sapien ut leo cursus rhoncus. Nullam dui mi, vulputate ac metus semper Nullam dui mi.
-				 Vestibulum ante ipsum primis in faucibus orci luctus et ultrices morbi posuere cubilia Curae; Curabitur quis luctus lectus.</p>
-				<a href="single.html" class="btn-banner"> View Post </a>
-			</div>
-			<div class="col-lg-7 mb-5 blog-img2">
-				<img src="images/blog1.jpg" alt="" class="img-fluid"/>
-				<a href="single.html">Blog #2</a>
-			</div>
-			<div class="col-lg-7 mb-lg-5 blog-img1">
-				<img src="images/blog1.jpg" alt="" class="img-fluid"/>
-				<a href="single.html">Blog #3</a>
-			</div>
-			<div class="col-lg-5 mb-lg-5 mb-4">
-				<h5>March 3, 2019.</h5>
-				<h4 class="my-3">Nullam dui mi, vulputate ac</h4>
-				<p class="my-3">onec consequat sapien ut leo cursus rhoncus. Nullam dui mi, vulputate ac metus semper Nullam dui mi.
-				 Vestibulum ante ipsum primis in faucibus orci luctus et ultrices morbi posuere cubilia Curae; Curabitur quis luctus lectus.</p>
-				<a href="single.html" class="btn-banner"> View Post </a>
-			</div>
-			<div class="col-lg-5 mb-lg-5 mb-4">
-				<h5>March 3, 2019.</h5>
-				<h4 class="my-3">Nullam dui mi, vulputate ac</h4>
-				<p class="my-3">onec consequat sapien ut leo cursus rhoncus. Nullam dui mi, vulputate ac metus semper Nullam dui mi.
-				 Vestibulum ante ipsum primis in faucibus orci luctus et ultrices morbi posuere cubilia Curae; Curabitur quis luctus lectus.</p>
-				<a href="single.html" class="btn-banner"> View Post </a>
-			</div>
-			<div class="col-lg-7 blog-img2">
-				<img src="images/blog1.jpg" alt="" class="img-fluid"/>
-				<a href="single.html">Blog #4</a>
-			</div>
+	
+			<script>
+				function showError(message) {
+					$('#AppointmentTable').hide();
+			
+					$('#main-container').append("<label>"+message+"</label>");
+				}
+			
+				///////////// HARD CODED THE CUSTOMERID - TO BE RETRIEVED ////////////
+				$(async() => {           
+					var appointmentURL = "http://127.0.0.1:4444/get-appointment/jiamin";
+			
+					try {
+						const response =
+						await fetch(
+						appointmentURL, { method: 'GET' }
+						);
+						const data = await response.json();
+		
+						var appointments = data.appointments;  
+						
+						if (!appointments || !appointments.length) {
+							showError('No appointment made or undefined.')
+						} else {
+							var rows = "";
+							for (const appointment of appointments) {
+								
+								eachRow =
+									"<td>" + appointment.clinicID + "</td>" +
+									"<td>" + appointment.doctorID + "</td>" +
+									"<td>" + appointment.appointmentDate + "</td>" +
+									"<td>" + appointment.appointmentTime + "</td>" +
+									"<td> <a href='map.html?location=\"" + appointment.clinicID + "\"'>Get Direction</td>";
+								rows += "<tbody><tr>" + eachRow + "</tr></tbody>";
+
+							}
+							
+							$('#AppointmentTable').append(rows);
+						}
+					} catch (error) {
+						showError ('There is a problem retrieving appointment data, please try again later.<br />'+error);
+					
+					} // error
+				});
+			</script>
+
+			<!-- Clicking on Get Directions -->
+			
 		</div>
 	</div>
 </section>
