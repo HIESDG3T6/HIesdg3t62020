@@ -33,8 +33,76 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			<link href="//fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i&amp;subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese" rel="stylesheet">
 			<link href="//fonts.googleapis.com/css?family=Dosis:200,300,400,500,600,700,800&amp;subset=latin-ext" rel="stylesheet">
 			<!-- //google fonts -->
+
+			<script 
+			src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 			
-		</head>
+			<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+			integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+			crossorigin="anonymous"></script>
+			
+			<script 
+			src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+			integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+			crossorigin="anonymous"></script>
+		
+			<!-- CALENDAR -->
+			<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+			<link rel="stylesheet" href="/resources/demos/style.css">
+			<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+			<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+			<script>
+			  $( function() {
+				  $( "#appointmentDate" ).datepicker({
+					dateFormat: "yy-mm-dd",
+					minDate: 0
+				  });
+				} );
+			</script>
+
+
+			<!-- TIME -->
+    		<!-- Simpler Timepicker-->
+				<!-- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+					<script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+					<script>
+						$( function() {
+							$( "#appointmentTime" ).timepicker({
+								timeFormat: 'HH:mm',
+								interval: 60,
+								minTime: '10:00',
+								maxTime: '18:00',
+								defaultTime: '11:00',
+								startTime: '10:00',
+								dynamic: false,
+								dropdown: true,
+								scrollbar: true
+							});
+						} );    
+					</script> -->
+			<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.css">
+			<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.js"></script>
+			<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.js"></script>
+			
+			<script>
+			var disableTimeList = [['12:00', '13:00']];
+		
+			$(function(){
+				$('#appointmentTime').timepicker({
+					'scrollDefault': 'now',
+					'timeFormat': 'H:i',
+					'step' : 60,
+					'minTime': '10:00',
+					'maxTime' : '18:00',
+					'disableTimeRanges': disableTimeList
+					
+					
+				}); 
+			 });
+			</script>
+			
+	</head>
 <body>
 
 <!-- top header -->
@@ -82,7 +150,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			<ul class="menu mt-2 ml-auto">
 				<li class="active"><a href="index.html">Home</a></li>
 				<li class=""><a href="precheck.html">PreCheck</a></li>
-				<li class=""><a href="search.php">Search Clinics </a></li>
+				<li class=""><a href="search.html">Search Clinics </a></li>
 				<li class=""><a href="patient_history.html">Patient History</a></li>
 			<!-- 	<li class=""><a href="billing.html">Billing</a></li>-->
 				<li class=""><a href="account.html">Account Details</a></li>
@@ -106,223 +174,81 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!-- single -->
 <section class="bottom-banner-w3layouts py-5">
 	<div class="container py-md-3">
-		<h2 class="heading text-center mb-sm-5 mb-4">Single Page </h2>
-		<div class="row inner-sec-w3ls-agileinfo">
-			<!--left-->
-			<div class="col-lg-8 left-blog-info text-left">
-					<div class="card">
-						<a href="single.html">
-							<img src="images/blog1.jpg" class="card-img-top img-fluid" alt="">
-						</a>
-						<div class="card-body">
-							<ul class="blog-icons my-4">
-								<li>
-									<a href="#">
-										<span class="fa fa-calendar"></span> Nov 8 .2018</a>
-								</li>
-								<li class="mx-2">
-									<a href="#">
-										<span class="fa fa-comment"></span> 21</a>
-								</li>
-								<li>
-									<a href="#">
-										<span class="fa fa-eye"></span> 2000</a>
-								</li>
-
-							</ul>
-							<h5 class="card-title ">
-								<a href="single.html">Blog Post Title</a>
-							</h5>
-							<p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit sedc dnmo eiusmod tempor incididunt,Lorem ipsum dolor sit amet consectetur adipisicing elit sedc dnmo eiusmod tempor incididunt ut labore et dolore magna aliqua uta enim ad minim ven iam quis nostrud exercitation ullamco labor nisi ut aliquip exea commodo consequat duis aute irudre dolor in elit sed uta labore dolore reprehender.. </p>
-							<div class="read inner mt-4">
-								<a href="single.html" class="btn btn-sm animated-button victoria-two">Read More</a>
-							</div>
-
-						</div>
-					</div>
-					<div class="comment-top">
-						<h4>Comments</h4>
-						<div class="media">
-							<img src="images/ser1.jpg" alt="" class="img-fluid rounded">
-							<div class="media-body">
-								<h5 class="mt-sm-0 mt-3">Joseph Goh</h5>
-								<p>Lorem Ipsum convallis diam consequat magna vulputate malesuada. id dignissim sapien velit id felis ac cursus eros.
-									Cras a ornare elit.</p>
-
-							</div>
-						</div>
-						<div class="media">
-							<img src="images/ser2.jpg" alt="" class="img-fluid rounded">
-							<div class="media-body">
-								<h5 class="mt-sm-0 mt-3">Richard Spark</h5>
-								<p>Lorem Ipsum convallis diam consequat magna vulputate malesuada. id dignissim sapien velit id felis ac cursus eros.
-									Cras a ornare elit.</p>
-							</div>
-						</div>
-					</div>
-					<div class="comment-top">
-						<h4>Leave a Comment</h4>
-						<div class="comment-bottom">
-							<form action="#" method="post">
-								<input class="form-control" type="text" name="Name" placeholder="Name" required="">
-								<input class="form-control" type="email" name="Email" placeholder="Email" required="">
-
-								<input class="form-control" type="text" name="Subject" placeholder="Subject" required="">
-
-								<textarea class="form-control" name="Message" placeholder="Message..." required=""></textarea>
-								<button type="submit" class="btn btn-primary submit">Submit</button>
-							</form>
-						</div>
-					</div>
-
-			</div>
-			<!--//left-->
-			<!--right-->
-			<aside class="col-lg-4 right-blog-con text-left">
-				<div class="right-blog-info text-left">
-					<div class="tech-btm">
-						<img src="images/service1.jpg" class="card-img-top img-fluid rounded" alt="">
-					</div>
-					<div class="tech-btm">
-						<h4>Sign up to our newsletter</h4>
-						<p>Pellentesque dui, non felis. Maecenas male </p>
-						<form action="#" method="post">
-							<input class="form-control" type="email" placeholder="Email" required="">
-							<input class="form-control" type="submit" value="Subscribe">
-						</form>
-
-					</div>
-					<div class="tech-btm">
-						<h4>Categories</h4>
-						<ul class="list-group single">
-							<li class="list-group-item d-flex justify-content-between align-items-center">
-								Cras justo odio
-								<span class="badge badge-primary badge-pill">14</span>
-							</li>
-							<li class="list-group-item d-flex justify-content-between align-items-center">
-								Dapibus ac facilisis in
-								<span class="badge badge-primary badge-pill">2</span>
-							</li>
-							<li class="list-group-item d-flex justify-content-between align-items-center">
-								Morbi leo risus
-								<span class="badge badge-primary badge-pill">1</span>
-							</li>
-						</ul>
-					</div>
-					<div class="tech-btm">
-						<h4>Top stories of the week</h4>
-
-						<div class="blog-grids row mb-3">
-							<div class="col-md-5 blog-grid-left">
-								<a href="single.html">
-									<img src="images/service4.jpg" class="card-img-top img-fluid rounded" alt="">
-								</a>
-							</div>
-							<div class="col-md-7 blog-grid-right">
-
-								<h5>
-									<a href="single.html">Pellentesque dui, non felis male non felis </a>
-								</h5>
-								<div class="sub-meta">
-									<span>
-										<span class="fa fa-clock-o"></span> 8 Nov, 2018</span>
-								</div>
-							</div>
-
-						</div>
-						<div class="blog-grids row mb-3">
-							<div class="col-md-5 blog-grid-left">
-								<a href="single.html">
-									<img src="images/service5.jpg" class="card-img-top img-fluid rounded" alt="">
-								</a>
-							</div>
-							<div class="col-md-7 blog-grid-right">
-								<h5>
-									<a href="single.html">Pellentesque dui, non felis male non felis </a>
-								</h5>
-								<div class="sub-meta">
-									<span>
-										<span class="fa fa-clock-o"></span> 8 Nov, 2018</span>
-								</div>
-							</div>
-
-						</div>
-					</div>
-					<div class="tech-btm widget_social text-left">
-						<h4>Stay Connect</h4>
-						<ul>
-
-							<li>
-								<a class="twitter" href="#">
-									<span class="fa fa-twitter"></span>
-									<span class="count">317K</span> Twitter Followers</a>
-							</li>
-							<li>
-								<a class="facebook" href="#">
-									<span class="fa fa-facebook"></span>
-									<span class="count">218k</span> Facebook Followers</a>
-							</li>
-							<li>
-								<a class="dribble" href="#">
-									<span class="fa fa-dribbble"></span>
-
-									<span class="count">215k</span> Dribble Followers</a>
-							</li>
-							<li>
-								<a class="pin" href="#">
-									<span class="fa fa-pinterest"></span>
-									<span class="count">190k</span> Pinterest Followers</a>
-							</li>
-
-						</ul>
-					</div>
-					<div class="tech-btm">
-						<h4>Recent Posts</h4>
-
-						<div class="blog-grids row mb-3 text-left">
-							<div class="col-md-5 blog-grid-left">
-								<a href="single.html">
-									<img src="images/service4.jpg" class="card-img-top img-fluid rounded" alt="">
-								</a>
-							</div>
-							<div class="col-md-7 blog-grid-right">
-
-								<h5>
-									<a href="single.html">Pellentesque dui, non felis male non felis </a>
-								</h5>
-								<div class="sub-meta">
-									<span>
-										<span class="fa fa-clock-o"></span> 8 Nov, 2018</span>
-								</div>
-							</div>
-
-						</div>
-						<div class="blog-grids row mb-3 text-left">
-							<div class="col-md-5 blog-grid-left">
-								<a href="single.html">
-									<img src="images/service5.jpg" class="card-img-top img-fluid rounded" alt="">
-								</a>
-							</div>
-							<div class="col-md-7 blog-grid-right">
-
-								<h5>
-									<a href="single.html">Pellentesque dui, non felis male non felis </a>
-								</h5>
-								<div class="sub-meta">
-									<span>
-										<span class="fa fa-clock-o"></span> 8 Nov, 2018</span>
-								</div>
-							</div>
-							<div class="clearfix"> </div>
-						</div>
-					</div>
-				</div>
-			</aside>
-			<!--//right-->
-		</div>
+		<h2 class="heading text-center mb-sm-5 mb-4">Make Appointment For Ooh Clinic </h2>
+		<!-- TO BE DYNAMICALLY RETRIEVED AND UPDATED -->
 	</div>
-</section>
-<!-- //contact -->
+
+<!-- Appointment Form -->
+<div>
+		<div id="appointmentSubmission" class="container">
+				<form id="appointmentForm">
+					appointmentDate <input name="appointmentDate" type="text" id="appointmentDate" class="form-control" required><br>
+					appointmentTime <input name="appointmentTime" type="text" id="appointmentTime" class="form-control" required><br>
+		
+					<button id="bookButton" type="button" class=form-control"> Book </button>
+				</form>
+			</div>
+			
+			<script>
+
+				function showError(message) {
+					$('#appointmentForm').hide()
+		
+					$('#appointmentSubmission').append("<label>" + message + "</label>");
+		
+				}
+		
+		
+				$('#bookButton').click(async(event) => {
+		
+					event.preventDefault();
+		
+					var addAppointmentURL = "http://localhost:4444/appointment"
+		
+					// var customerID = $('#customerID').val();
+					// var clinicID = $('#clinicID').val();
+					// var doctorID = $('#doctorID').val();
+					var customerID = "jiamin";
+					var clinicID = "ooh clinic";
+					var doctorID = 1;
+					var appointmentDate = $('#appointmentDate').val();
+					var appointmentTime = $('#appointmentTime').val();
+		
+					try {
+						const response = await fetch (addAppointmentURL,
+							{
+								method: 'POST',
+								// mode: 'no-cors',
+								headers: {"Content-Type": "application/json"},
+								body: JSON.stringify ({
+									customerID: customerID, clinicID : clinicID, doctorID : doctorID, 
+									appointmentDate : appointmentDate, appointmentTime : appointmentTime
+									})
+							}
+		
+							
+						);
+		
+						const data = await response.json();
+						
+		
+						if (!response.ok) {
+							var msg = data['message'];
+							showError(msg);
+		
+						} else {
+							location.replace("account.html");
+						
+						} 
+		
+					} catch (error) {
+						console.log(error);
+						showError ('There is a problem adding the appointment, please try again later.');
+					}
+				});
+			</script>
+</div>
+</section>	
 
 
 <!-- footer -->
