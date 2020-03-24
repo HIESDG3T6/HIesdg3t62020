@@ -177,7 +177,7 @@ def create_payment(claimbody):
             # parsed=urlparse(approval_url)
             # ppid=parse_qs(parsed.query).get('paymentId')[0]
             # print(ppid)
-
+            result['payment_details'] = payment
             return result
 
         except Exception as e:
@@ -187,6 +187,7 @@ def create_payment(claimbody):
         print(payment.error)
         result = {'status':500, "message":"An error occurred when creating the payment", "error":str(payment.error)}
     return result
+
 
 
 
