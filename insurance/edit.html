@@ -80,6 +80,23 @@
 </header>
 <!-- //header -->
 
+<script>
+	function test(Names){
+	var status = ['Pending','Approved','Rejected']
+	var Name;
+	for (var i of status ){    
+		var tempname="mune_x"+i                                                                            
+		var NewsHot=i    //  x is part of id name for display
+		if (Names==tempname){
+			Nnews=document.getElementById(NewsHot)
+			Nnews.style.display='';
+		}else{
+			Nnews=document.getElementById(NewsHot)
+			Nnews.style.display='none';   
+		}
+	}
+}
+</script>
 
 
 <!--tables for claims --> 
@@ -132,10 +149,10 @@
                             
 							<div class="form-group">
 								<p class="col-sm-6 header-right-w3_pvt" style="color:white;" >Refund Status</p>
-								<select id="RefundStatus_text" name="RefundStatus" class="form-control" placeholder="Refund Status" >
-									<option value="Pending">Pending</option>
-									<option value="Approved">Approved</option>
-									<option value="Rejected">Rejected</option>
+								<select onChange="javascript:test('mune_x'+this.value)" id="RefundStatus_text" name="RefundStatus" class="form-control" placeholder="Refund Status">
+									<option value='Pending' name="1">Pending</option>
+									<option value='Approved' name="2">Approved</option>
+									<option value='Rejected' name="3">Rejected</option>
 								</select>
 
 							</div>
@@ -147,14 +164,31 @@
 
 						</div>
 
-						
-						<div class="col-md-12 grid p" >
+						<!-------------------------------------- Customerize the Submit Button for different status ------------------------------------>
+						<!-- for pending the claim -->
+						<div class="col-md-12 grid p" id='Pending'>
 							<p class="col-sm-6 header-right-w3_pvt" >   </p>
 							<div class="submit-buttons" style="text-align: center;">
-								<button type="submit" class="btn">Submit</button>
+								<!-- show nothing for button-->
                             </div>
-                            
 						</div>
+
+						<!-- for approve the claim -->
+						<div class="col-md-12 grid p" id='Approved' style="display:none">
+							<p class="col-sm-6 header-right-w3_pvt" >   </p>
+							<div class="submit-buttons" style="text-align: center;">
+								<button type="submit" class="btn" id='pay_button' onclick="payment_paypal()"> Pay  Patient  for  Claim </button>
+                            </div>
+						</div>
+
+						<!-- for reject the claim -->
+						<div class="col-md-12 grid p" id='Rejected' style="display:none">
+							<p class="col-sm-6 header-right-w3_pvt" >   </p>
+							<div class="submit-buttons" style="text-align: center;">
+								<button type="submit" class="btn" id='reject_button'>Update Claim Status</button>
+                            </div>
+						</div>
+						<!-------------------------------------------- END of button ------------------------------------------------>
 
 						<div class="login-icon ml-2">
 							<a class="user" href="home.html">Back</a>
@@ -164,20 +198,13 @@
 
 					</div>
                 </form>
-			</div>
-			
-		</div>
-		
+			</div>			
+		</div>	
 	</div>
-
-	
 
 </section>
 
 <!-- //tables for claims --> 
-
-
-
 
 
 
@@ -225,9 +252,6 @@
 		var ClaimID = getvalue('ClaimID');
 		//alert(getvalue('ClaimID'));
 
-		
-
-
 
 		// anonymous async function 
         // - using await requires the function that calls it to be async
@@ -235,7 +259,7 @@
             // Change serviceURL to your own
             var serviceURL = "http://127.0.0.1:5000/claims/"+ClaimID;
 
-			console.log(serviceURL);
+			// console.log(serviceURL);
 			//after that can change it to only display opening 
             try {
                 const response =
@@ -244,7 +268,7 @@
                 );
                 const data = await response.json();
                 
-				console.log(data)
+				// console.log(data)
 
 
 				//set the value to the textinput
@@ -268,8 +292,8 @@
 
 
 
-
-		//POST METHODS when click the submit button => call insurance_claim MS for updating
+		// =========================================================================
+		//POST METHODS when click the submit button => call insurance_claim MS for updating <status> NO MATTER APPROVE OR REJECT
 		async function postData(serviceURL, requestBody){
 
 			var requestParam = {
@@ -282,7 +306,7 @@
 			try{
 				const response = await fetch(serviceURL, requestParam);
 			    data = await response.json();
-			    console.log(data);
+			    console.log("update status data is "+data);
 				
 				if( response.ok){
 					window.location.replace("home.html");
@@ -308,13 +332,6 @@
 			var RefundStatus = $('#RefundStatus_text').val();
 			var Medicine = $('#Medication_text').val();
 
-
-/* 
-            console.log(isbn13);
-            console.log(title);
-            console.log(price);
-            console.log(availability);
- */
             var serviceURL = "http://127.0.0.1:5000/claims/" +ClaimID + "/";
             var requestBody = {
 				ClaimID:ClaimID,
@@ -328,15 +345,51 @@
 				Medicine:Medicine
             };
 
-            console.log(serviceURL);
-            console.log(requestBody);
-            postData(serviceURL,requestBody);
-            
-        
-
-            
-
+            console.log("claim url and cliam id is "+serviceURL);
+			console.log(requestBody);
+			
+			postData(serviceURL,requestBody);
+			
        });
+
+
+	   // ======================================================================
+	   // GET METHOD to retrieve approval url for payment only when pay button is click
+	   function showError(message) {
+            // Hide the table and button in the event of error
+            $('#claimsTable').hide(); 
+            // Display an error under the main container
+            $('#main-container')
+                .append("<label>"+message+"</label>");
+        }
+
+		// anonymous async function 
+        // - using await requires the function that calls it to be async
+		async function payment_paypal() {       
+            // Change serviceURL to your own
+            var serviceURL = "http://127.0.0.1:3000/refund/execute";
+			console.log("refund and execute"+serviceURL);
+			//after that can change it to only display opening 
+            try {
+                const response =
+                 await fetch(
+                   serviceURL, { method: 'GET' }
+                );
+                const data = await response.json();
+                var approval_url = data.approval_url; 
+				console.log("approval url is "+approval_url)
+                // array or array.length are falsy
+                if (!approval_url) {
+                    showError('data is empty or undefined')
+                } else {
+                    window.location.replace(approval_url)
+                }
+            } catch (error) {
+                // Errors when calling the service; such as network error, 
+                // service offline, etc
+                showError('There is a problem when processing a payment, please try again later.<br />'+error);
+            } // error
+        };
 
 
 	</script>
