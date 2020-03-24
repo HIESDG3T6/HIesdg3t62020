@@ -75,7 +75,7 @@ def callback(channel, method, properties, body): # required signature for the ca
             )
     )
     channel.basic_ack(delivery_tag=method.delivery_tag) # acknowledge to the broker that the processing of the request message is completed
-    app.run(port=3000,debug=True)
+
 
 
 """ def createRefund(claim):
@@ -197,12 +197,13 @@ def execute():
     payer_id=request.args.get('PayerID')
     print(paymentId)
     payment = paypalrestsdk.Payment.find(paymentId)
-
+    ClaimID = payment['transactions']['item_list']['items']['name']
 
     if payment.execute({"payer_id": payer_id}):
         print("Payment[%s] execute successfully" % (payment.id))
-        result = {'Status':200, 'Message':"Payment[%s] execute successfully"% (payment.id)}
+        result = {'Status':200, 'Message':"Payment[%s] execute successfully"% (payment.id),'claimid':ClaimID}
         print(result)
+        # need to update the claim as close 
     else:
         print(payment.error)
 
@@ -212,7 +213,6 @@ def execute():
 
 if __name__ == "__main__":  # execute this program only if it is run as a script (not by 'import')
     print("This is " + os.path.basename(__file__) + ": processing refund to customer...")
-    app.run(port=3000,debug=True)
     receiveClaim()
     
 
