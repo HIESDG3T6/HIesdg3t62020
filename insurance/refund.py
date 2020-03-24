@@ -75,7 +75,7 @@ def callback(channel, method, properties, body): # required signature for the ca
             )
     )
     channel.basic_ack(delivery_tag=method.delivery_tag) # acknowledge to the broker that the processing of the request message is completed
-
+    app.run(port=3000,debug=True)
 
 
 """ def createRefund(claim):
@@ -114,8 +114,7 @@ CORS(app)
 def create_payment(claimbody):
     claim_id = claimbody['ClaimID']
     amount = claimbody['ClaimedAmount']
-    print(claim_id)
-    print(amount)
+
     status = 201
     result = {}
     print("1")
@@ -177,39 +176,43 @@ def create_payment(claimbody):
             # parsed=urlparse(approval_url)
             # ppid=parse_qs(parsed.query).get('paymentId')[0]
             # print(ppid)
-            result['payment_details'] = payment
             return result
 
-        except Exception as e:
+        except:
             status=500
     else:
-        print("6")
+        print("e")
         print(payment.error)
         result = {'status':500, "message":"An error occurred when creating the payment", "error":str(payment.error)}
     return result
 
 
 
-@app.route('/refund/execute',methods=['GET'])
+@app.route('/refund/execute',methods=['GET','POST'])
 def execute():
+    
     # assumption: when the user logged in, we have their paypal account
+    print('8')
     paymentId = request.args.get('paymentId')
     payer_id=request.args.get('PayerID')
+    print(paymentId)
     payment = paypalrestsdk.Payment.find(paymentId)
-    print(payment)
+
 
     if payment.execute({"payer_id": payer_id}):
         print("Payment[%s] execute successfully" % (payment.id))
-        result = {'Status':200, 'Message':"Payment[%s] execute successfully"}
+        result = {'Status':200, 'Message':"Payment[%s] execute successfully"% (payment.id)}
+        print(result)
     else:
         print(payment.error)
 
     
 
-    return payer_id
+    return result
 
 if __name__ == "__main__":  # execute this program only if it is run as a script (not by 'import')
     print("This is " + os.path.basename(__file__) + ": processing refund to customer...")
-    receiveClaim()
     app.run(port=3000,debug=True)
+    receiveClaim()
+    
 
