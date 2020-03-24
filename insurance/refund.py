@@ -1,3 +1,18 @@
+# ------ ----- ----- ----- ----- ----- ----- PayPal API ------ ----- ----- ----- ----- ----- ----- 
+import paypalrestsdk
+import logging
+from paypalrestsdk import Payout, ResourceNotFound
+from paypalrestsdk import Invoice
+from urllib.parse import urlparse, parse_qs
+
+paypalrestsdk.configure({
+    ## merchant
+  "mode": "sandbox", # sandbox or live
+  "client_id": "AQ9P1S3pslwO9fKMgTc3w_AiXokPpSoTxkhyzAiKxytWttgPQGNpG-rccXLHlMWincbPT9ORlhBiOPl9",
+  "client_secret": "EGJvzrlNRwLVBD9am3XJm1RUx__JO6QHhdebmOM-E0bUURCuC6ZgiJ6XeC4NKu4mHCmQWNz0RtTj_dFZ" })
+
+# ------ ----- ----- ----- ----- ----- ----- Refund microservices AMQP ------ ----- ----- ----- ----- ----- ----- 
+
 import json
 import sys
 import os
@@ -41,8 +56,8 @@ def callback(channel, method, properties, body): # required signature for the ca
     print() # print a new line feed
     # reply the insurance_claim
     print("Refunding Now...")
-    result = createRefund(json.loads(body))
-
+    ##result = createRefund(json.loads(body))
+    result = create_payment(json.loads(body))
     print(result)
 
     # prepare the reply message and send it out
@@ -63,7 +78,7 @@ def callback(channel, method, properties, body): # required signature for the ca
 
 
 
-def createRefund(claim):
+""" def createRefund(claim):
 
     stripe.api_key = 'sk_test_cO2Ogpe9pGbxUkPX7XT4608p00VqIxakqr'
 
@@ -83,7 +98,99 @@ def createRefund(claim):
         message = {'status':response['status'],'message':'Simulation of refund response','claim':claim}
     
     return message
+ """
+# ------ ----- ----- ----- ----- ----- ----- PayPal API + FLASK ------ ----- ----- ----- ----- ----- ----- 
+from flask import Flask, request,jsonify
+from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
+
+
+app=Flask(__name__)
+
+CORS(app)
+
+  
+# for refund
+def create_payment(claimbody):
+    claim_id = claimbody['ClaimID']
+    amount = claimbody['ClaimedAmount']
+    print(claim_id)
+    print(amount)
+    status = 201
+    result = {}
+    print("1")
+    #retrieve information  about payment and payment items from the request
+    print("2")
+    paypalrestsdk.configure({
+    ## merchant
+        "mode": "sandbox", # sandbox or live
+        "client_id": "AQ9P1S3pslwO9fKMgTc3w_AiXokPpSoTxkhyzAiKxytWttgPQGNpG-rccXLHlMWincbPT9ORlhBiOPl9",
+        "client_secret": "EGJvzrlNRwLVBD9am3XJm1RUx__JO6QHhdebmOM-E0bUURCuC6ZgiJ6XeC4NKu4mHCmQWNz0RtTj_dFZ" })
+    print("3")
+    payment = paypalrestsdk.Payment({
+        "intent": "sale",
+        "payer": {
+            "payment_method": "paypal"
+        },
+        "redirect_urls": {
+            "return_url": "http://localhost:3000/payment/execute",
+            "cancel_url": "http://localhost:3000/"
+        },
+        "transactions": [
+            {
+                "item_list": {
+                    "items": [
+                        {
+                            "name":claim_id,
+                            "sku": "pet treatment",
+                            "price": amount,
+                            "currency": "SGD",
+                            "quantity":1
+                        }
+                    ]
+                },
+                "amount": {
+                    "total": amount,
+                    "currency": "SGD"
+                },
+                "description": "treatment description"
+            }
+        ]  
+    })
+    print("4")
+    if payment.create():
+        print("5")
+        print(payment)
+        try:
+            #authorize the payment
+            for link in payment.links:
+                print("6")
+                if link.rel=='approval_url':
+                # Convert to str to avoid google appengine unicode issue
+                # https://github.com/paypal/rest-api-sdk-python/pull/58
+                    print("7")
+                    approval_url = str(link.href)
+                    print("Redirect for approval: %s" % (approval_url))
+            status=200
+            message="The payment has been created"
+            result={'status':status,"message":message,"approval_url":approval_url}
+            # parsed=urlparse(approval_url)
+            # ppid=parse_qs(parsed.query).get('paymentId')[0]
+            # print(ppid)
+
+            return result
+
+        except Exception as e:
+            status=500
+    else:
+        print("6")
+        print(payment.error)
+        result = {'status':500, "message":"An error occurred when creating the payment", "error":str(payment.error)}
+    return result
+
+
+
 if __name__ == "__main__":  # execute this program only if it is run as a script (not by 'import')
-    print("This is " + os.path.basename(__file__) + ": shipping for an order...")
+    print("This is " + os.path.basename(__file__) + ": processing refund to customer...")
     receiveClaim()
 

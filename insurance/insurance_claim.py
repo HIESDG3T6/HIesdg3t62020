@@ -92,7 +92,9 @@ def update_claimstatus(ClaimID):
     except:
         return jsonify({"message": "An error occurred updating the insurance claim."}),500
     send_claim(claim.json())
+
     return jsonify(claim.json()),201
+    #return jsonify(claim.json()),201
 
 
 
@@ -167,6 +169,7 @@ def send_claim(claim):
     connection.close()
     receiveReply()
 
+
 # receive the reply from refund.reply
 def receiveReply():
 
@@ -192,13 +195,13 @@ def receiveReply():
     channel.basic_consume(queue=queue_name, on_message_callback=callback)
     channel.start_consuming()
     
-
 def callback(channel, method, properties, body): 
     print("Received an reply from Refund Service: ")
     print(body)
+    json.loads(body)
     #after receive the message, stop the loop
     channel.stop_consuming()
-
+    
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
