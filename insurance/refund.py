@@ -133,7 +133,7 @@ def create_payment(claimbody):
             "payment_method": "paypal"
         },
         "redirect_urls": {
-            "return_url": "http://localhost:3000/payment/execute",
+            "return_url": "http://localhost:3000/refund/execute",
             "cancel_url": "http://localhost:3000/"
         },
         "transactions": [
@@ -142,7 +142,7 @@ def create_payment(claimbody):
                     "items": [
                         {
                             "name":claim_id,
-                            "sku": "pet treatment",
+                            "sku": "per claim",
                             "price": amount,
                             "currency": "SGD",
                             "quantity":1
@@ -153,7 +153,7 @@ def create_payment(claimbody):
                     "total": amount,
                     "currency": "SGD"
                 },
-                "description": "treatment description"
+                "description": "refund description"
             }
         ]  
     })
@@ -190,8 +190,26 @@ def create_payment(claimbody):
 
 
 
+@app.route('/refund/execute',methods=['GET'])
+def execute():
+    # assumption: when the user logged in, we have their paypal account
+    paymentId = request.args.get('paymentId')
+    payer_id=request.args.get('PayerID')
+    payment = paypalrestsdk.Payment.find(paymentId)
+    print(payment)
+
+    if payment.execute({"payer_id": payer_id}):
+        print("Payment[%s] execute successfully" % (payment.id))
+        result = {'Status':200, 'Message':"Payment[%s] execute successfully"}
+    else:
+        print(payment.error)
+
+    
+
+    return payer_id
 
 if __name__ == "__main__":  # execute this program only if it is run as a script (not by 'import')
     print("This is " + os.path.basename(__file__) + ": processing refund to customer...")
     receiveClaim()
+    app.run(port=3000,debug=True)
 
