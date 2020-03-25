@@ -201,13 +201,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 							// console.log(value2);
 							eachRow =
 								"<td><h6>" + value2.clinicName + "</h6><br>" +
-								"Doctor: Dr " + value2.doctorName + "<br>" +
 								"Specialty: " + value2.specialty + "<br>" +
 								"Address: " + value2.address + "<br>" +
 								"S(" + value2.postalCode + ")<br>" +
 								"Contact: " + value2.contactNumber + "<br>" +
 								"Opening Hours: " + value2.opening + "<br>" +
-								"<td align='center'><iframe src='../clinicsearch/distance.html?location=" + value.postalCode + "'></iframe><br><a href='appointment.html'>Book Appointment</a></td>";
+								"<td align='center'><iframe src='../clinicsearch/distance.php?location=" + value2.address + "'></iframe><br><a href='appointment.html'>Book Appointment</a></td>";
 							rows += "<tbody><tr>" + eachRow + "</tr></tbody>";
 							if (jQuery.inArray(value2.specialty, specarr) == -1){
 								specarr.push(value2.specialty);
@@ -243,18 +242,17 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 									// console.log(value2);
 								eachRow =
 									"<td><h6>" + value.clinicName + "</h6><br>" +
-									"Doctor: Dr " + value.doctorName + "<br>" +
 									"Specialty: " + value.specialty + "<br>" +
 									"Address: " + value.address + "<br>" +
 									"S(" + value.postalCode + ")<br>" +
 									"Contact: " + value.contactNumber + "<br>" +
 									"Opening Hours: " + value.opening + "<br>" +
-									"<td><iframe src='../clinicsearch/distance.html?location=" + value.postalCode + "'></iframe><br><a href='appointment.html'>Book Appointment</a></td>";
+									"<td align='center'><iframe src='../clinicsearch/distance.php?location=" + value.address + "'></iframe><br><a href='appointment.html'>Book Appointment</a></td>";
 								rows += "<tbody><tr>" + eachRow + "</tr></tbody>";
 
 								});
 								// add all the rows to the table
-								console.log(rows);
+								console.log(value.postalCode);
 								$('#clinicsSearch').empty().append(rows);
 							}}
 					$('#clinics').show();
@@ -344,13 +342,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 							// console.log(value2);
 						eachRow =
 							"<td><h6>" + value.clinicName + "</h6><br>" +
-							"Doctor: Dr " + value.doctorName + "<br>" +
 							"Specialty: " + value.specialty + "<br>" +
 							"Address: " + value.address + "<br>" +
 							"S(" + value.postalCode + ")<br>" +
 							"Contact: " + value.contactNumber + "<br>" +
 							"Opening Hours: " + value.opening + "<br>" +
-							"<td><iframe src='../clinicsearch/distance.html?location=" + value.postalCode + "'></iframe><br><a href='appointment.html'>Book Appointment</a></td>";
+							"<td align='center'><iframe src='../clinicsearch/distance.php?location=" + value.address + "'></iframe><br><a href='appointment.html'>Book Appointment</a></td>";
 						rows += "<tbody><tr>" + eachRow + "</tr></tbody>";
 
 					});
