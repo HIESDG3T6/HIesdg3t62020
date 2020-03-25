@@ -49,8 +49,7 @@
             var param = location.href.split('?')[1];
 
 
-            var destination = param.split('=')[1];
-
+            var destination = decodeURI(param.split('=')[1]);
 
             function initMap() {
                 var map = new google.maps.Map(document.getElementById('map'), {
@@ -71,14 +70,8 @@
                     };
                     
                     map.setCenter(pos);
-                }, function() {
-                    handleLocationError(true, infoWindow, map.getCenter());
-                });
-                } else {
-                // Browser doesn't support Geolocation
-                handleLocationError(false, infoWindow, map.getCenter());
-                }
-                    
+                
+                                   
                 var directionsService = new google.maps.DirectionsService;
                 var directionsRenderer = new google.maps.DirectionsRenderer({
                 draggable: true,
@@ -92,6 +85,8 @@
             
                 displayRoute(pos, destination, directionsService,
                     directionsRenderer);
+                });
+            }
         }
 
         function handleLocationError(browserHasGeolocation, infoWindow, pos) {
@@ -137,6 +132,6 @@
         </div>
         <!-- Replace the value of the key parameter with your own API key. -->
         <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkUOdZ5y7hMm0yrcCQoCvLwzdM6M8s5qk&callback=initMap">
+        src="https://maps.googleapis.com/maps/api/js?key=TOBEFILLED&callback=initMap">
         </script>
     </body>
