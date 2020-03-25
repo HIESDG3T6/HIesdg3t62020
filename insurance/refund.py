@@ -172,7 +172,7 @@ def create_payment(claimbody):
                     print("Redirect for approval: %s" % (approval_url))
             status=200
             message="The payment has been created"
-            result={'status':status,"message":message,"approval_url":approval_url}
+            result={'status':status,"message":message,"approval_url":approval_url,"claimid":claim_id}
             # parsed=urlparse(approval_url)
             # ppid=parse_qs(parsed.query).get('paymentId')[0]
             # print(ppid)
