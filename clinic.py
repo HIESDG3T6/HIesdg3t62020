@@ -64,7 +64,9 @@ def get_all():
 @app.route("/clinic/<string:clinicName>")
 def find_by_clinicName(clinicName):
     # clinic = Clinic.query(Clinic).join(ClinicOpening).filter(clinicName.like(f'%{clinicName}%')).all()
-    clinic = Clinic.query.filter_by(clinicName=clinicName).all()
+    # clinic = Clinic.query.filter_by(clinicName=clinicName).all()
+    search = "%{}%".format(clinicName)
+    clinic = Clinic.query.filter(Clinic.clinicName.like(search)).all()
     result = []
     if clinic:
         for aClinic in clinic:
@@ -106,8 +108,10 @@ def find_by_specialty(specialty):
 def find_by_all(clinicName, groupedLocation, specialty):
     # if groupedLocation:
     #     return jsonify(groupedLocation.json())
-
-    clinics = Clinic.query.filter_by(clinicName=clinicName).filter_by(groupedLocation=groupedLocation).filter_by(specialty=specialty).order_by(Clinic.clinicName).all()
+    search = "%{}%".format(clinicName)
+    loc = groupedLocation
+    spec = specialty
+    clinics = Clinic.query.filter(Clinic.clinicName.like(search), Clinic.groupedLocation==loc, Clinic.specialty==spec).all()
     result = []
 
     if clinics:
@@ -120,7 +124,6 @@ def find_by_all(clinicName, groupedLocation, specialty):
 def find_by_spec_loc(groupedLocation, specialty):
     # if groupedLocation:
     #     return jsonify(groupedLocation.json())
-
     clinics = Clinic.query.filter_by(groupedLocation=groupedLocation).filter_by(specialty=specialty).order_by(Clinic.clinicName).all()
     result = []
 
@@ -134,8 +137,10 @@ def find_by_spec_loc(groupedLocation, specialty):
 def find_by_nameloc(clinicName, groupedLocation):
     # if groupedLocation:
     #     return jsonify(groupedLocation.json())
-
-    clinics = Clinic.query.filter_by(clinicName=clinicName).filter_by(groupedLocation=groupedLocation).order_by(Clinic.clinicName).all()
+    search = "%{}%".format(clinicName)
+    loc = groupedLocation
+    clinics = Clinic.query.filter(Clinic.clinicName.like(search), Clinic.groupedLocation==loc).all()
+    # clinics = Clinic.query.filter_by(clinicName=clinicName).filter_by(groupedLocation=groupedLocation).order_by(Clinic.clinicName).all()
     result = []
 
     if clinics:
@@ -148,8 +153,10 @@ def find_by_nameloc(clinicName, groupedLocation):
 def find_by_namespec(clinicName, specialty):
     # if groupedLocation:
     #     return jsonify(groupedLocation.json())
-
-    clinics = Clinic.query.filter_by(clinicName=clinicName).filter_by(specialty=specialty).order_by(Clinic.clinicName).all()
+    search = "%{}%".format(clinicName)
+    spec = specialty
+    clinics = Clinic.query.filter(Clinic.clinicName.like(search), Clinic.specialty==spec).all()
+    # clinics = Clinic.query.filter_by(clinicName=clinicName).filter_by(specialty=specialty).order_by(Clinic.clinicName).all()
     result = []
 
     if clinics:

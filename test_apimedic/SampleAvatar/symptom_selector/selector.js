@@ -2103,7 +2103,7 @@ var mode = "diagnosis";
                     // "href": specUrl  + "/" + "specId" + this.SpecialistID + ".html"
                     // "href": "../../patient/search.php" + "/" + this.Name
                     // "href": "http://127.0.0.1:5000/clinic/spec" + "/" + this.Name
-                    "href": "../../patient/search.html",
+                    "href": "../../patient/search.php?specialty=" + this.Name,
                     // "onClick": "'" + this.Name + "'",
                 });
                 // sessionStorage.setItem("symptom", "'" + this.Name + "'");
