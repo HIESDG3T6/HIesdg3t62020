@@ -275,11 +275,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		var ClaimAmount = $('#claim_amt').val();
 
         // form the POST url which includes the dynamic isbnNumber
-		console.log(ClaimID)
-		console.log(AID)
+		// console.log(ClaimID)
+		console.log(PID)
 
 		var serviceURL_claim = "http://127.0.0.1:5000/claims/"+ClaimID;
-		var serviceURL_ph = "http://127.0.0.1:5000/patient_history"+AID+"/";
+		var serviceURL_ph = "http://127.0.0.1:5000/patient_history/"+PID+"/";
 		console.log(serviceURL_claim);
 		console.log(serviceURL_ph)
 

@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `patient_history` (
   `Medication` varchar(1000) DEFAULT NULL,
   `BillAmount` varchar(1000) DEFAULT NULL,
   `claimAmount` varchar(10000) DEFAULT NULL,
-  PRIMARY KEY (`PID`,`AID`)
+  PRIMARY KEY (`AID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
