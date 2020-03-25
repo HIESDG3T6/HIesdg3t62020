@@ -38,7 +38,7 @@ function initMap() {
   service.getDistanceMatrix({
     origins: [pos],
     destinations: [destinationA],
-    travelMode: 'DRIVING',
+    travelMode: 'TRANSIT',
     unitSystem: google.maps.UnitSystem.METRIC,
     avoidHighways: false,
     avoidTolls: false
