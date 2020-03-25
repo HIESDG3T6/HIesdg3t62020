@@ -105,14 +105,14 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 	</head>
 <body>
 <!-- update the version number as needed -->
-<script  src="/__/firebase/7.12.0/firebase-app.js"></script>
+<!-- <script  src="/__/firebase/7.12.0/firebase-app.js"></script> -->
 <!-- include only the Firebase features as you need -->
-<script  src="/__/firebase/7.12.0/firebase-auth.js"></script>
+<!-- <script  src="/__/firebase/7.12.0/firebase-auth.js"></script>
 <script  src="/__/firebase/7.12.0/firebase-database.js"></script>
 <script  src="/__/firebase/7.12.0/firebase-messaging.js"></script>
-<script  src="/__/firebase/7.12.0/firebase-storage.js"></script>
+<script  src="/__/firebase/7.12.0/firebase-storage.js"></script> -->
 <!-- initialize the SDK after all desired features are loaded -->
-<script>
+<!-- <script>
 	// Your web app's Firebase configuration
 	var firebaseConfig = {
 	  apiKey: "AIzaSyDv6Gp9lUVuCDWX80uh3eLIninJwrJ6zEA",
@@ -204,7 +204,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			// TODO(developer): Send the current token to your server.
 			firebase.database().ref("/tokens").push({
 				token: currentToken,
-				uid: "patient"
+				uid: "receptionist"
 			});
 		// } else {
 		// 	console.log('Token already sent to server so won\'t send it again ' +
@@ -238,7 +238,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 
 
-</script>
+</script> -->
 
 <!-- top header -->
 <div class="header-top">
@@ -325,18 +325,20 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			</div>
 			
 			<script>
-				$("#bookButton").click( function(e){
-					e.preventDefault();
+				// $("#bookButton").click( function(e){
+				// 	e.preventDefault();
 
-					const appointmentdate = document.getElementById('appointmentDate').value; 
-					const appointmenttime = document.getElementById('appointmentTime').value; 
+				// 	const appointmentdate = document.getElementById('appointmentDate').value; 
+				// 	const appointmenttime = document.getElementById('appointmentTime').value; 
+				// 	serviceURL = "https://fcm.googleapis.com/v1/{parent=projects/health-service-2680a}/messages:send"
 
-					firebase.database().ref("/notifications").push({
-						user: "jiamin",
-						date: appointmentdate,
-						time: appointmenttime,
-					});
-				})
+
+				// 	firebase.database().ref("/notifications").push({
+				// 		user: "jiamin",
+				// 		date: appointmentdate,
+				// 		time: appointmenttime,
+				// 	});
+				// })
 
 				function showError(message) {
 					$('#appointmentForm').hide()
