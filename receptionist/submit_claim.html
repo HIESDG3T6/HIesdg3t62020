@@ -132,7 +132,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         </div>
 						<div class="col-md-12">
 							<div class="submit-buttons" style="text-align: center;">
-								<button type="submit" class="btn btn-banner my-sm-3 mb-3" name="claim">Submit a New Claim</button>
+								<button type="submit" class="btn btn-banner my-sm-3 mb-3" name="claim" id="submitClaim">Submit a New Claim</button>
 
 								<!-- <button type="submit" class="btn btn-banner1 my-sm-3 mb-3" name="history">Submit a New Patient Record</button> -->
                             </div>
@@ -199,111 +199,146 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		var today = now.getFullYear()+'-'+(month)+'-'+(day);
 		$("#claim_date").val(today);
 
-		console.log(PID);
-		console.log(ClinicID);
+	// ===================================== Start to post data ===========================================
+	// Post claim data to Patient History DB for updates
+		function showError(message) {
+            $('#info_form').hide()
+
+            $('#main-container')
+                .append("<label>"+message+"</label>");
+        }
 
 
-	// send claim data to claim MS
-	async function postDataToClaim(serviceURL_claim, requestBody_claim) {
-	    var requestParam = {
-	        headers: { "content-type": "charset=UTF-8; application/json;" },
-	        mode: 'cors', // other options: no-cors, etc.
-	        method: 'POST',
-	        body: JSON.stringify(requestBody_claim)
-	    }
-	    try {
-	        const response = await fetch(serviceURL_claim, requestParam);
-	        data_claim = await response.json();
-	        console.log(data_claim);
+	$('#submitClaim').click(async(event) => {
 
-			if (response.ok) {
-						// relocate to home page
-						window.location.replace("patient_history.html");
-						return false;
-					} else {
-						console.log(data);
-						showError(data.message);
-				}
-	    } catch (error) {
-			showError(error)
-	        console.error(error);
-	    }
-	}
-	// send claim data to Patient History DB for updates
-	async function postDataToPatientHistory(serviceURL_ph, requestBody_ph) {
-	    var requestParam = {
-	        headers: { "content-type": "charset=UTF-8; application/json;" },
-	        mode: 'cors', // other options: no-cors, etc.
-	        method: 'POST',
-	        body: JSON.stringify(requestBody_ph)
-	    }
-	    try {
-	        const response = await fetch(serviceURL_ph, requestParam);
-	        data_ph = await response.json();
-	        console.log(data_ph);
-
-			if (response.ok) {
-						// relocate to home page
-						window.location.replace("patient_history.html");
-						return false;
-					} else {
-						console.log(data);
-						showError(data.message);
-				}
-				
-	    } catch (error) {
-			showError(error)
-	        console.error(error);
-	    }
-	}
-
-	// Pass information to 
-    $("#info_form").submit(function() {
-        //Prevents screen from refreshing when submitting
-        event.preventDefault();
-
-
-		// var PID = $('#pid').val();
+		event.preventDefault();
+		
 		var AID = $('#aid').val();
-        var ClaimID = $('#claim_id').val();
-        var ClaimDate = $('#claim_date').val();
+		var Medication = $('#medication').val();
+		var BillAmount = $('#bill_amt').val();
+		var ClaimAmount = $('#claim_amt').val();
+		
+		var serviceURL_ph = "http://127.0.0.1:5008/patient_history/"+PID+"/";
+
+		console.log(serviceURL_ph)
+		
+		var requestBody_ph = {
+				AID:AID,
+				Medication:Medication,
+				BillAmount:BillAmount,
+				ClaimAmount:ClaimAmount
+			};
+
+		try {
+			const response = await fetch (serviceURL_ph,
+				{
+					method: 'POST',
+					mode: 'cors',
+					headers: {"Content-Type": "application/json"},
+					body: JSON.stringify (requestBody_ph)	
+				}
+
+				
+			);
+			console.log(response)
+			console.log(requestBody_ph)
+
+			console.log('1')
+
+			const data = await response.json();
+			console.log('2')
+			console.log(data)
+
+			if (!response.ok) {
+				var msg = data['message'];
+				showError(msg);
+				console.log('3');
+
+			} else {
+				location.replace("check_app.html");
+				console.log('4')
+			} 
+
+		} catch (error) {
+			console.log(error);
+			showError ('There is a problem adding the appointment, please try again later.');
+		}
+	});
+
+	//=================================Post to create claim===================================
+
+	function showError(message) {
+            $('#info_form').hide()
+
+            $('#main-container')
+                .append("<label>"+message+"</label>");
+        }
+
+
+	$('#submitClaim').click(async(event) => {
+
+		event.preventDefault();
+		
+		var AID = $('#aid').val();
+		var ClaimID = $('#claim_id').val();
+		var ClaimDate = $('#claim_date').val();
 		var Medication = $('#medication').val();
 		//var ClinicID = $('#clinic_id').val();
-		var PatientID = $('#patient_id').val();
+		// var PatientID = $('#patient_id').val();
 		var ClaimStatus = $('#claim_status').val();
-        var BillAmount = $('#bill_amt').val();
+		var BillAmount = $('#bill_amt').val();
 		var ClaimAmount = $('#claim_amt').val();
-
-        // form the POST url which includes the dynamic isbnNumber
-		// console.log(ClaimID)
-		console.log(PID)
-
+		
 		var serviceURL_claim = "http://127.0.0.1:5000/claims/"+ClaimID;
-		var serviceURL_ph = "http://127.0.0.1:5000/patient_history/"+PID+"/";
-		console.log(serviceURL_claim);
-		console.log(serviceURL_ph)
 
+		console.log(serviceURL_claim)
+		
 		var requestBody_claim = {
-			ClaimID:ClaimID,
+			// ClaimID:ClaimID,
 			ClinicName:ClinicID,
 			BillAmount:BillAmount,
 			ClaimStatus:ClaimStatus,
 			ClaimDate:ClaimDate,
-			PatientID:PatientID,
+			PatientID:PID,
 			ClaimedAmount:ClaimAmount,
 			RefundStatus: 'Pending',
 			Medicine:Medication
-		}
-		console.log(requestBody_claim);
+		};
 
-		var requestBody_ph = {
-			PID:PID,
-			AID:AID,
-			BillAmount:BillAmount,
-			ClaimedAmount:ClaimAmount,
-			Medication:Medication
+		try {
+			const response = await fetch (serviceURL_claim,
+				{
+					method: 'POST',
+					mode: 'cors',
+					headers: {"Content-Type": "application/json"},
+					body: JSON.stringify (requestBody_claim)	
+				}
+
+				
+			);
+			console.log(response)
+			console.log(requestBody_claim)
+
+			console.log('1')
+
+			const data = await response.json();
+			console.log('2')
+			console.log(data)
+
+			if (!response.ok) {
+				var msg = data['message'];
+				showError(msg);
+				console.log('3');
+
+			} else {
+				location.replace("check_app.html");
+				console.log('4')
+			} 
+
+		} catch (error) {
+			console.log(error);
+			showError ('There is a problem adding the appointment, please try again later.');
 		}
-		console.log(requestBody_ph);
 	});
 
 </script>
