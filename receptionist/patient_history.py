@@ -67,5 +67,5 @@ def create_history(PID):
 if __name__ == '__main__': # if it is the main program you run, then start flask
     # with docker
     # app.run(host='0.0.0.0', port=5000, debug=True)
-    app.run(port=6666, debug=True) #to allow the file to be named other stuff apart from app.py
+    app.run(port=5008, debug=True) #to allow the file to be named other stuff apart from app.py
     # debug=True; shows the error and it will auto restart

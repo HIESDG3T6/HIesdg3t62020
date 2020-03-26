@@ -53,3 +53,16 @@ INSERT INTO `Insurance_Claim` (`ClaimID`, `PatientID`, `ClinicName`, `ClaimDate`
 ('3', '2', 'okay clinic', '2020-01-30 13:01:00','probiotics',33.1,15,'Close','Approved'),
 ('4', '3', 'ohh clinic', '2020-01-31 22:01:00','aspirin',33.2,33.2,'Close','Rejected'),
 ('5', '4', 'okay clinic', '2020-02-01 10:01:00','panadol',53.2,53.2,'Open','Pending');
+
+
+--
+-- Table structure for table `Insurance_Claim`
+--
+DROP TABLE IF EXISTS `refund`;
+CREATE TABLE IF NOT EXISTS `refund`(
+    `Corrid` INT NOT NULL PRIMARY KEY,
+    `ClaimID` INT,
+    `reply_Status` INT,
+    `Approval_url` varchar(10000)
+);
+
