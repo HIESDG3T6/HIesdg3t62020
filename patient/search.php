@@ -206,7 +206,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 								"S(" + value2.postalCode + ")<br>" +
 								"Contact: " + value2.contactNumber + "<br>" +
 								"Opening Hours: " + value2.opening + "<br>" +
-								"<td align='center'><iframe src='../clinicsearch/distance.php?location=" + value2.address + "'></iframe><br><a href='appointment.html'>Book Appointment</a></td>";
+								"<td align='center'><iframe src='../clinicsearch/distance.php?location=" + value2.address + "'></iframe><br><a href='appointment.html?clinc=" + value2.clinicName +"&postalcode=" +value2.postalCode + "'>Book Appointment</a></td>";
 							rows += "<tbody><tr>" + eachRow + "</tr></tbody>";
 							if (jQuery.inArray(value2.specialty, specarr) == -1){
 								specarr.push(value2.specialty);
@@ -247,7 +247,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 									"S(" + value.postalCode + ")<br>" +
 									"Contact: " + value.contactNumber + "<br>" +
 									"Opening Hours: " + value.opening + "<br>" +
-									"<td align='center'><iframe src='../clinicsearch/distance.php?location=" + value.address + "'></iframe><br><a href='appointment.html'>Book Appointment</a></td>";
+									"<td align='center'><iframe src='../clinicsearch/distance.php?location=" + value.address + "'></iframe><br><a href='appointment.html?clinc=" + value.clinicName +"&postalcode=" +value.postalCode + "'>Book Appointment</a></td>";
 								rows += "<tbody><tr>" + eachRow + "</tr></tbody>";
 
 								});
@@ -346,7 +346,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 							"S(" + value.postalCode + ")<br>" +
 							"Contact: " + value.contactNumber + "<br>" +
 							"Opening Hours: " + value.opening + "<br>" +
-							"<td align='center'><iframe src='../clinicsearch/distance.php?location=" + value.address + "'></iframe><br><a href='appointment.html'>Book Appointment</a></td>";
+							"<td align='center'><iframe src='../clinicsearch/distance.php?location=" + value.address + "'></iframe><br><a href='appointment.html?clinc=" + value.clinicName +"&postalcode=" +value.postalCode + "'>Book Appointment</a></td>";
 						rows += "<tbody><tr>" + eachRow + "</tr></tbody>";
 
 					});
