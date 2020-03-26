@@ -252,8 +252,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 								});
 								// add all the rows to the table
-								console.log(value.postalCode);
-								$('#clinicsSearch').empty().append(rows);
+								$('#clinics').append(rows);
 							}}
 					$('#clinics').show();
 
