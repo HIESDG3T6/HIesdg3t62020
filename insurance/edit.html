@@ -334,7 +334,7 @@
 
             var serviceURL = "http://127.0.0.1:5000/claims/" +ClaimID + "/";
             var requestBody = {
-				ClaimID:ClaimID,
+				// ClaimID:ClaimID,
 				ClinicName:ClinicName,
 				BillAmount:BillAmount,
 				ClaimStatus:ClaimStatus,
@@ -368,7 +368,7 @@
 		async function payment_paypal() {       
             // Change serviceURL to your own
             var serviceURL = "http://127.0.0.1:5001/refund/"+ClaimID;
-			console.log("refund and execute"+serviceURL);
+			console.log("1");
 			//after that can change it to only display opening 
             try {
                 const response =
@@ -376,14 +376,16 @@
                    serviceURL, { method: 'GET' }
                 );
 				const data = await response.json();
-				console.log("data is "+data);
+				console.log(data);
                 var approval_url = data.approval_url; 
-				console.log("approval url is "+approval_url);
+				console.log("3: "+approval_url);
                 // array or array.length are falsy
                 if (!approval_url) {
+					console.log("4");
                     showError('data is empty or undefined')
                 } else {
-                    window.location.replace(approval_url)
+					console.log("5");
+                    // window.location.replace(approval_url)
                 }
             } catch (error) {
                 // Errors when calling the service; such as network error, 

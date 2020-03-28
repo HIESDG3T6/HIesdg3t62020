@@ -15,23 +15,23 @@ CORS(app)
 class Refund(db.Model):
     __tablename__ = 'refund'
 
-    Corrid = db.Column(db.Integer, nullable=False,primary_key=True)
+    Corrid = db.Column(db.String(100), nullable=False,primary_key=True)
     ClaimID = db.Column(db.Integer, nullable=True)
-    Status = db.Column(db.Integer,nullable=True)
+    reply_Status = db.Column(db.String(100),nullable=True)
     Approval_url = db.Column(db.String(10000),nullable=True)
     
-    def __init__(self, Corrid, ClaimID, Status, Approval_url):
+    def __init__(self, Corrid, ClaimID, reply_Status, Approval_url):
         self.Corrid = Corrid
         self.ClaimID = ClaimID
-        self.Status = Status
+        self.reply_Status = reply_Status
         self.Approval_url = Approval_url
 
     # return an insurance item as a JSON object
     def json(self):
         
         return {
-            'Corrid': self.Corrid, 'ClaimID': self.ClaimID, 'Status': self.Status, 'Approval_url': self.Approval_url}
-
+            'Corrid': self.Corrid, 'ClaimID': self.ClaimID, 'reply_Status': self.reply_Status, 'Approval_url': self.Approval_url}
+    
 
 # ================================== For Refund Table ============================================
 
@@ -42,7 +42,11 @@ def create_refund_record(Corrid):
         return jsonify({"message": "An record with corrid '{}' already exists.".format(Corrid)}), 400
 
     data = request.get_json()
+    print("data is: ")
+    print(data)
     record = Refund(Corrid, **data)
+    print("corrid is: ")
+    print(record.Corrid)
    
     try:
         db.session.add(record)
@@ -57,8 +61,16 @@ def create_refund_record(Corrid):
 def update_refund_record(Corrid):
     refund = Refund.query.filter_by(Corrid=Corrid).first()
     data = request.get_json()
-    refund.Status = data.Status
-    refund.Approval_url = data.Approval_url
+    print("corrid is: ")
+    print(Corrid)
+    print("data is: ")
+    print(data)
+    print("refund record is: ")
+    print(refund)
+    refund.reply_Status = data["status"]
+    refund.Approval_url = data["approval_url"]
+    print("Approval_url is: ")
+    print(refund.Approval_url)
     try:
         db.session.commit()
         
@@ -77,9 +89,12 @@ def find_url_by_ClaimID(ClaimID):
 
     if record:
         return jsonify(record.json())
+    print("record is:")
+    print(record)
     return jsonify({"message": "Arroval URL record not found."}), 404
 
 
 if __name__ == '__main__':
+    
     app.run(port=5001, debug=True)
 
