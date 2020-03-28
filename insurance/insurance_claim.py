@@ -139,11 +139,14 @@ def send_claim(claim):
         # Keep the corrid into refund table under claim database
         
         corrid = str(uuid.uuid4())
-        row = {"ClaimID": claim['ClaimID'], "Corrid": corrid, "Status": "", "Approval_url": ""}
+        row = {"ClaimID": claim['ClaimID'], "reply_Status": "none", "Approval_url": "none"}
+        headers={"content-type": "application/json"}
         
         service_url = "http://127.0.0.1:5001/refund/"+corrid
 
-        r = requests.post(service_url, json=row, timeout=1)
+        r = requests.post(service_url, json=row, headers=headers)
+        print(r.text)
+        print(corrid)
         
     
         # prepare the channel and send a message to Refund
@@ -197,9 +200,12 @@ def reply_callback(channel, method, properties, body):
     print(body)
     reply = json.loads(body)
     #after receive the message, stop the loop
+    headers={"content-type": "application/json"}
     channel.stop_consuming()
     update_url = 'http://127.0.0.1:5001/refund/'+properties.correlation_id +'/'
-    r = requests.post(update_url, json=reply, timeout=1)
+    print("reply is")
+    print(reply)
+    r = requests.post(update_url, json=reply, headers=headers)
 
 
 if __name__ == '__main__':
