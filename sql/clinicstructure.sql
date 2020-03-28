@@ -27,6 +27,9 @@ SET time_zone = "+00:00";
 --
 -- Table structure for table `clinic`
 --
+DROP SCHEMA IF EXISTS clinic;
+create schema clinic;
+use clinic;
 
 DROP TABLE IF EXISTS `clinic`;
 CREATE TABLE IF NOT EXISTS `clinic` (

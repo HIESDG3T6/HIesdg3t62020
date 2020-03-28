@@ -5,8 +5,8 @@ use Patient;
 
 CREATE TABLE Patient /*creating course table*/
 (
-PatientID		varchar(255)		not null	,
-PatientName		varchar(255)		not null	,
+PatientID		varchar(100)		not null	,
+PatientName		varchar(100)		not null	,
 Email		varchar(100)					,
 Telehandle	varchar(100)					,
 PolicyNum	varchar(100)		not null    ,

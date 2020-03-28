@@ -34,8 +34,8 @@ USE `patient_history`;
 
 DROP TABLE IF EXISTS `patient_history`;
 CREATE TABLE IF NOT EXISTS `patient_history` (
-  `PID` int(11) NOT NULL,
-  `AID` int(11) NOT NULL,
+  `PID` varchar(100) NOT NULL,
+  `AID` varchar(100) NOT NULL,
   `Medication` varchar(1000) DEFAULT NULL,
   `BillAmount` varchar(1000) DEFAULT NULL,
   `claimAmount` varchar(10000) DEFAULT NULL,

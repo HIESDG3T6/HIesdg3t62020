@@ -353,7 +353,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					event.preventDefault();
 		
 					var addAppointmentURL = "http://localhost:4444/appointment"
-		
+					var mailURL = "http://localhost:5000/appointmentemail"
+
 					// var customerID = $('#customerID').val();
 					// var clinicID = $('#clinicID').val();
 					// var doctorID = $('#doctorID').val();
@@ -386,10 +387,35 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 							showError(msg);
 		
 						} else {
+							//send an email notifying patient of successful appointment
+							try {
+								const mailresponse = await fetch (mailURL,
+									{
+										method: 'POST',
+										// mode: 'no-cors',
+										headers: {"Content-Type": "application/json"},
+										body: JSON.stringify ({
+											customerID: customerID, clinicID : clinicID, doctorID : doctorID, 
+											appointmentDate : appointmentDate, appointmentTime : appointmentTime
+											})
+									}
+				
+									
+								);
+			
+								const maildata = await mailresponse.json();
+
+								if (!response.ok) {
+								var msg = data['message'];
+								showError(msg);
+								} 
+							} catch (error){
+									console.log(error);
+							} 
 							location.replace("account.html");
 						
-						} 
-		
+						
+						}
 					} catch (error) {
 						console.log(error);
 						showError ('There is a problem adding the appointment, please try again later.');
