@@ -177,7 +177,8 @@
 						<div class="col-md-12 grid p" id='Approved' style="display:none">
 							<p class="col-sm-6 header-right-w3_pvt" >   </p>
 							<div class="submit-buttons" style="text-align: center;">
-								<button type="submit" class="btn" id='pay_button' onclick="payment_paypal()"> Pay  Patient  for  Claim </button>
+								<button type="submit" class="btn" id='pay_button' > Pay  Patient  for  Claim </button>
+								<!-- onclick="payment_paypal()" -->
                             </div>
 						</div>
 
@@ -257,7 +258,7 @@
         // - using await requires the function that calls it to be async
 		$(async() => {       
             // Change serviceURL to your own
-            var serviceURL = "http://127.0.0.1:5000/claims/"+ClaimID;
+            var serviceURL = "http://127.0.0.1:5003/claims/"+ClaimID;
 
 			// console.log(serviceURL);
 			//after that can change it to only display opening 
@@ -306,7 +307,7 @@
 			try{
 				const response = await fetch(serviceURL, requestParam);
 			    data = await response.json();
-			    console.log("update status data is "+data);
+			//     console.log("update status data is "+data);
 				
 				if( response.ok){
 					// window.location.replace("home.html");
@@ -332,7 +333,7 @@
 			var RefundStatus = $('#RefundStatus_text').val();
 			var Medicine = $('#Medication_text').val();
 
-            var serviceURL = "http://127.0.0.1:5000/claims/" +ClaimID + "/";
+            var serviceURL = "http://127.0.0.1:5003/claims/" +ClaimID + "/";
             var requestBody = {
 				// ClaimID:ClaimID,
 				ClinicName:ClinicName,
@@ -344,9 +345,6 @@
 				RefundStatus:RefundStatus,
 				Medicine:Medicine
             };
-
-            console.log("claim url and cliam id is "+serviceURL);
-			console.log(requestBody);
 			
 			postData(serviceURL,requestBody);
 			
@@ -365,34 +363,102 @@
 
 		// anonymous async function 
         // - using await requires the function that calls it to be async
-		async function payment_paypal() {       
-            // Change serviceURL to your own
-            var serviceURL = "http://127.0.0.1:5001/refund/"+ClaimID;
+		async function getURL(serviceURL){
+			console.log('get ok');
+			try{
+
+				const response = await fetch(
+						serviceURL, { method: 'GET' }
+				);
+
+				if (response.ok){
+
+					const data = await response.json();
+					console.log("refund data is"+data);
+					var approval_url = data.Approval_url; 
+					console.log("3: "+approval_url);
+
+					// array or array.length are falsy
+					if (!approval_url) {
+						console.log("4");
+						showError('data is empty or undefined');
+					} else {
+						console.log("5");
+						window.location.replace(approval_url);
+					}
+
+
+				}else{
+
+					console.log(response.status)
+				}
+
+
+			}catch(error){
+				showError('There is a problem when processing a payment, please try again later.<br />'+error);
+			}
+		}
+
+		// wait for 5 seconds then proceed
+		$(function(){
+			$('#pay_button').click(
+				
+				function () {
+					alert('Please wait for 2 secs to direct you to paypal');
+					var serviceURL = "http://127.0.0.1:5001/refund/"+ClaimID;
+					setTimeout(
+						function () { 
+							getURL(serviceURL)
+						 },2000
+					);
+
+					
+				}
+			);
+		});
+
+		
+		/* $(function(){
 			console.log("1");
-			//after that can change it to only display opening 
-            try {
-                const response =
-                 await fetch(
-                   serviceURL, { method: 'GET' }
-                );
-				const data = await response.json();
-				console.log(data);
-                var approval_url = data.approval_url; 
-				console.log("3: "+approval_url);
-                // array or array.length are falsy
-                if (!approval_url) {
-					console.log("4");
-                    showError('data is empty or undefined')
-                } else {
-					console.log("5");
-                    // window.location.replace(approval_url)
-                }
-            } catch (error) {
-                // Errors when calling the service; such as network error, 
-                // service offline, etc
-                showError('There is a problem when processing a payment, please try again later.<br />'+error);
-            } // error
-        };
+			$('#pay_button').click(async(event) => {       
+				// Change serviceURL to your own
+				console.log("2");
+				var serviceURL = "http://127.0.0.1:5001/refund/"+ClaimID;
+				console.log(serviceURL);
+				//after that can change it to only display opening 
+				try {
+					const response = await fetch(
+						serviceURL, { method: 'GET' }
+					);
+
+					if (response.ok){
+
+						const data = await response.json();
+						console.log("refund data is"+data);
+						var approval_url = data.Approval_url; 
+						console.log("3: "+approval_url);
+
+					}else{
+
+						console.log(response.status)
+					}
+					
+					// array or array.length are falsy
+					if (!approval_url) {
+						console.log("4");
+						showError('data is empty or undefined')
+					} else {
+						console.log("5");
+						window.location.replace(approval_url)
+					}
+				} catch (error) {
+					// Errors when calling the service; such as network error, 
+					// service offline, etc
+					showError('There is a problem when processing a payment, please try again later.<br />'+error);
+				} // error
+        	});
+		});
+		 */
 
 
 	</script>

@@ -219,7 +219,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		var ClaimAmount = $('#claim_amt').val();
 		
 		var serviceURL_ph = "http://127.0.0.1:5008/patient_history/"+PID+"/";
-
+		var mailURL = "http://localhost:5000/paymentemail"
 		console.log(serviceURL_ph)
 		
 		var requestBody_ph = {
@@ -255,6 +255,26 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 				console.log('3');
 
 			} else {
+				//send email about payment amt
+				try {
+					const mailresponse = await fetch (mailURL,
+						{
+							method: 'POST',
+							// mode: 'no-cors',
+							headers: {"Content-Type": "application/json"},
+							body: JSON.stringify (requestBody_ph)
+						}					
+					);
+			
+					const maildata = await mailresponse.json();
+
+					if (!response.ok) {
+						var msg = data['message'];
+						showError(msg);
+					} 
+				} catch (error){
+					console.log(error);
+				} 
 				location.replace("check_app.html");
 				console.log('4')
 			} 
@@ -289,7 +309,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		var BillAmount = $('#bill_amt').val();
 		var ClaimAmount = $('#claim_amt').val();
 		
-		var serviceURL_claim = "http://127.0.0.1:5000/claims/"+ClaimID;
+		var serviceURL_claim = "http://127.0.0.1:5003/claims/"+ClaimID;
 
 		console.log(serviceURL_claim)
 		

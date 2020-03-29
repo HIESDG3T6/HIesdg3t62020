@@ -18,7 +18,7 @@ from flask_cors import CORS
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/insurance_claim'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:3306/insurance_claim'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -129,7 +129,7 @@ def send_claim(claim):
 
 
     message = json.dumps(claim, default=str) # convert a JSON object to a string
-    print(message)
+    # print(message)
 
 
     # if the claim is approved and open => notify refund service
@@ -145,7 +145,8 @@ def send_claim(claim):
         service_url = "http://127.0.0.1:5001/refund/"+corrid
 
         r = requests.post(service_url, json=row, headers=headers)
-        print(r.text)
+        #print(r.text)
+        print('post corrid')
         print(corrid)
         
     
@@ -199,16 +200,22 @@ def reply_callback(channel, method, properties, body):
     print("Received an reply from Refund Service: ")
     print(body)
     reply = json.loads(body)
+    
+    print("reply corrid is")
+    print(properties.correlation_id)
+
     #after receive the message, stop the loop
     headers={"content-type": "application/json"}
+
+    channel.basic_ack(delivery_tag=method.delivery_tag)
     channel.stop_consuming()
+    
     update_url = 'http://127.0.0.1:5001/refund/'+properties.correlation_id +'/'
-    print("reply is")
-    print(reply)
+
     r = requests.post(update_url, json=reply, headers=headers)
 
 
 if __name__ == '__main__':
-    app.run(port=5000, debug=True)
+    app.run(port=5003, debug=True)
 
 

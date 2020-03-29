@@ -40,22 +40,16 @@
 						<p> Welcome! Patient Wong</p>
 						
 					</li>
-					<!-- <li>
-						<span class="fa fa-phone"></span>
-						<p class="d-inline">Call Us +12 345 678</p>
-					</li> -->
+
 				</ul>
 			</div>
-			<!-- <div class="col-sm-6 header-right-w3_pvt">
+			<div class="col-sm-6 header-right-w3_pvt">
 				<ul class="d-lg-flex header-w3_pvt justify-content-lg-end">
-					<li class="mr-lg-3">
-						<span class=""><span class="fa fa-clock-o"></span>Mon - Fri : 8:30am to 9:30pm</span>
-					</li>
 					<li class="">
-						<span class=""><span class="fa fa-clock-o"></span>Sat & Sun : 9:00am to 6:00pm</span>
+						<span class=""><span class="fa fa-clock-o"></span>Log out</span>
 					</li>
 				</ul>
-			</div> -->
+			</div>
 		</div>
 	</div>
 </div>
@@ -100,7 +94,7 @@
 				<table id="HistoryTable" class='table table-striped' >
 					<thead>
 						<tr>
-							<th>Patient ID</th>
+							<!-- <th>Patient ID</th> -->
 							<th>Appointment ID</th>
 							<th>Medication</th>
 							<th>Bill Amount</th>
@@ -164,7 +158,7 @@
         // - using await requires the function that calls it to be async
 		$(async() => {       
             // Change serviceURL to your own
-            var serviceURL = "http://127.0.0.1:5000/patient_history";
+            var serviceURL = "http://127.0.0.1:5008/patient_history/1998"; // hardcoded patient ID 1998
 			console.log(serviceURL);
 			//after that can change it to only display opening 
             try {
@@ -173,8 +167,10 @@
                    serviceURL, { method: 'GET' }
                 );
                 const data = await response.json();
-                var records = data.insurance_claims; //the arr is in data.insurance_claims of the JSON data
-				console.log(records)
+				console.log(data);
+                var records = data.patient_history; //the arr is in data.insurance_claims of the JSON data
+				console.log("record is"+records[0]);
+				
                 // array or array.length are falsy
                 if (!records || !records.length) {
                     showError('History list empty or undefined.')
@@ -182,13 +178,17 @@
                     // for loop to setup all table rows with obtained insurance_claims data
                     var rows = "";
                     for (const record of records) {
+						// console.log("PID is"+record.PID);
+						console.log("AID is"+record.AID);
+						console.log("Medication is"+record.Medication);
+						console.log("ClaimAmount is"+record.ClaimAmount);
                         eachRow =
-                            "<td>" + record.PID + "</td>" +
+                            // "<td>" + record.PID + "</td>" +
                             "<td>" + record.AID + "</td>" +
                             "<td>" + record.Medication + "</td>" +
                             "<td>" + record.BillAmount + "</td>"+
-							"<td>" + record.ClaimAmount + "</td>"+
-							"<td>" + "<div class='login-icon2'><a class='user' id='updatebutton' href='edit.html?ClaimID="+claim.ClaimID+"'> Update</a></div>" + "</td>";
+							"<td>" + record.ClaimAmount + "</td>";
+							// "<td>" + "<div class='login-icon2'><a class='user' id='updatebutton' href='edit.html?ClaimID="+claim.ClaimID+"'> Update</a></div>" + "</td>";
                         rows += "<tr>" + eachRow + "</tr>";
                     }
 					rows = "<tbody>"+rows+"</tbody>";
