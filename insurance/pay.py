@@ -25,7 +25,9 @@ app=Flask(__name__)
 
 CORS(app)
 
- 
+@app.route('/')
+def cancel():
+    return 'You have cancelled your payment'
 
 @app.route('/refund/execute',methods=['GET','POST'])
 def execute():
