@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script 
+    src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    
+    <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+    integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+    crossorigin="anonymous"></script>
+</head>
+<body>
+    <a href="https://telegram.me/HIesd_bot?start=check-this-out">Click Here</a>
+    <script>
+        $(document).ready(async() => {  
+			// var passedspec = "<?php echo $passedSpec; ?>";
+			// console.log(passedspec);
+
+			var serviceURL = "https://api.telegram.org/botHERE/getUpdates";
+
+            try {
+                const response =
+                await fetch(
+                   serviceURL, { method: 'GET' }
+                );
+                const data = await response.json();
+
+				// array or array.length are falsy
+                if (response.ok) {
+                    console.log(data);
+                    var result = data['result'];
+                    // var lengtharr = result.length();
+                    var record = result[result.length-1]['message']['from'];
+                    var chatid = record['id'];
+                    var username = record['username']
+
+
+                    
+                    // console.log(username);
+
+                    var sendURL = 'https://api.telegram.org/botHERE/sendMessage?chat_id=' + chatid + '&text=Appointmentyo';
+                    try {
+                        const response =
+                        await fetch(
+                            sendURL, { method: 'GET' }
+                        );
+                        const data = await response.json();
+                        }
+                    catch{
+                        
+                    }
+                }
+            }
+
+            catch{
+
+            }
+        });
+		
+    </script>
+</body>
+</html>
