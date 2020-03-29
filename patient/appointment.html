@@ -96,8 +96,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 				var clinicName = decodeURI(clinicField.split('=')[1]);
            	 	var postalCode = decodeURI(locationField.split('=')[1]);
 
-				
-
 			
 			</script>
 			
@@ -415,14 +413,14 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						);
 
 						
-						const data = await response;
+						const data = await response.json();
 
-						console.log(data);
+						// console.log(data);
 						
 		
 						if (!response.ok) {
-							var temp = response.json();
-							console.log(temp);
+							// const temp = response.json();
+							console.log(data);
 							var msg = data['message'];
 							console.log(msg);
 							showError(msg);

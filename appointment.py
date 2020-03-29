@@ -64,13 +64,13 @@ def create_appointment():
     if (Appointment.query.filter_by(customerID = customerID, appointmentDate = appointmentDate, appointmentTime = appointmentTime).first()):
         status = 400
         msg = "You have an existing appointment on " + appointmentDate + ", " + appointmentTime
-        return jsonify({"status": status, "message": msg}), status
+        return jsonify({"message": msg}), 400
 
 
     if (Appointment.query.filter_by(clinicID = clinicID, appointmentDate = appointmentDate, appointmentTime = appointmentTime).first()):
         status = 400
         msg = "Your chosen slot on " + appointmentDate + ", " + appointmentTime + " is taken. Please try another timeslot."
-        return jsonify({"status": status, "message": msg}), status
+        return jsonify({"message": msg}), 400
 
     if status == 201:
         try:

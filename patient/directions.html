@@ -124,10 +124,55 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!-- //banner -->
 
 <div class="container py-lg-5">
-		<h2 class="heading text-center mb-sm-5 mb-4">Get Directions to Ooh Clinic </h2>
+		
+		<h2 class="heading text-center mb-sm-5 mb-4" id="directionTag">Get Directions to </h2>
+
+		<script>
+			var x = location.href;
+			
+			var param = location.href.split('?')[1];
+			var clinicField = decodeURI(param.split('=')[1]);
+			console.log(clinicField);
+			$("#directionTag").append(clinicField);
+
+		</script>
+
+		
 </div>
 
-<iframe src="map.html?location='pasir ris mrt, sg'" width=100% height="800"></iframe>
+<div>
+	<iframe id="mapFrame" src="map.html" width=100% height="800"></iframe>
+
+	<script>
+		var mapLink = "";
+
+		$(async() => {
+			var getPostalCodeLink = "http://127.0.0.1:5000/clinic/getPostalCode/" + clinicField;
+
+			console.log(getPostalCodeLink);
+			const response = 
+				await fetch(
+					getPostalCodeLink, { method: 'GET' }
+				);
+
+			const postalCode = await response.json();
+
+			console.log(postalCode);
+
+			mapLink = "map.html?location=" + String(postalCode);
+
+			console.log(mapLink);
+
+			document.getElementById("mapFrame").src = mapLink;
+		});
+		
+	</script>
+
+</div>
+
+
+
+
 
 <!-- footer -->
 <footer class="py-5">

@@ -165,6 +165,18 @@ def find_by_namespec(clinicName, specialty):
         return jsonify(result)
     return jsonify({"message": "No clinics found."}), 404
 
+
+@app.route("/clinic/getPostalCode/<string:clinicName>")
+def getPostalCode(clinicName):
+    clinic = Clinic.query.filter_by(clinicName = clinicName).first()
+
+    # data = clinic
+    # postalCode = data['postalCode']
+
+    data = clinic.postalCode
+
+    return jsonify(data), 201
+
 if __name__ == '__main__': # if it is the main program you run, then start flask
     # with docker
     # app.run(host='0.0.0.0', port=5000, debug=True)

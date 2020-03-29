@@ -167,13 +167,16 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						} else {
 							var rows = "";
 							for (const appointment of appointments) {
+
+								var link = "directions.html?location=" + appointment.clinicID;
 								
 								eachRow =
 									"<td>" + appointment.clinicID + "</td>" +
 									"<td>" + appointment.doctorID + "</td>" +
 									"<td>" + appointment.appointmentDate + "</td>" +
 									"<td>" + appointment.appointmentTime + "</td>" +
-									"<td> <a href='directions.html?location=\"" + appointment.clinicID + "\"'>Get Direction</td>";
+									"<td> <a href='"  + link + "'>Get Direction</td>";
+
 								rows += "<tbody><tr>" + eachRow + "</tr></tbody>";
 
 							}
