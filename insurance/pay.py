@@ -42,14 +42,14 @@ def execute():
     if payment.execute({"payer_id": payer_id}):
         print("Payment[%s] execute successfully" % (payment.id))
         result = {'Status':200, 'Message':"Payment[%s] execute successfully"% (payment.id),'claimid':claimid}
-        print(result)
+        # print(result)
         # need to update the claim as close 
     else:
         print(payment.error)
 
     
 
-    return result
+    return 'Your payment has been processed successfully. Thank you for your payment! You may close the page now'
 
 if __name__ == '__main__': 
     app.run(port=3000,debug=True)

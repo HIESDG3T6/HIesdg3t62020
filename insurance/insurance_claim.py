@@ -18,7 +18,7 @@ from flask_cors import CORS
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/insurance_claim'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:3306/insurance_claim'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -200,6 +200,10 @@ def reply_callback(channel, method, properties, body):
     print("Received an reply from Refund Service: ")
     print(body)
     reply = json.loads(body)
+    
+    print("reply corrid is")
+    print(properties.correlation_id)
+
     #after receive the message, stop the loop
     headers={"content-type": "application/json"}
 
@@ -207,8 +211,7 @@ def reply_callback(channel, method, properties, body):
     channel.stop_consuming()
     
     update_url = 'http://127.0.0.1:5001/refund/'+properties.correlation_id +'/'
-    print("reply corrid is")
-    print(properties.correlation_id)
+
     r = requests.post(update_url, json=reply, headers=headers)
 
 
