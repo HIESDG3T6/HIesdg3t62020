@@ -40,11 +40,11 @@ def get_all():
 @app.route("/patient_history/<string:PID>")
 def find_by_PID(PID):
     history = Patient_history.query.filter_by(PID=PID).all()
-    result = []
+    # result = []
     if history:
-        for ahistory in history:
-            result.append(ahistory.json())
-        return jsonify(result)
+        # for ahistory in history:
+        #     result.append(ahistory.json())
+        return jsonify({"patient_history": [patient_history.json() for patient_history in Patient_history.query.filter_by(PID = PID)]})
     return jsonify({"message": "Patient History not found."}), 404
   
 @app.route("/patient_history/<string:PID>/", methods=['POST'])
