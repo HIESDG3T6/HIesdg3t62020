@@ -363,23 +363,81 @@
 
 		// anonymous async function 
         // - using await requires the function that calls it to be async
+		async function getURL(serviceURL){
+			console.log('get ok');
+			try{
+
+				const response = await fetch(
+						serviceURL, { method: 'GET' }
+				);
+
+				if (response.ok){
+
+					const data = await response.json();
+					console.log("refund data is"+data);
+					var approval_url = data.Approval_url; 
+					console.log("3: "+approval_url);
+
+					// array or array.length are falsy
+					if (!approval_url) {
+						console.log("4");
+						showError('data is empty or undefined');
+					} else {
+						console.log("5");
+						window.location.replace(approval_url);
+					}
+
+
+				}else{
+
+					console.log(response.status)
+				}
+
+
+			}catch(error){
+				showError('There is a problem when processing a payment, please try again later.<br />'+error);
+			}
+		}
+
+		// wait for 5 seconds then proceed
 		$(function(){
+			$('#pay_button').click(
+				function () {
+					var serviceURL = "http://127.0.0.1:5001/refund/"+ClaimID;
+					setTimeout(
+						function () { 
+							getURL(serviceURL)
+						 },5000
+					)
+				}
+			);
+		});
+
+		/* $(function(){
 			console.log("1");
 			$('#pay_button').click(async(event) => {       
 				// Change serviceURL to your own
 				console.log("2");
 				var serviceURL = "http://127.0.0.1:5001/refund/"+ClaimID;
-				console.log("ClaimID is "+ClaimID);
+				console.log(serviceURL);
 				//after that can change it to only display opening 
 				try {
-					const response =
-					await fetch(
-					serviceURL, { method: 'GET' }
+					const response = await fetch(
+						serviceURL, { method: 'GET' }
 					);
-					const data = await response.json();
-					console.log("refund data is"+data);
-					var approval_url = data.Approval_url; 
-					console.log("3: "+approval_url);
+
+					if (response.ok){
+
+						const data = await response.json();
+						console.log("refund data is"+data);
+						var approval_url = data.Approval_url; 
+						console.log("3: "+approval_url);
+
+					}else{
+
+						console.log(response.status)
+					}
+					
 					// array or array.length are falsy
 					if (!approval_url) {
 						console.log("4");
@@ -395,7 +453,7 @@
 				} // error
         	});
 		});
-		
+		 */
 
 
 	</script>
