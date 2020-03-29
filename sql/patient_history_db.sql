@@ -43,7 +43,8 @@ CREATE TABLE IF NOT EXISTS `patient_history` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
-
+INSERT INTO `patient_history` (`PID`, `AID`, `Medication`, `BillAmount`, `claimAmount`) VALUES
+('123456780', '1', 'help', '13', '12');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

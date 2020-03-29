@@ -406,7 +406,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 								const maildata = await mailresponse.json();
 
 								if (!response.ok) {
-								var msg = data['message'];
+								var msg = maildata['message'];
 								showError(msg);
 								} 
 							} catch (error){
