@@ -404,12 +404,12 @@
 			$('#pay_button').click(
 				
 				function () {
-					alert('Please wait for a while');
+					alert('Please wait for 2 secs to direct you to paypal');
 					var serviceURL = "http://127.0.0.1:5001/refund/"+ClaimID;
 					setTimeout(
 						function () { 
 							getURL(serviceURL)
-						 },1000
+						 },2000
 					);
 
 					
