@@ -402,17 +402,22 @@
 		// wait for 5 seconds then proceed
 		$(function(){
 			$('#pay_button').click(
+				
 				function () {
+					alert('Please wait for a while');
 					var serviceURL = "http://127.0.0.1:5001/refund/"+ClaimID;
 					setTimeout(
 						function () { 
 							getURL(serviceURL)
-						 },5000
-					)
+						 },1000
+					);
+
+					
 				}
 			);
 		});
 
+		
 		/* $(function(){
 			console.log("1");
 			$('#pay_button').click(async(event) => {       
