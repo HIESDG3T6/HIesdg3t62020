@@ -60,17 +60,20 @@ def create_refund_record(Corrid):
 @app.route("/refund/<string:Corrid>/", methods=['POST'])
 def update_refund_record(Corrid):
     refund = Refund.query.filter_by(Corrid=Corrid).first()
+
     data = request.get_json()
-    print("corrid is: ")
-    print(Corrid)
-    print("data is: ")
-    print(data)
-    print("refund record is: ")
-    print(refund)
+    # print("corrid is: ")
+    # print(Corrid)
+    # print("data is: ")
+    # print(data)
+    # print("refund record is: ")
+    # print(refund)
     refund.reply_Status = data["status"]
+    # print("update status:")
+    # print(refund.reply_Status)
     refund.Approval_url = data["approval_url"]
-    print("Approval_url is: ")
-    print(refund.Approval_url)
+    # print("Approval_url is: ")
+    # print(refund.Approval_url)
     try:
         db.session.commit()
         

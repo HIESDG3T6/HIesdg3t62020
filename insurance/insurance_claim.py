@@ -129,7 +129,7 @@ def send_claim(claim):
 
 
     message = json.dumps(claim, default=str) # convert a JSON object to a string
-    print(message)
+    # print(message)
 
 
     # if the claim is approved and open => notify refund service
@@ -145,7 +145,8 @@ def send_claim(claim):
         service_url = "http://127.0.0.1:5001/refund/"+corrid
 
         r = requests.post(service_url, json=row, headers=headers)
-        print(r.text)
+        #print(r.text)
+        print('post corrid')
         print(corrid)
         
     
@@ -201,10 +202,13 @@ def reply_callback(channel, method, properties, body):
     reply = json.loads(body)
     #after receive the message, stop the loop
     headers={"content-type": "application/json"}
+
+    channel.basic_ack(delivery_tag=method.delivery_tag)
     channel.stop_consuming()
+    
     update_url = 'http://127.0.0.1:5001/refund/'+properties.correlation_id +'/'
-    print("reply is")
-    print(reply)
+    print("reply corrid is")
+    print(properties.correlation_id)
     r = requests.post(update_url, json=reply, headers=headers)
 
 
