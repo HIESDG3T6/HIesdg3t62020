@@ -188,28 +188,6 @@ def create_payment(claimbody):
 
 
 
-@app.route('/refund/execute',methods=['GET','POST'])
-def execute():
-    
-    # assumption: when the user logged in, we have their paypal account
-    print('8')
-    paymentId = request.args.get('paymentId')
-    payer_id=request.args.get('PayerID')
-    print(paymentId)
-    payment = paypalrestsdk.Payment.find(paymentId)
-    ClaimID = payment['transactions']['item_list']['items']['name']
-
-    if payment.execute({"payer_id": payer_id}):
-        print("Payment[%s] execute successfully" % (payment.id))
-        result = {'Status':200, 'Message':"Payment[%s] execute successfully"% (payment.id),'claimid':ClaimID}
-        print(result)
-        # need to update the claim as close 
-    else:
-        print(payment.error)
-
-    
-
-    return result
 
 if __name__ == "__main__":  # execute this program only if it is run as a script (not by 'import')
     print("This is " + os.path.basename(__file__) + ": processing refund to customer...")
