@@ -13,12 +13,8 @@ CORS(app)
 class Patient_history(db.Model):
     __tablename__ = 'patient_history'
  
-    PID = db.Column(db.Integer, primary_key=True)
+    PID = db.Column(db.Integer)
     AID = db.Column(db.Integer, primary_key=True)
-    # clinicName = db.Column(db.String(100), nullable=False)
-    # Pname = db.Column(db.String(1000), nullable=False)
-    # contact = db.Column(db.String(1000), nullable=True)
-    # location = db.Column(db.String(1000), nullable=True)
     Medication = db.Column(db.String(100), nullable=True)
     BillAmount = db.Column(db.String(100), nullable=True)
     ClaimAmount = db.Column(db.String(100), nullable=True)
@@ -26,17 +22,13 @@ class Patient_history(db.Model):
     def __init__(self, PID, AID, Medication, BillAmount, ClaimAmount):
         self.PID = PID
         self.AID = AID
-        # self.clinicName = clinicName
-        # self.Pname = Pname
-        # self.contact = contact
-        # self.location = location
         self.Medication = Medication
         self.BillAmount = BillAmount
         self.ClaimAmount = ClaimAmount
 
  
     def json(self):
-        return {"Patient ID": self.PID, "Appointment ID": self.AID, "Treatment Details": self.Medication, "Bill Amount": self.BillAmount, "Claim Amount": self.ClaimAmount,}
+        return {"PID": self.PID, "AID": self.AID, "Medication": self.Medication, "BillAmount": self.BillAmount, "ClaimAmount": self.ClaimAmount}
 
 # get all 
 @app.route("/patient_history")
@@ -55,13 +47,13 @@ def find_by_PID(PID):
         return jsonify(result)
     return jsonify({"message": "Patient History not found."}), 404
   
-@app.route("/patient_history/<string:AID>/", methods=['POST'])
-def create_history(AID):
-    if (Patient_history.query.filter_by(AID=AID).first()):
-        return jsonify({"message": "An patient history with AppointmentID '{}' already exists.".format(AID)}), 400
+@app.route("/patient_history/<string:PID>/", methods=['POST'])
+def create_history(PID):
+    if (Patient_history.query.filter_by(PID=PID).first()):
+        return jsonify({"message": "An patient history already exists."}), 400
 
     data = request.get_json()
-    history = Patient_history(AID, **data)
+    history = Patient_history(PID, **data)
    
     try:
         db.session.add(history)
@@ -75,5 +67,5 @@ def create_history(AID):
 if __name__ == '__main__': # if it is the main program you run, then start flask
     # with docker
     # app.run(host='0.0.0.0', port=5000, debug=True)
-    app.run(port=5000, debug=True) #to allow the file to be named other stuff apart from app.py
+    app.run(port=5008, debug=True) #to allow the file to be named other stuff apart from app.py
     # debug=True; shows the error and it will auto restart

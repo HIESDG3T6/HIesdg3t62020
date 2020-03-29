@@ -34,16 +34,17 @@ USE `patient_history`;
 
 DROP TABLE IF EXISTS `patient_history`;
 CREATE TABLE IF NOT EXISTS `patient_history` (
-  `PID` int(11) NOT NULL,
-  `AID` int(11) NOT NULL,
+  `PID` varchar(100) NOT NULL,
+  `AID` varchar(100) NOT NULL,
   `Medication` varchar(1000) DEFAULT NULL,
   `BillAmount` varchar(1000) DEFAULT NULL,
   `claimAmount` varchar(10000) DEFAULT NULL,
-  PRIMARY KEY (`PID`,`AID`)
+  PRIMARY KEY (`AID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
-
+INSERT INTO `patient_history` (`PID`, `AID`, `Medication`, `BillAmount`, `claimAmount`) VALUES
+('123456780', '1', 'help', '13', '12');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

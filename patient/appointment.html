@@ -62,57 +62,56 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			</script>
 
 
-			<!-- TIME -->
-    		<!-- Simpler Timepicker-->
-				<!-- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
-					<script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
-					<script>
-						$( function() {
-							$( "#appointmentTime" ).timepicker({
-								timeFormat: 'HH:mm',
-								interval: 60,
-								minTime: '10:00',
-								maxTime: '18:00',
-								defaultTime: '11:00',
-								startTime: '10:00',
-								dynamic: false,
-								dropdown: true,
-								scrollbar: true
-							});
-						} );    
-					</script> -->
 			<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.css">
 			<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.js"></script>
 			<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.js"></script>
 			
 			<script>
-			var disableTimeList = [['12:00', '13:00']];
-		
-			$(function(){
+
+			function refreshTimePicker(disableTimeList=[["12:00","13:00"]]){
+				console.log(disableTimeList);
 				$('#appointmentTime').timepicker({
+					'timeFormat': 'g:ia'})
+
+				$('#appointmentTime').timepicker('option',{
 					'scrollDefault': 'now',
 					'timeFormat': 'H:i',
 					'step' : 60,
 					'minTime': '10:00',
 					'maxTime' : '18:00',
 					'disableTimeRanges': disableTimeList
-					
-					
-				}); 
-			 });
+				});
+			}
+			</script>
+
+			<script>
+				var x = location.href;
+            
+            
+            	var param = location.href.split('?')[1];
+				var entries = param.split('&');
+            	var clinicField = entries[0];
+            	var locationField = entries[1];
+
+				var clinicName = decodeURI(clinicField.split('=')[1]);
+           	 	var postalCode = decodeURI(locationField.split('=')[1]);
+
+				
+
+			
 			</script>
 			
 	</head>
 <body>
 <!-- update the version number as needed -->
-<script  src="/__/firebase/7.12.0/firebase-app.js"></script>
+<!-- <script  src="/__/firebase/7.12.0/firebase-app.js"></script> -->
 <!-- include only the Firebase features as you need -->
-<script  src="/__/firebase/7.12.0/firebase-auth.js"></script>
+<!-- <script  src="/__/firebase/7.12.0/firebase-auth.js"></script>
 <script  src="/__/firebase/7.12.0/firebase-database.js"></script>
 <script  src="/__/firebase/7.12.0/firebase-messaging.js"></script>
-<script  src="/__/firebase/7.12.0/firebase-storage.js"></script>
+<script  src="/__/firebase/7.12.0/firebase-storage.js"></script> -->
 <!-- initialize the SDK after all desired features are loaded -->
-<script>
+<!-- <script>
 	// Your web app's Firebase configuration
 	var firebaseConfig = {
 	  apiKey: "AIzaSyDv6Gp9lUVuCDWX80uh3eLIninJwrJ6zEA",
@@ -204,7 +203,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			// TODO(developer): Send the current token to your server.
 			firebase.database().ref("/tokens").push({
 				token: currentToken,
-				uid: "patient"
+				uid: "receptionist"
 			});
 		// } else {
 		// 	console.log('Token already sent to server so won\'t send it again ' +
@@ -238,7 +237,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 
 
-</script>
+</script> -->
 
 <!-- top header -->
 <div class="header-top">
@@ -285,7 +284,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			<ul class="menu mt-2 ml-auto">
 				<li class="active"><a href="index.html">Home</a></li>
 				<li class=""><a href="precheck.html">PreCheck</a></li>
-				<li class=""><a href="search.html">Search Clinics </a></li>
+				<li class=""><a href="search.php">Search Clinics </a></li>
 				<li class=""><a href="patient_history.html">Patient History</a></li>
 			<!-- 	<li class=""><a href="billing.html">Billing</a></li>-->
 				<li class=""><a href="account.html">Account Details</a></li>
@@ -309,7 +308,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!-- single -->
 <section class="bottom-banner-w3layouts py-5">
 	<div class="container py-md-3">
-		<h2 class="heading text-center mb-sm-5 mb-4">Make Appointment For Ooh Clinic </h2>
+		<h2 class="heading text-center mb-sm-5 mb-4" id="clinicFieldName">Make Appointment for </h2>
 		<!-- TO BE DYNAMICALLY RETRIEVED AND UPDATED -->
 	</div>
 
@@ -317,7 +316,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <div>
 		<div id="appointmentSubmission" class="container">
 				<form id="appointmentForm">
-					appointmentDate <input name="appointmentDate" type="text" id="appointmentDate" class="form-control" required><br>
+					appointmentDate <input name="appointmentDate" type="text" id="appointmentDate" class="form-control" onchange=showDate() required><br>
 					appointmentTime <input name="appointmentTime" type="text" id="appointmentTime" class="form-control" required><br>
 		
 					<button id="bookButton" type="button" class="form-control"> Book </button>
@@ -325,38 +324,79 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			</div>
 			
 			<script>
-				$("#bookButton").click( function(e){
-					e.preventDefault();
+				// $("#bookButton").click( function(e){
+				// 	e.preventDefault();
 
-					const appointmentdate = document.getElementById('appointmentDate').value; 
-					const appointmenttime = document.getElementById('appointmentTime').value; 
+				// 	const appointmentdate = document.getElementById('appointmentDate').value; 
+				// 	const appointmenttime = document.getElementById('appointmentTime').value; 
+				// 	serviceURL = "https://fcm.googleapis.com/v1/{parent=projects/health-service-2680a}/messages:send"
 
-					firebase.database().ref("/notifications").push({
-						user: "jiamin",
-						date: appointmentdate,
-						time: appointmenttime,
-					});
-				})
+
+				// 	firebase.database().ref("/notifications").push({
+				// 		user: "jiamin",
+				// 		date: appointmentdate,
+				// 		time: appointmenttime,
+				// 	});
+				// })
+
+				$('#clinicFieldName').append(clinicName);
+				
 
 				function showError(message) {
+
 					$('#appointmentForm').hide()
 		
 					$('#appointmentSubmission').append("<label>" + message + "</label>");
 		
 				}
-		
+				
+				async function showDate() {
+					var tempDate = $("#appointmentDate").val();
+
+					var numOfAppointmentLink= "http://localhost:4444/numOfAppointment/";
+					numOfAppointmentLink += clinicName + "/" + tempDate;
+
+					const response = await fetch (numOfAppointmentLink, 
+										{
+											method:'GET', "Access-Control-Allow-Origin" : "*", "Access-Control-Allow-Credentials" : true 
+										}
+									);
+						
+
+						var data = await response.json();
+
+						var disableTimeListNew = [['12:00', '13:00']];
+
+						var appointments = data['appointments'];
+
+
+						for (index in appointments) {
+							var timeslot = appointments[index].appointmentTime;
+							var nexthour = Number(timeslot.split(":")[0]) + 1;
+							var nextTiming = String(nexthour) + ":00";
+
+							disableTimeListNew.push([timeslot, nextTiming])
+
+						}
+
+						// console.log(disableTimeListNew);
+						
+						refreshTimePicker(disableTimeListNew);
+
+				};
 		
 				$('#bookButton').click(async(event) => {
 		
 					event.preventDefault();
 		
 					var addAppointmentURL = "http://localhost:4444/appointment"
-		
+					// var mailURL = "http://localhost:5000/appointmentemail"
+
 					// var customerID = $('#customerID').val();
 					// var clinicID = $('#clinicID').val();
 					// var doctorID = $('#doctorID').val();
 					var customerID = "jiamin";
-					var clinicID = "ooh clinic";
+					var clinicID = clinicName;
 					var doctorID = 1;
 					var appointmentDate = $('#appointmentDate').val();
 					var appointmentTime = $('#appointmentTime').val();
@@ -371,25 +411,53 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 									customerID: customerID, clinicID : clinicID, doctorID : doctorID, 
 									appointmentDate : appointmentDate, appointmentTime : appointmentTime
 									})
-							}
-		
-							
+							},
 						);
-		
-						const data = await response.json();
+
+						
+						const data = await response;
+
+						console.log(data);
 						
 		
 						if (!response.ok) {
+							var temp = response.json();
+							console.log(temp);
 							var msg = data['message'];
+							console.log(msg);
 							showError(msg);
 		
 						} else {
+							// send an email notifying patient of successful appointment
+							// try {
+							// 	const mailresponse = await fetch (mailURL,
+							// 		{
+							// 			method: 'POST',
+							// 			mode: 'no-cors',
+							// 			headers: {"Content-Type": "application/json"},
+							// 			body: JSON.stringify ({
+							// 				customerID: customerID, clinicID : clinicID, doctorID : doctorID, 
+							// 				appointmentDate : appointmentDate, appointmentTime : appointmentTime
+							// 				})
+							// 		}
+				
+									
+							// 	);
+			
+								const maildata = await mailresponse.json();
+
+								if (!response.ok) {
+								var msg = maildata['message'];
+								showError(msg);
+								} 
+							} catch (error){
+									console.log(error);
+							} 
 							location.replace("account.html");
 						
-						} 
-		
+						
+						}
 					} catch (error) {
-						console.log(error);
 						showError ('There is a problem adding the appointment, please try again later.');
 					}
 				});

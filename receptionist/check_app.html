@@ -83,14 +83,13 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <div class="container py-lg-5">
                 <h3 class="heading text-center mb-sm-5 mb-4">Appointment Listing</h3>
                 <div class="table-block p-4">
-                    <table id="claimsTable" class='table table-striped' >
+                    <table id="AppointmentTable" class='table table-striped' >
                         <thead>
                             <tr>
                                 <th>ClinicID</th>
                                 <th>DoctorID</th>
                                 <th>Appointment Date</th>
                                 <th>Appointment Time</th>
-                                <th>Operation</th>
                             </tr>
                         </thead>
                         <!--// END TO DISPLAY MESSAGE FROM DATABASE -->
@@ -113,7 +112,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         ///////////// HARD CODED THE CUSTOMERID - TO BE RETRIEVED ////////////
         $(async() => {           
             var appointmentURL = "http://127.0.0.1:4444/get-clinic-appointment/12";
-    
+            console.log("url is "+appointmentURL);
             try {
                 const response =
                  await fetch(
@@ -122,24 +121,31 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 );
                 const data = await response.json();
 
-                var appointments = data.appointments; 
+                var appointments = data.appointments;
+                // console.log(appointments);
     
                 // array or array.length are falsy
                 if (!appointments || !appointments.length) {
                     showError('No upcoming appointment or undefined.')
+                    console.log('error')
                 } else {
                     var rows = "";
                     for (const appointment of appointments) {
+                        // console.log(appointment);
                         eachRow =
                             "<td>" + appointment.clinicID + "</td>" +
                             "<td>" + appointment.doctorID + "</td>" +
                             "<td>" + appointment.appointmentDate + "</td>" +
                             "<td>" + appointment.appointmentTime + "</td>" +
                             "<td>" + "<div><a class='user' id='updatebutton' href='submit_claim.html?pid="+appointment.customerID+"&clinicid=12'> Update</a></div>" + "</td>";
-                            //"<td>" + "<div class='login-icon2'><a class='user' id='updatebutton' href='edit.html?ClaimID="+claim.ClaimID+"'> Update</a></div>" + "</td>";;
+                            
                         rows += "<tbody><tr>" + eachRow + "</tr></tbody>";
+                        
                     }
+                    
                     $('#AppointmentTable').append(rows);
+                    console.log(eachRow);
+                    console.log('appointment');
                 }
             } catch (error) {
                 showError

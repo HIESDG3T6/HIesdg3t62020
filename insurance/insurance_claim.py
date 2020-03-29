@@ -3,6 +3,7 @@ import sys
 import os
 import random
 import datetime
+import requests
 
 # Communication patterns:
 # Use a message-broker with 'direct' exchange to enable interaction
@@ -17,7 +18,7 @@ from flask_cors import CORS
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:3306/insurance_claim'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/insurance_claim'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -59,6 +60,7 @@ class Insurance_Claim(db.Model):
             'ClaimDate': self.ClaimDate, 'Medicine': self.Medicine, 'BillAmount': self.BillAmount, 
             'ClaimedAmount': self.ClaimedAmount,'ClaimStatus': self.ClaimStatus, 'RefundStatus': self.RefundStatus}
 
+
 @app.route("/claims")
 def get_all():
     return jsonify({"insurance_claims": [claims.json() for claims in Insurance_Claim.query.all()]})
@@ -79,7 +81,6 @@ def create_claim(ClaimID):
         return jsonify({"message": "An error occurred creating the insurance claim."}), 500
 
     return jsonify(claim.json()), 201
-
 
 @app.route("/claims/<string:ClaimID>/", methods=['POST'])
 def update_claimstatus(ClaimID):
@@ -105,9 +106,6 @@ def find_by_ClaimID(ClaimID):
     if claim:
         return jsonify(claim.json())
     return jsonify({"message": "Insurance Claim not found."}), 404
-
-
-
 
 # ------ ----- ----- ----- ----- ----- ----- insurance claim microservices AMQP ------ ----- ----- ----- ----- ----- ----- 
 
@@ -138,17 +136,19 @@ def send_claim(claim):
     if claim['RefundStatus'] == "Approved" and claim['ClaimStatus'] == "Open":
 
         # Prepare the correlation id and reply_to queue and do some record keeping
+        # Keep the corrid into refund table under claim database
         
         corrid = str(uuid.uuid4())
-        row = {"claim_id": claim['ClaimID'], "correlation_id": corrid}
-        csvheaders = ["claim_id", "correlation_id", "status"]
-        with open("corrids.csv", "a+", newline='') as corrid_file: # 'with' statement in python auto-closes the file when the block of code finishes, even if some exception happens in the middle
-            csvwriter = csv.DictWriter(corrid_file, csvheaders)
-            csvwriter.writerow(row)
+        row = {"ClaimID": claim['ClaimID'], "reply_Status": "none", "Approval_url": "none"}
+        headers={"content-type": "application/json"}
         
-        
-       
+        service_url = "http://127.0.0.1:5001/refund/"+corrid
 
+        r = requests.post(service_url, json=row, headers=headers)
+        print(r.text)
+        print(corrid)
+        
+    
         # prepare the channel and send a message to Refund
         replyqueuename = "refund.reply"
 
@@ -192,16 +192,21 @@ def receiveReply():
 
     # set up a consumer and start to wait for coming messages
     channel.basic_qos(prefetch_count=1) # The "Quality of Service" setting makes the broker distribute only one message to a consumer if the consumer is available (i.e., having finished processing and acknowledged all previous messages that it receives)
-    channel.basic_consume(queue=queue_name, on_message_callback=callback)
+    channel.basic_consume(queue=queue_name, on_message_callback=reply_callback)
     channel.start_consuming()
     
-def callback(channel, method, properties, body): 
+def reply_callback(channel, method, properties, body): 
     print("Received an reply from Refund Service: ")
     print(body)
-    json.loads(body)
+    reply = json.loads(body)
     #after receive the message, stop the loop
+    headers={"content-type": "application/json"}
     channel.stop_consuming()
-    
+    update_url = 'http://127.0.0.1:5001/refund/'+properties.correlation_id +'/'
+    print("reply is")
+    print(reply)
+    r = requests.post(update_url, json=reply, headers=headers)
+
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
