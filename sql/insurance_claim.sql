@@ -60,9 +60,9 @@ INSERT INTO `Insurance_Claim` (`ClaimID`, `PatientID`, `ClinicName`, `ClaimDate`
 --
 DROP TABLE IF EXISTS `refund`;
 CREATE TABLE IF NOT EXISTS `refund`(
-    `Corrid` INT NOT NULL PRIMARY KEY,
+    `Corrid` varchar(100) NOT NULL PRIMARY KEY,
     `ClaimID` INT,
-    `reply_Status` INT,
+    `reply_Status` varchar(100),
     `Approval_url` varchar(10000)
 );
 

@@ -46,9 +46,10 @@ class Appointment(db.Model):
 def create_appointment():
     status = 201
 
-    appointment_input = request.json
+    appointment_input = request.get_json(force = True)
     # why get_json() doesn't work here?
 
+    print(appointment_input)
 
     customerID = appointment_input['customerID']
     clinicID = appointment_input['clinicID']
@@ -64,6 +65,7 @@ def create_appointment():
         status = 400
         msg = "You have an existing appointment on " + appointmentDate + ", " + appointmentTime
         return jsonify({"status": status, "message": msg}), status
+
 
     if (Appointment.query.filter_by(clinicID = clinicID, appointmentDate = appointmentDate, appointmentTime = appointmentTime).first()):
         status = 400
@@ -85,12 +87,12 @@ def create_appointment():
 
     return jsonify(appointment.json()), 201
 
-# @app.route("/numOfAppointment")
-# def numOfAppointment():
-#     key = request.args.get('clinicID','')
+@app.route("/numOfAppointment/<string:clinicID>/<string:appointmentDate>")
+def numOfAppointment(clinicID, appointmentDate):
 
-#     return key
-#     # result = Appointment.query.filter_by(clinicID = clinicID, appointmentDate = appointmentDate, appointmentTime = appointmentTime)
+    result = jsonify({"appointments": [appointment.json() for appointment in Appointment.query.filter_by(clinicID = clinicID, appointmentDate = appointmentDate)]})
+
+    return result, 201
 
 
 @app.route("/get-appointment/<string:customerID>")
