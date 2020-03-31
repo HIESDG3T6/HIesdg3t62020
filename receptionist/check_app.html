@@ -86,7 +86,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <table id="AppointmentTable" class='table table-striped' >
                         <thead>
                             <tr>
-                                <th>ClinicID</th>
+                                <th>Appointment ID</th>
                                 <th>DoctorID</th>
                                 <th>Appointment Date</th>
                                 <th>Appointment Time</th>
@@ -109,7 +109,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             $('#main-container').append("<label>"+message+"</label>");
         }
     
-        ///////////// HARD CODED THE CUSTOMERID - TO BE RETRIEVED ////////////
+        ///////////// HARD CODED THE clinic ID - TO BE RETRIEVED ////////////
         $(async() => {           
             var appointmentURL = "http://127.0.0.1:4444/get-clinic-appointment/12";
             console.log("url is "+appointmentURL);
@@ -133,11 +133,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     for (const appointment of appointments) {
                         // console.log(appointment);
                         eachRow =
-                            "<td>" + appointment.clinicID + "</td>" +
+                            "<td>" + appointment.AID + "</td>" +
                             "<td>" + appointment.doctorID + "</td>" +
                             "<td>" + appointment.appointmentDate + "</td>" +
                             "<td>" + appointment.appointmentTime + "</td>" +
-                            "<td>" + "<div><a class='user' id='updatebutton' href='submit_claim.html?pid="+appointment.customerID+"&clinicid=12'> Update</a></div>" + "</td>";
+                            "<td>" + "<div><a class='user' id='updatebutton' href='submit_claim.html?pid="+appointment.customerID+"&clinicid=12&aid="+appointment.AID+"'> Update</a></div>" + "</td>";
                             
                         rows += "<tbody><tr>" + eachRow + "</tr></tbody>";
                         
