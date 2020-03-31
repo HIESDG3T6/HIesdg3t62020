@@ -2,9 +2,11 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from os import environ
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/patient_history'
+# app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
  
 db = SQLAlchemy(app)
@@ -13,8 +15,8 @@ CORS(app)
 class Patient_history(db.Model):
     __tablename__ = 'patient_history'
  
-    PID = db.Column(db.Integer)
-    AID = db.Column(db.Integer, primary_key=True)
+    PID = db.Column(db.String(100))
+    AID = db.Column(db.String(100), primary_key=True)
     Medication = db.Column(db.String(100), nullable=True)
     BillAmount = db.Column(db.String(100), nullable=True)
     ClaimAmount = db.Column(db.String(100), nullable=True)
@@ -67,5 +69,5 @@ def create_history(PID):
 if __name__ == '__main__': # if it is the main program you run, then start flask
     # with docker
     # app.run(host='0.0.0.0', port=5000, debug=True)
-    app.run(port=5008, debug=True) #to allow the file to be named other stuff apart from app.py
+    app.run(host='0.0.0.0',port=5008, debug=True) #to allow the file to be named other stuff apart from app.py
     # debug=True; shows the error and it will auto restart

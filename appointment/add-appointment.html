@@ -134,7 +134,8 @@
                         // mode: 'no-cors',
                         headers: {"Content-Type": "application/json"},
                         body: JSON.stringify ({
-                            customerID: customerID, clinicID : clinicID, doctorID : doctorID, 
+                            // need to include AID here when sent request
+                            AID:null, customerID: customerID, clinicID : clinicID, doctorID : doctorID, 
                             appointmentDate : appointmentDate, appointmentTime : appointmentTime
                             })
                     }

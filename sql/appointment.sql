@@ -4,7 +4,7 @@ use Appointment;
 
 DROP TABLE IF EXISTS `appointment`;
 CREATE TABLE IF NOT EXISTS `appointment` (
-	`AID` int NOT NULL AUTO_INCREMENT,
+	`AID` int AUTO_INCREMENT,
     `customerID` varchar(100) NOT NULL,
     `clinicID` varchar(100) NOT NULL,
     `doctorID` varchar(100) NOT NULL,

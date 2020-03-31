@@ -90,12 +90,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						<div class="col-md-6 wthree_contact_left">
 							<div class="form-group">
 								Patient ID<br>
-								<input type="text" id="pid" name="pid" class="form-control" placeholder="Patient ID" required="">
+								<input type="text" id="pid" name="pid" class="form-control" placeholder="Patient ID" required="" disabled>
 							</div>
-							<div class="form-group">
+							<!-- <div class="form-group">
 								Claim ID<br>
 								<input type="text" id="claim_id" name="claim_id" class="form-control" placeholder="Claim ID" required="">
-							</div>
+							</div> -->
 							<div class="form-group">
 								Claim Date<br>
 								<input type="text" id="claim_date" name="claim_date" class="form-control" placeholder="Claim Date" required="">
@@ -112,11 +112,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						<div class="col-md-6 wthree_contact_left_grid">
 							<div class="form-group">
 								Appointment ID<br>
-								<input type="text" id="aid" name="aid" class="form-control" placeholder="Appointment ID" required="">
+								<input type="text" id="aid" name="aid" class="form-control" placeholder="Appointment ID" value="" required="" disabled>
 							</div>
 							<div class="form-group">
 								Clinic ID<br>
-								<input type="text" id="clinic_id" name="clinic_id" class="form-control" placeholder="Clinic ID" value="" required="">
+								<input type="text" id="clinic_id" name="clinic_id" class="form-control" placeholder="Clinic ID" value="" required="" disabled>
 							</div>
 							<!-- <div class="form-group">
 								<input type="text" id="patient_id" name="patient_id" class="form-control" placeholder="Patient ID" required="">
@@ -187,10 +187,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		// PID and Clinic ID passed through URL 
 		var PID = getvalue('pid');
 		var ClinicID = getvalue('clinicid');
+		var AID = getvalue('aid');
 
 		//set the value to the textinput from URL
 		$("#clinic_id").val(ClinicID);
 		$("#pid").val(PID);
+		$("#aid").val(AID);
 
 		// set date as current
 		var now = new Date();
@@ -300,7 +302,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		event.preventDefault();
 		
 		var AID = $('#aid').val();
-		var ClaimID = $('#claim_id').val();
+		// var ClaimID = $('#claim_id').val();
 		var ClaimDate = $('#claim_date').val();
 		var Medication = $('#medication').val();
 		//var ClinicID = $('#clinic_id').val();
@@ -309,12 +311,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		var BillAmount = $('#bill_amt').val();
 		var ClaimAmount = $('#claim_amt').val();
 		
-		var serviceURL_claim = "http://127.0.0.1:5003/claims/"+ClaimID;
+		var serviceURL_claim = "http://127.0.0.1:5003/claims/create/";
 
 		console.log(serviceURL_claim)
 		
 		var requestBody_claim = {
-			// ClaimID:ClaimID,
+			ClaimID:null,
 			ClinicName:ClinicID,
 			BillAmount:BillAmount,
 			ClaimStatus:ClaimStatus,
