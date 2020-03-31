@@ -65,7 +65,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.css">
 			<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.js"></script>
 			<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.js"></script>
-			
+
 			<script>
 
 			function refreshTimePicker(disableTimeList=[["12:00","13:00"]]){
@@ -316,19 +316,27 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 				<form id="appointmentForm">
 					appointmentDate <input name="appointmentDate" type="text" id="appointmentDate" class="form-control" onchange=showDate() required><br>
 					appointmentTime <input name="appointmentTime" type="text" id="appointmentTime" class="form-control" required><br>
+
+					<div>
+						Send me a confirmation through: <br> 
+					<label><input type="checkbox" name="emailChecked" id="emailChecked" class="form-control"> Email </label>
+					<label><input type="checkbox" name="teleChecked" id="teleChecked" class="form-control" onclick=checkSubscribed()> Telegram </label></div>
 		
 					<button id="bookButton" type="button" class="form-control"> Book </button>
 				</form>
 			</div>
 			
 			<script>
-				// $("#bookButton").click( function(e){
-				// 	e.preventDefault();
+				$('#clinicFieldName').append(clinicName);
 
-				// 	const appointmentdate = document.getElementById('appointmentDate').value; 
-				// 	const appointmenttime = document.getElementById('appointmentTime').value; 
+				var getChatID = "http://localhost:4646/telegram/getChatID/CHANGETOYOUROWNTELE";
+				var sendToChat = "http://localhost:5566/telegramNotification/CHANGETOYOUROWNTELE";
+				var getUpdatesLink = "http://localhost:4646/telegram/getUpdates";
+				var startTelgram = "http://localhost:4646/telegram/start";
+				var submitButton = document.getElementById("bookButton");
+				var teleStarted = false;
+				
 				// 	serviceURL = "https://fcm.googleapis.com/v1/{parent=projects/health-service-2680a}/messages:send"
-
 
 				// 	firebase.database().ref("/notifications").push({
 				// 		user: "jiamin",
@@ -337,17 +345,17 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 				// 	});
 				// })
 
-				$('#clinicFieldName').append(clinicName);
-				
-
+	
+				// Show Error Message
 				function showError(message) {
 
-					$('#appointmentForm').hide()
+					$('#appointmentForm').hide();
 		
 					$('#appointmentSubmission').append("<label>" + message + "</label>");
 		
 				}
 				
+				// Dynamically leave out timing that the clinic is not available
 				async function showDate() {
 					var tempDate = $("#appointmentDate").val();
 
@@ -356,7 +364,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 					const response = await fetch (numOfAppointmentLink, 
 										{
-											method:'GET', "Access-Control-Allow-Origin" : "*", "Access-Control-Allow-Credentials" : true 
+											method:'GET'
+											// "Access-Control-Allow-Origin" : "*", "Access-Control-Allow-Credentials" : true 
 										}
 									);
 						
@@ -381,29 +390,31 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						
 						refreshTimePicker(disableTimeListNew);
 
-				};
-		
+				}
+
+				// ADD BOOK TO DATABASE
 				$('#bookButton').click(async(event) => {
 		
 					event.preventDefault();
 		
 					var addAppointmentURL = "http://localhost:4444/appointment"
 					var mailURL = "http://localhost:5000/appointmentemail"
-
-					// var customerID = $('#customerID').val();
-					// var clinicID = $('#clinicID').val();
-					// var doctorID = $('#doctorID').val();
+					
 					var customerID = "jiamin";
 					var clinicID = clinicName;
 					var doctorID = 1;
+					var chatID = null;
 					var appointmentDate = $('#appointmentDate').val();
 					var appointmentTime = $('#appointmentTime').val();
+					if (document.getElementById('emailChecked').checked) {
+						console.log("emailChecked");
+						// Call for Email Notification API
+					}
 		
 					try {
 						const response = await fetch (addAppointmentURL,
 							{
 								method: 'POST',
-								// mode: 'no-cors',
 								headers: {"Content-Type": "application/json"},
 								body: JSON.stringify ({
 									customerID: customerID, clinicID : clinicID, doctorID : doctorID, 
@@ -414,51 +425,91 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 						
 						const data = await response.json();
-
-						// console.log(data);
-						
 		
 						if (!response.ok) {
-							// const temp = response.json();
-							console.log(data);
 							var msg = data['message'];
-							console.log(msg);
 							showError(msg);
-		
+
+							console.log(msg)
+
+							// Send Telegram Message
+							if (document.getElementById('teleChecked').checked) {
+								sendToChat += "/" + msg;							
+								fetch(sendToChat);
+							}
+
 						} else {
 							// send an email notifying patient of successful appointment
-							try {
-								const mailresponse = await fetch (mailURL,
-									{
-										method: 'POST',
-										mode: 'no-cors',
-										headers: {"Content-Type": "application/json"},
-										body: JSON.stringify ({
-											customerID: customerID, clinicID : clinicID, doctorID : doctorID, 
-											appointmentDate : appointmentDate, appointmentTime : appointmentTime
-											})
-									}
-				
-									
-								);
-			
-								const maildata = await mailresponse.json();
 
-								if (!response.ok) {
-								var msg = maildata['message'];
-								showError(msg);
-								} 
-							} catch (error){
-									console.log(error);
-							} 
-							location.replace("account.html");
-						
+							// Send Telegram Message
+							if (document.getElementById('teleChecked').checked) {
+								sendToChat += "/" + appointmentDate + "/" + appointmentTime + "/" + clinicName;
+								fetch(sendToChat).then( response => {
+									location.replace("account.html");
+								}
+								);
+							}
+
+							else {
+								location.replace("account.html");
+							}
+							
+							
 						
 						}
 					} catch (error) {
 						showError ('There is a problem adding the appointment, please try again later.');
 					}
 				});
+
+				// Get the user chatID
+				var fetchNow = function() {
+					fetch(getUpdatesLink);
+					fetch(getChatID).then( function(response) {
+						response.json().then (data => {
+							console.log(data['status']);
+
+							if (data['status'] == true) {
+								teleStarted = true;
+								alert("Thank you! You will now receive notification from the bot.")
+								console.log("started")
+							}
+
+							else {
+								alert("Please start the Telegram Bot. Press Ok when you are done.");
+							}
+						})
+					})
+
+					setTimeout(function(){
+						if (teleStarted == false) {
+							fetchNow();
+						}
+						}, 5000
+					)
+						
+				}
+				
+				// Check if the patient has Start the telebot
+				async function checkSubscribed() {
+					if (document.getElementById('teleChecked').checked) {
+						fetch(getChatID).then(function(response) {
+							response.json().then (data => {
+								console.log(data['status']);
+
+								if (data['status'] == true) {
+									console.log("started")
+								}
+
+								else {
+									fetch(startTelgram);
+									fetchNow();
+								}
+							})
+						})
+					}
+				}
+			
 			</script>
 </div>
 </section>	
@@ -540,3 +591,14 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 </body>
 </html>
+
+<!-- var testNow = function() {
+	console.log("hello");
+	setTimeout(
+		function() {
+			if (true) {
+				testNow();
+			}
+		}, 5000)
+	console.log(Date.now())
+} -->
