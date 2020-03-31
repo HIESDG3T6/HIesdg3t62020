@@ -26,6 +26,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			<link href="../css/css_slider.css" type="text/css" rel="stylesheet" media="all"><!-- slider css -->
 			<link href="../css/bootstrap.css" rel='stylesheet' type='text/css' /><!-- bootstrap css -->
 			<link href="../css/style.css" rel='stylesheet' type='text/css' /><!-- custom css -->
+			<link href="../css/loading.css" rel='stylesheet' type='text/css' /><!-- loading css -->
+			
 			
 			<!-- //css files -->
 			
@@ -345,6 +347,17 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 				// 	});
 				// })
 
+				// Show Loading
+				function loading() {
+
+					$('#appointmentForm').hide();
+					$('#clinicFieldName').hide();
+
+					text = "<div class='wrapper'><div class='circle'></div><div class='circle'></div><div class='circle'></div><div class='shadow'></div><div class='shadow'></div><div class='shadow'></div><span>Loading</span></div>";
+
+					$('#appointmentSubmission').append(text);
+
+				}
 	
 				// Show Error Message
 				function showError(message) {
@@ -444,6 +457,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 							// Send Telegram Message
 							if (document.getElementById('teleChecked').checked) {
 								sendToChat += "/" + appointmentDate + "/" + appointmentTime + "/" + clinicName;
+								loading();
 								fetch(sendToChat).then( response => {
 									location.replace("account.html");
 								}
