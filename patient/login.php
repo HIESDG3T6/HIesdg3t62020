@@ -1,7 +1,20 @@
+<?php
+    $error = '';
+    $userid = '';
+    $password ='';
+
+    if ( isset($_GET['error']) ) {
+        $error = $_GET['error'];
+    } elseif ( isset($_POST['userid']) && isset($_POST['password']) ) {
+        $userid = $_POST['userid'];
+        $password = $_POST['password'];
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Login to Health Insurance</title>
+<title>Patient Panel </title>
 <!-- for-mobile-apps -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -31,13 +44,12 @@
     
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 			<script 
-                src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-            <script src="js/jquerysession.js"></script>
-            <script src="js/site.js"></script>
-            <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
-            integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
-            crossorigin="anonymous"></script>
+				src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+				
+				<script
+				src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+				integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+				crossorigin="anonymous"></script>
 	
 </head>
 <body>
@@ -73,26 +85,24 @@
         <script>
             $('#searchBtn').click(async(event) => {  
                 event.preventDefault();
-                var userid = $("#userid").val();
-                var password = $("#password").val();
-                // console.log(password);
+                var userid = "<?php echo $userid; ?>";
+                var password = "<?php echo $password; ?>";
+                console.log(userid);
 
-                var serviceURL = "http://localhost:5555/patient/login/" + userid;
+                var serviceURL = "http://localhost:5000/patient/" + userid;
                 try {
                     const response =
                     await fetch(
                     serviceURL, { method: 'GET' }
                     );
                     const data = await response.json();
-                    // console.log(response);
+
                     // array or array.length are falsy
                     if (response.ok) {
-                        var returnedPassword = data.pw;
-                        // console.log(returnedPassword);
+                        var returnedPassword = data.password;
                         if (password == returnedPassword){
-                            $.session.set("userid", userid);
-                            // console.log($.session.get('userid'));
-                            window.location.replace("/esd/patient/index.html");
+                            $_SESSION['userid'] = $userid; 
+                            window.location.replace("http://localhost/patient/index.html");
                         }
                         else{
                             alert('Username or Password is wrong.')
@@ -100,9 +110,15 @@
                     }
                 }
                 catch{
-                    alert('Username or Password is wrong.')
+
                 }
             });
         </script>
     </body>
 </html>
+
+<?php
+    if(isset($error)){
+        echo '<div align="center" span style="color:#FF0000;" ><b>' . $error ." </div>";
+    }
+?>
