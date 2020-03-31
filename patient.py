@@ -27,16 +27,20 @@ class Patient(db.Model):
     email = db.Column(db.VARCHAR(100), nullable=True) #for when patient wants to use tele, should we make nullable?
     telehandle = db.Column(db.VARCHAR(100), nullable=True)
     policynum = db.Column(db.VARCHAR(1000), nullable=False)
+    username = db.Column(db.VARCHAR(1000), nullable=False)
+    pw = db.Column(db.VARCHAR(1000), nullable=False)
 
-    def __init__(self, patientid, patientname, email, telehandle, policynum):
+    def __init__(self, patientid, patientname, email, telehandle, policynum, username, pw):
         self.patientid = patientid
         self.patientname = patientname
         self.email = email
         self.telehandle = telehandle
         self.policynum = policynum
+        self.username = username
+        self.pw = pw
 
     def json(self):
-        return {"patientid": self.patientid, "patientname": self.patientname, "email": self.email, "telehandle": self.telehandle, "policynum": self.policynum}
+        return {"patientid": self.patientid, "patientname": self.patientname, "email": self.email, "telehandle": self.telehandle, "policynum": self.policynum, "username": self.username, "pw": self.pw}
 
 @app.route("/patient")
 def get_all():
@@ -49,6 +53,12 @@ def find_by_patientid(patientid):
         return jsonify(patient.json())
     return jsonify({"message": "Patient not found."}), 404
 
+@app.route("/patient/login/<string:username>")
+def find_by_username(username):
+    patient = Patient.query.filter_by(username=username).first()
+    if patient:
+        return jsonify(patient.json())
+    return jsonify({"message": "Patient not found."}), 404
 
 @app.route("/patient/<string:patientid>", methods=['POST'])
 def create_patient(patientid):
