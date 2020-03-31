@@ -34,6 +34,23 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			<link href="//fonts.googleapis.com/css?family=Dosis:200,300,400,500,600,700,800&amp;subset=latin-ext" rel="stylesheet">
 			<!-- //google fonts -->
 			
+			<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+			<script 
+				src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+			<script src="js/jquerysession.js"></script>
+			<script src="js/site.js"></script>
+			<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+			integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+			crossorigin="anonymous"></script>
+
+			<!-- session -->
+			<script>
+				if ($.session.get('userid') == null){
+					window.location.replace("/esd/patient/login.html");
+				}
+				// console.log($.session.get('userid'));
+			</script>
 		</head>
 <body>
 
@@ -53,16 +70,17 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					</li> -->
 				</ul>
 			</div>
-			<!-- <div class="col-sm-6 header-right-w3_pvt">
+			<div class="col-sm-6 header-right-w3_pvt">
 				<ul class="d-lg-flex header-w3_pvt justify-content-lg-end">
-					<li class="mr-lg-3">
+					<!-- <li class="mr-lg-3">
 						<span class=""><span class="fa fa-clock-o"></span>Mon - Fri : 8:30am to 9:30pm</span>
 					</li>
 					<li class="">
-						<span class=""><span class="fa fa-clock-o"></span>Sat & Sun : 9:00am to 6:00pm</span>
-					</li>
+						<span class=""><span class="fa fa-clock-o"></span>Sat & Sun : 9:00am to 6:00pm</span> -->
+					<!-- </li> -->
+					<li class="mr-lg-3"><a class="user" href="logout.html">Logout</a></li>
 				</ul>
-			</div> -->
+			</div>
 		</div>
 	</div>
 </div>
@@ -380,6 +398,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 	</a>
 </div>
 <!-- move top -->
+
+
 
 </body>
 </html>

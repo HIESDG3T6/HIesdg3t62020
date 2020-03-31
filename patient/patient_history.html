@@ -20,7 +20,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+	<script src="js/jquerysession.js"></script>
+	<script src="js/site.js"></script>
 	<!-- //jquery-->
+	<!-- session -->
+	<script>
+		if ($.session.get('userid') == null){
+			window.location.replace("/esd/patient/login.html");
+		}
+		// console.log($.session.get('userid'));
+	</script>
 
 	<!-- google fonts -->
 	<link href="//fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i&amp;subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese" rel="stylesheet">
@@ -45,9 +55,13 @@
 			</div>
 			<div class="col-sm-6 header-right-w3_pvt">
 				<ul class="d-lg-flex header-w3_pvt justify-content-lg-end">
-					<li class="">
-						<span class=""><span class="fa fa-clock-o"></span>Log out</span>
+					<!-- <li class="mr-lg-3">
+						<span class=""><span class="fa fa-clock-o"></span>Mon - Fri : 8:30am to 9:30pm</span>
 					</li>
+					<li class="">
+						<span class=""><span class="fa fa-clock-o"></span>Sat & Sun : 9:00am to 6:00pm</span> -->
+					<!-- </li> -->
+					<li class="mr-lg-3"><a class="user" href="logout.html">Logout</a></li>
 				</ul>
 			</div>
 		</div>
