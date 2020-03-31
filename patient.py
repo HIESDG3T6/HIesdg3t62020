@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from sqlalchemy import update
 
 # # Communication patterns:
 # # Use a message-broker with 'direct' exchange to enable interaction
@@ -12,14 +13,14 @@ from flask_cors import CORS
 # import csv
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/patient'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/Patient'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 CORS(app)
 
 class Patient(db.Model):
-    __tablename__ = 'patient'
+    __tablename__ = 'Patient'
 
     patientid = db.Column(db.VARCHAR(255), primary_key=True)
     patientname = db.Column(db.VARCHAR(255), nullable=False)
@@ -27,10 +28,11 @@ class Patient(db.Model):
     telehandle = db.Column(db.VARCHAR(100), nullable=True)
     policynum = db.Column(db.VARCHAR(1000), nullable=False)
 
-    def __init__(self, patientid, patientname, email, policynum):
+    def __init__(self, patientid, patientname, email, telehandle, policynum):
         self.patientid = patientid
         self.patientname = patientname
         self.email = email
+        self.telehandle = telehandle
         self.policynum = policynum
 
     def json(self):
@@ -66,4 +68,4 @@ def create_patient(patientid):
 
 
 if __name__ == '__main__':
-    app.run(port=5000, debug=True)
+    app.run(port=5555, debug=True)
