@@ -71,7 +71,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			<script>
 
 			function refreshTimePicker(disableTimeList=[["12:00","13:00"]]){
-				console.log(disableTimeList);
 				$('#appointmentTime').timepicker({
 					'timeFormat': 'g:ia'})
 
@@ -325,10 +324,13 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					<label><input type="checkbox" name="teleChecked" id="teleChecked" class="form-control" onclick=checkSubscribed()> Telegram </label></div>
 		
 					<button id="bookButton" type="button" class="form-control"> Book </button>
+					<p id='plsStart' align='center'> Please start the Telegram Bot to receive Notification </p>
 				</form>
 			</div>
 			
 			<script>
+				$('#plsStart').hide();
+
 				$('#clinicFieldName').append(clinicName);
 
 				var getChatID = "http://localhost:4646/telegram/getChatID/CHANGETOYOUROWNTELE";
@@ -337,6 +339,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 				var startTelgram = "http://localhost:4646/telegram/start";
 				var submitButton = document.getElementById("bookButton");
 				var teleStarted = false;
+				var teleNeeded = false;
 				
 				// 	serviceURL = "https://fcm.googleapis.com/v1/{parent=projects/health-service-2680a}/messages:send"
 
@@ -398,8 +401,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 							disableTimeListNew.push([timeslot, nextTiming])
 
 						}
-
-						// console.log(disableTimeListNew);
 						
 						refreshTimePicker(disableTimeListNew);
 
@@ -443,8 +444,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 							var msg = data['message'];
 							showError(msg);
 
-							console.log(msg)
-
 							// Send Telegram Message
 							if (document.getElementById('teleChecked').checked) {
 								sendToChat += "/" + msg;							
@@ -481,23 +480,23 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					fetch(getUpdatesLink);
 					fetch(getChatID).then( function(response) {
 						response.json().then (data => {
-							console.log(data['status']);
-
 							if (data['status'] == true) {
 								teleStarted = true;
 								alert("Thank you! You will now receive notification from the bot.")
-								console.log("started")
+								$("#bookButton").show();
+								$("#plsStart").hide();
 							}
 
 							else {
 								alert("Please start the Telegram Bot. Press Ok when you are done.");
 							}
+
 						})
 					})
 
 					setTimeout(function(){
-						if (teleStarted == false) {
-							fetchNow();
+						if (teleStarted == false && teleNeeded == true) {
+								fetchNow();
 						}
 						}, 5000
 					)
@@ -507,20 +506,24 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 				// Check if the patient has Start the telebot
 				async function checkSubscribed() {
 					if (document.getElementById('teleChecked').checked) {
+						teleNeeded = true;
 						fetch(getChatID).then(function(response) {
 							response.json().then (data => {
-								console.log(data['status']);
 
-								if (data['status'] == true) {
-									console.log("started")
-								}
-
-								else {
+								if (data['status'] != true) {
+									$("#bookButton").hide();
+									$("#plsStart").show();
 									fetch(startTelgram);
 									fetchNow();
 								}
 							})
 						})
+					}
+
+					else {
+						teleNeeded = false;
+						$("#bookButton").show();
+						$('#plsStart').hide();
 					}
 				}
 			
