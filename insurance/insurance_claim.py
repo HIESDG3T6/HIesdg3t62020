@@ -18,7 +18,7 @@ from flask_cors import CORS
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:3306/insurance_claim'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/insurance_claim'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -28,8 +28,8 @@ CORS(app)
 class Insurance_Claim(db.Model):
     __tablename__ = 'insurance_claim'
 
-    ClaimID = db.Column(db.Integer, nullable=False,primary_key=True)
-    PatientID = db.Column(db.Integer,nullable=False)
+    ClaimID = db.Column(db.Integer, nullable=True,primary_key=True)
+    PatientID = db.Column(db.String(64),nullable=False)
     ClinicName = db.Column(db.String(64),nullable=False)
     
     ClaimDate = db.Column(db.DateTime,nullable=False)
@@ -65,14 +65,12 @@ class Insurance_Claim(db.Model):
 def get_all():
     return jsonify({"insurance_claims": [claims.json() for claims in Insurance_Claim.query.all()]})
 
-@app.route("/claims/<string:ClaimID>", methods=['POST'])
-def create_claim(ClaimID):
-    if (Insurance_Claim.query.filter_by(ClaimID=ClaimID).first()):
-        return jsonify({"message": "An insurance claim with ClaimID '{}' already exists.".format(ClaimID)}), 400
+@app.route("/claims/create/", methods=['POST'])
+def create_claim():
     # When adding data to the database, the ClaimDate format will be '2020-01-30 14:01:00'
     # When you use get to get the data from database, the ClaimDate format 'Mon, 27 Jan 2020 12:01:00 GMT'
     data = request.get_json()
-    claim = Insurance_Claim(ClaimID, **data)
+    claim = Insurance_Claim(**data)
    
     try:
         db.session.add(claim)

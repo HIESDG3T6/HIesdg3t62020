@@ -30,7 +30,7 @@ USE `Insurance_Claim`;
 --
 DROP TABLE IF EXISTS `Insurance_Claim`;
 CREATE TABLE IF NOT EXISTS `Insurance_Claim`(
-    `ClaimID` INT NOT NULL PRIMARY KEY,
+    `ClaimID` INT PRIMARY KEY AUTO_INCREMENT,
     `PatientID` varchar(100) NOT NULL,
     `ClinicName` varchar(100) NOT NULL,
     `ClaimDate` DATETIME NOT NULL,

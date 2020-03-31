@@ -17,13 +17,15 @@ class Appointment(db.Model):
     __tablename__ = 'appointment'
 
     # NEED TO ADD IN DB.ForeignKey('databasename.columnname')
+    AID = db.Column(db.Integer, nullable= True)
     customerID = db.Column(db.String(10), primary_key = True)
     clinicID = db.Column(db.String(10), nullable= False)
     doctorID = db.Column(db.String(10), nullable= False)
     appointmentDate = db.Column(db.Date, primary_key = True)
     appointmentTime = db.Column(db.Time, primary_key = True)
 
-    def __init__(self, customerID, clinicID, doctorID, appointmentDate, appointmentTime):
+    def __init__(self, AID, customerID, clinicID, doctorID, appointmentDate, appointmentTime):
+        self.AID = AID
         self.customerID = customerID
         self.clinicID = clinicID
         self.doctorID = doctorID
@@ -32,6 +34,7 @@ class Appointment(db.Model):
 
     def json(self):
         return {
+            "AID": self.AID,
             "customerID" : self.customerID,
             "clinicID" : self.clinicID,
             "doctorID" : self.doctorID,
@@ -48,7 +51,6 @@ def create_appointment():
 
     appointment_input = request.json
     # why get_json() doesn't work here?
-
 
     customerID = appointment_input['customerID']
     clinicID = appointment_input['clinicID']
