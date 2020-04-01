@@ -195,7 +195,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			var passedspec = "<?php echo $passedSpec; ?>";
 			// console.log(passedspec);
 
-			var serviceURL = "http://localhost:5000/clinic";
+			var serviceURL = "http://localhost:5111/clinic";
 
             try {
                 const response =
@@ -239,7 +239,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						$('#clinics').append(rows);
 					}
 					else{
-						var serviceURL = "http://localhost:5000/clinic/spec" + "/" + passedspec;
+						var serviceURL = "http://localhost:5111/clinic/spec" + "/" + passedspec;
 						const anotherresponse =
 						await fetch(
 							serviceURL, { method: 'GET' }
@@ -305,34 +305,34 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 				var clinicName = $('#clinicName').val();
 				var specialty = $('#specialty').val();
 				var groupedlocation = $('#location').val();
-				var serviceURL = "http://localhost:5000/clinic" + "/" + clinicName + "/" + groupedlocation + "/" + specialty;
+				var serviceURL = "http://localhost:5111/clinic" + "/" + clinicName + "/" + groupedlocation + "/" + specialty;
 			}
 			else if ($('#clinicName').val()!== "" && $('#location').val()!== ""){
 				var clinicName = $('#clinicName').val();
 				var groupedlocation = $('#location').val();
-				var serviceURL = "http://localhost:5000/clinic/nameloc" + "/" + clinicName + "/" + groupedlocation;
+				var serviceURL = "http://localhost:5111/clinic/nameloc" + "/" + clinicName + "/" + groupedlocation;
 			}
 			else if ($('#clinicName').val()!== "" && $('#specialty').val()!== ""){
 				var clinicName = $('#clinicName').val();
 				var specialty = $('#specialty').val();
-				var serviceURL = "http://localhost:5000/clinic/namespec" + "/" + clinicName + "/" + specialty;
+				var serviceURL = "http://localhost:5111/clinic/namespec" + "/" + clinicName + "/" + specialty;
 			}
 			else if ($('#specialty').val()!== "" && $('#location').val()!== ""){
 				var specialty = $('#specialty').val();
 				var groupedlocation = $('#location').val();
-				var serviceURL = "http://localhost:5000/clinic/specloc" + "/" + groupedlocation + "/" + specialty;
+				var serviceURL = "http://localhost:5111/clinic/specloc" + "/" + groupedlocation + "/" + specialty;
 			}
 			else if ($('#clinicName').val()!== ""){
 				var clinicName = $('#clinicName').val();
-				var serviceURL = "http://localhost:5000/clinic" + "/" + clinicName;
+				var serviceURL = "http://localhost:5111/clinic" + "/" + clinicName;
 			}
 			else if ($('#specialty').val()!== ""){
 				var specialty = $('#specialty').val();
-				var serviceURL = "http://localhost:5000/clinic/spec" + "/" + specialty;
+				var serviceURL = "http://localhost:5111/clinic/spec" + "/" + specialty;
 			}
 			else if ($('#location').val()!== ""){
 				var groupedlocation = $('#location').val();
-				var serviceURL = "http://localhost:5000/clinic/loc" + "/" + groupedlocation;
+				var serviceURL = "http://localhost:5111/clinic/loc" + "/" + groupedlocation;
 			}
 			else{
 				alert('Please Fill in a Field');
