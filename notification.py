@@ -30,33 +30,5 @@ def sendTelegramNoti(TelegramHandle, appointmentDate=None, appointmentTime=None,
 
     return sendResult
 
-# @app.route("\notification\email\<string:customerID>/<more>")
-    # pass
-    # try {
-    #     const mailresponse = await fetch (mailURL,
-    #         {
-    #             method: 'POST',
-    #             mode: 'no-cors',
-    #             headers: {"Content-Type": "application/json"},
-    #             body: JSON.stringify ({
-    #                 customerID: customerID, clinicID : clinicID, doctorID : doctorID, 
-    #                 appointmentDate : appointmentDate, appointmentTime : appointmentTime
-    #                 })
-    #         }
-
-            
-    #     );
-
-    #     const maildata = await mailresponse.json();
-
-    #     if (!response.ok) {
-    #     var msg = maildata['message'];
-    #     showError(msg);
-    #     } 
-    # } catch (error){
-    #         console.log(error);
-    # } 
-
-
 if __name__ == '__main__':
     app.run(port=5566, debug=True)

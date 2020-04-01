@@ -501,8 +501,33 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 								fetch(sendToChat);
 							}
 
+
 						} else {
 							// send an email notifying patient of successful appointment
+							if (document.getElementById('emailChecked').checked) {
+								try {
+        							const mailresponse = await fetch (mailURL,
+										{
+											method: 'POST',
+											mode: 'no-cors',
+											headers: {"Content-Type": "application/json"},
+											body: JSON.stringify ({
+												customerID: customerID, clinicID : clinicID, doctorID : doctorID, 
+												appointmentDate : appointmentDate, appointmentTime : appointmentTime
+												})
+										}     
+        							);
+
+        							const maildata = await mailresponse.json();
+
+        							if (!response.ok) {
+										var msg = maildata['message'];
+										showError(msg);
+        							} 
+								} catch (error){
+										console.log(error);
+								} 
+							}
 
 							// Send Telegram Message
 							if (document.getElementById('teleChecked').checked) {
@@ -518,8 +543,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 								location.replace("account.html");
 							}
 							
-							
-						
 						}
 					} catch (error) {
 						showError ('There is a problem adding the appointment, please try again later.');
