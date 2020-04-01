@@ -351,7 +351,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 				var getChatID = "http://localhost:4646/telegram/getChatID/CHANGETOYOUROWNTELE";
 				var sendToChat = "http://localhost:5566/telegramNotification/CHANGETOYOUROWNTELE";
 				var getUpdatesLink = "http://localhost:4646/telegram/getUpdates";
-				var startTelgram = "http://localhost:4646/telegram/start";
+				var startTelegram = "http://localhost:4646/telegram/start";
 				var submitButton = document.getElementById("bookButton");
 				var teleStarted = false;
 				var teleNeeded = false;
@@ -528,7 +528,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 								if (data['status'] != true) {
 									$("#bookButton").hide();
 									$("#plsStart").show();
-									fetch(startTelgram);
+									fetch(startTelegram);
 									fetchNow();
 								}
 							})
