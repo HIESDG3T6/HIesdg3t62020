@@ -76,6 +76,22 @@ def create_patient(patientid):
 
     return jsonify(patient.json()), 201
 
+@app.route("/patient/getTeleHandle/<string:username>")
+def getTeleHandle(username):
+    patient = Patient.query.filter_by(username=username).first()
+    if patient:
+        return jsonify(patient.json()['telehandle'])
+
+    return jsonify({"message": "Patient not found."}), 404
+
+@app.route("/patient/getName/<string:username>")
+def getPatientName(username):
+    patient = Patient.query.filter_by(username=username).first()
+    if patient:
+        return jsonify(patient.json()['patientname'])
+
+    return jsonify({"message": "Patient not found."}), 404
+
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

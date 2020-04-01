@@ -51,7 +51,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		if ($.session.get('userid') == null){
 			window.location.replace("/esd/patient/login.html");
 		}
-		// console.log($.session.get('userid'));
+
+		var name = $.session.get('name');
+		console.log($.session.get('userid'));
+		console.log($.session.get('name'));
+		console.log($.session.get('teleHandle'));
 	</script>
 </head>
 <body>
@@ -199,7 +203,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			<div class="col-sm-6">
 				<ul class="d-lg-flex header-w3_pvt">
 					<li class="mr-lg-3">
-						<p> Welcome! Patient Wong</p>
+						<p id="patientNameHeading"> Welcome! Patient </p>
 						
 					</li>
 					<!-- <li>
@@ -222,6 +226,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			</div>
 		</div>
 	</div>
+
+	<script>
+		$('#patientNameHeading').append(name);	
+	</script>
 </div>
 <!-- //top header -->
 
