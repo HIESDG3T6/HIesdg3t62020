@@ -103,12 +103,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			<label for="drop" class="toggle"><span class="fa fa-bars"></span></label>
 			<input type="checkbox" id="drop" />
 			<ul class="menu mt-2 ml-auto">
-				<li class="active"><a href="index.html">Home</a></li>
-				<li class=""><a href="precheck.html">PreCheck</a></li>
+				<!-- <li class="active"><a href="index.html">Home</a></li> -->
+				<li class=""><a href="precheck.html">Symptoms Checker</a></li>
 				<li class=""><a href="search.php">Search Clinics </a></li>
-				<li class=""><a href="patient_history.html">Patient History</a></li>
+				<li class=""><a href="patient_history.html">Medical History</a></li>
 			<!-- 	<li class=""><a href="billing.html">Billing</a></li>-->
-				<li class=""><a href="account.html">Account Details</a></li>
+				<li class=""><a href="account.html">Appointment Details</a></li>
 			</ul>
 			<div class="login-icon ml-2">
 				<a class="user" href="appointment.html"> Book Appointment Now</a>
@@ -120,12 +120,13 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!-- //header -->
 
 <!-- banner -->
-<div class="innerpage-banner" id="home">
+<!-- <div class="innerpage-banner" id="home">
 	<div class="inner-page-layer">
 	</div>
-</div>
+</div> -->
 <!-- //banner -->
 
+<br><br>
 <!-- contact -->
 <section class="mail pt-lg-5 pt-4">
 	<div class="container pt-lg-5">
@@ -394,7 +395,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!-- //contact -->
 
 <!-- footer -->
-<footer class="py-5">
+<!-- <footer class="py-5">
 	<div class="container py-sm-3">
 		<div class="row footer-grids">
 			<div class="col-lg-3 col-sm-6 mb-lg-0 mb-sm-5 mb-4">
@@ -445,7 +446,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			</div>
 		</div>
 	</div>
-</footer>
+</footer> -->
 <!-- //footer -->
 
 <!-- copyright -->
