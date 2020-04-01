@@ -99,17 +99,24 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 			<script>
 				var x = location.href;
-            
-            
-            	var param = location.href.split('?')[1];
-				var entries = param.split('&');
-            	var clinicField = entries[0];
-            	var locationField = entries[1];
+				var clinicNotFound = false;
 
-				var clinicName = decodeURI(clinicField.split('=')[1]);
-           	 	var postalCode = decodeURI(locationField.split('=')[1]);
+				if (x.search("clinic") > -1) {
+					var param = location.href.split('?')[1];
+					var entries = param.split('&');
+					var clinicField = entries[0];
+					var locationField = entries[1];
 
-			
+					var clinicName = decodeURI(clinicField.split('=')[1]);
+					var postalCode = decodeURI(locationField.split('=')[1]);
+				}
+
+				else {
+					clinicNotFound = true;
+				}
+            
+            	
+
 			</script>
 			
 	</head>
@@ -330,8 +337,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <div>
 		<div id="appointmentSubmission" class="container">
 				<form id="appointmentForm">
-					appointmentDate <input name="appointmentDate" type="text" id="appointmentDate" class="form-control" onchange=showDate() required><br>
-					appointmentTime <input name="appointmentTime" type="text" id="appointmentTime" class="form-control" required><br>
+					
+					Appointment Date <input name="appointmentDate" type="text" id="appointmentDate" class="form-control" onchange=showDate() required><br>
+					Appointment Time <input name="appointmentTime" type="text" id="appointmentTime" class="form-control" required><br>
 
 					<div>
 						Send me a confirmation through: <br> 
@@ -344,6 +352,34 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			</div>
 			
 			<script>
+				if (clinicNotFound) {
+					$('#appointmentForm').prepend('Clinic  <select id="clinicList" name="clinicName" onchange=updateName() required><option></option></select><br><br>')
+					getAllClinic();
+				}
+
+				async function getAllClinic() {
+					var getAllClinicLink = "http://localhost:5000/clinic";
+
+					const getAllClinicResponse = await fetch(getAllClinicLink, { method: 'GET' });
+					const clinics = await getAllClinicResponse.json();
+					console.log(clinics);
+					var listOfClinic = clinics['clinic'];
+
+					for (clinic in listOfClinic) {
+						clinicName = listOfClinic[clinic]['clinicName'];
+						
+						text = "<option value='" + clinicName + "'>" + clinicName + "</option>";
+						$('#clinicList').append(text)
+					}
+				}
+
+				function updateName() {
+					clinicName = $('#clinicList').val();
+					var headingText = "Make Appointment for " + clinicName;
+					$('#clinicFieldName').text(headingText);
+				}
+
+
 				$('#plsStart').hide();
 
 				$('#clinicFieldName').append(clinicName);
