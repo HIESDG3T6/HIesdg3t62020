@@ -358,7 +358,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 				}
 
 				async function getAllClinic() {
-					var getAllClinicLink = "http://localhost:5000/clinic";
+					var getAllClinicLink = "http://localhost:5111/clinic";
 
 					const getAllClinicResponse = await fetch(getAllClinicLink, { method: 'GET' });
 					const clinics = await getAllClinicResponse.json();

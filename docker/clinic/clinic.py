@@ -2,15 +2,15 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 # with docker
-# from os import environ
+from os import environ
 
 app = Flask(__name__)
 
 # with docker
-# app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL')
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL')
 
 # without docker
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/clinic'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/clinic'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
  
 db = SQLAlchemy(app)
@@ -48,17 +48,6 @@ class Clinic(db.Model):
 def get_all():
     # query for clinic alone
 	return jsonify({"clinic": [clinic.json() for clinic in Clinic.query.all()]})
-
-    # queries for 2 tables
-    # opening = db.session.query(ClinicOpening).join(Map, Map.ClinicOpening==ClinicOpening.clinicName).all()
-    # clinic = db.session.query(Clinic).join(Map, Clinic.clinicName==Map.clinicName).all()
-    # joined = db.session.query(Clinic, ClinicOpening).join(ClinicOpening, Clinic.clinicName==ClinicOpening.clinicName).first()
-    # return joined.dumps(joined)
-    # query for clinic and opening hours
-
-    # query = db.session.query(Clinic, ClinicOpening).join(Map, Clinic.clinicName==Map.clinicName, Map.ClinicOpening==ClinicOpening.clinicName).all()
-    # return jsonify({"clinic": [clinic.json() for clinic in query]})
-
 
 #get clinics from name
 @app.route("/clinic/<string:clinicName>")
@@ -179,6 +168,6 @@ def getPostalCode(clinicName):
 
 if __name__ == '__main__': # if it is the main program you run, then start flask
     # with docker
-    # app.run(host='0.0.0.0', port=5000, debug=True)
-    app.run(port=5111, debug=True) #to allow the file to be named other stuff apart from app.py
+    app.run(host='0.0.0.0', port=5111, debug=True)
+    # app.run(port=5000, debug=True) #to allow the file to be named other stuff apart from app.py
     # debug=True; shows the error and it will auto restart
