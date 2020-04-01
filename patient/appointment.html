@@ -46,7 +46,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			
 			<script src="js/jquerysession.js"></script>
 			<script src="js/site.js"></script>
-			
+		
 			<script 
 			src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
 			integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
@@ -58,7 +58,14 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 				if ($.session.get('userid') == null){
 					window.location.replace("/esd/patient/login.html");
 				}
+
+				var name = $.session.get('name');
+				var teleHandle = $.session.get('teleHandle');
+				
 				// console.log($.session.get('userid'));
+				console.log($.session.get('userid'));
+				console.log($.session.get('name'));
+				console.log($.session.get('teleHandle'));
 			</script>
 		
 			<!-- CALENDAR -->
@@ -115,8 +122,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					clinicNotFound = true;
 				}
             
-            	
-
 			</script>
 			
 	</head>
@@ -264,7 +269,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			<div class="col-sm-6">
 				<ul class="d-lg-flex header-w3_pvt">
 					<li class="mr-lg-3">
-						<p> Welcome! Patient Wong</p>
+						<p id="patientNameHeading"> Welcome! Patient </p>
 						
 					</li>
 					
@@ -288,6 +293,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			</div>
 		</div>
 	</div>
+	<script>
+			$('#patientNameHeading').append(name);	
+	</script>
 </div>
 <!-- //top header -->
 
@@ -385,8 +393,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 				$('#clinicFieldName').append(clinicName);
 
-				var getChatID = "http://localhost:4646/telegram/getChatID/CHANGETOYOUROWNTELE";
-				var sendToChat = "http://localhost:5566/telegramNotification/CHANGETOYOUROWNTELE";
+				var getChatID = "http://localhost:4646/telegram/getChatID/" + teleHandle ;
+				var sendToChat = "http://localhost:5566/telegramNotification/" + teleHandle;
 				var getUpdatesLink = "http://localhost:4646/telegram/getUpdates";
 				var startTelegram = "http://localhost:4646/telegram/start";
 				var submitButton = document.getElementById("bookButton");
@@ -502,8 +510,33 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 								fetch(sendToChat);
 							}
 
+
 						} else {
 							// send an email notifying patient of successful appointment
+							if (document.getElementById('emailChecked').checked) {
+								try {
+        							const mailresponse = await fetch (mailURL,
+										{
+											method: 'POST',
+											mode: 'no-cors',
+											headers: {"Content-Type": "application/json"},
+											body: JSON.stringify ({
+												customerID: customerID, clinicID : clinicID, doctorID : doctorID, 
+												appointmentDate : appointmentDate, appointmentTime : appointmentTime
+												})
+										}     
+        							);
+
+        							const maildata = await mailresponse.json();
+
+        							if (!response.ok) {
+										var msg = maildata['message'];
+										showError(msg);
+        							} 
+								} catch (error){
+										console.log(error);
+								} 
+							}
 
 							// Send Telegram Message
 							if (document.getElementById('teleChecked').checked) {
@@ -519,8 +552,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 								location.replace("account.html");
 							}
 							
-							
-						
 						}
 					} catch (error) {
 						showError ('There is a problem adding the appointment, please try again later.');
