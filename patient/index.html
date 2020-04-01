@@ -52,6 +52,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			window.location.replace("/esd/patient/login.html");
 		}
 		// console.log($.session.get('userid'));
+
+
 	</script>
 </head>
 <body>
@@ -199,7 +201,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			<div class="col-sm-6">
 				<ul class="d-lg-flex header-w3_pvt">
 					<li class="mr-lg-3">
-						<p> Welcome! Patient Wong</p>
+						<p id='patientname'> Welcome! Patient Wong</p>
 						
 					</li>
 					<!-- <li>
@@ -237,12 +239,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			<label for="drop" class="toggle"><span class="fa fa-bars"></span></label>
 			<input type="checkbox" id="drop" />
 			<ul class="menu mt-2 ml-auto">
-				<li class="active"><a href="index.html">Home</a></li>
-				<li class=""><a href="precheck.html">PreCheck</a></li>
+				<!-- <li class="active"><a href="index.html">Home</a></li> -->
+				<li class=""><a href="precheck.html">Symptoms Checker</a></li>
 				<li class=""><a href="search.php">Search Clinics </a></li>
-				<li class=""><a href="patient_history.html">Patient History</a></li>
+				<li class=""><a href="patient_history.html">Medical History</a></li>
 			<!-- 	<li class=""><a href="billing.html">Billing</a></li>-->
-				<li class=""><a href="account.html">Account Details</a></li>
+				<li class=""><a href="account.html">Appointment Details</a></li>
 			</ul>
 			<div class="login-icon ml-2">
 				<a class="user" href="appointment.html"> Book Appointment Now</a>
@@ -269,34 +271,33 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 							<li>
 								<div class="container-fluid">
 									<div class="w3ls_banner_txt">
-										<h3 class="b-w3ltxt text-capitalize mt-md-4"><span> Online PreCheck  </span> Avaliable Now</h3>
-										<p class="w3ls_pvt-title my-3">You can check by your symptoms </p>
-										<a href="index.html" class="btn btn-banner my-sm-3 mb-3">Read More</a>
-										<a href="precheck.html".html" class="btn btn-banner1 my-sm-3 mb-3">Online PreCheck Now</a>
+										<h3 class="b-w3ltxt text-capitalize mt-md-4"><span> Symptom Checker  </span> Avaliable Now</h3>
+										<p class="w3ls_pvt-title my-3">Get a diagnosis by selecting your symptoms here!</p>
+										<!-- <a href="index.html" class="btn btn-banner my-sm-3 mb-3">Read More</a> -->
+										<a href="precheck.html".html" class="btn btn-banner1 my-sm-3 mb-3">Check Your Symptoms Now</a>
 									</div>
 								</div>
 							</li>
 							<li>
 								<div class="container-fluid">
 									<div class="w3ls_banner_txt">
-										<h3 class="b-w3ltxt text-capitalize mt-md-4"><span>We care about your</span>Health</h3>
-										<p class="w3ls_pvt-title my-3">Onec Consequat Sapien Ut Leo Cursus Rhoncus. Nullam Dui Mi, Vulputate Ac 
-										Metus Semper Nullam Dui Mi. Vestibulum Ante Ipsum Primis In Faucibus Orci Luctus Et Ultrices Posuere 
-										Cubilia Curae.</p>
-										<a href="index.html" class="btn btn-banner my-sm-3 mb-3">Read More</a>
-										<a href="precheck.html" class="btn btn-banner1 my-sm-3 mb-3">Online PreCheck Now</a>
+										<h3 class="b-w3ltxt text-capitalize mt-md-4"><span>We care about your </span>Health</h3>
+										<p class="w3ls_pvt-title my-3">We believe that Health is Wealth. Feel free to search
+											for specialist clinics under our insurance coverage or make an appointment through us.
+										</p>
+										<a href="search.php" class="btn btn-banner my-sm-3 mb-3">Search for Clinics</a>
+										<a href="appointment.html" class="btn btn-banner1 my-sm-3 mb-3">Book an Appointment</a>
 									</div>
 								</div>
 							</li>
 							<li>
 								<div class="container-fluid">
 									<div class="w3ls_banner_txt">
-										<h3 class="b-w3ltxt text-capitalize mt-md-4"><span>Professionally Trained</span> Clinic Staff.</h3>
-										<p class="w3ls_pvt-title my-3">Onec Consequat Sapien Ut Leo Cursus Rhoncus. Nullam Dui Mi, Vulputate Ac 
-										Metus Semper Nullam Dui Mi. Vestibulum Ante Ipsum Primis In Faucibus Orci Luctus Et Ultrices Posuere 
-										Cubilia Curae.</p>
-										<a href="index.html" class="btn btn-banner my-sm-3 mb-3">Read More</a>
-										<a href="precheck.html" class="btn btn-banner1 my-sm-3 mb-3">Online PreCheck Now</a>
+										<h3 class="b-w3ltxt text-capitalize mt-md-4"><span>Helping you </span>remember</h3>
+										<p class="w3ls_pvt-title my-3">Your appointment and medical details. 
+											You can check your appointment details, medicine taken as well as payment history here.</p>
+										<a href="patient_history.html" class="btn btn-banner my-sm-3 mb-3">Check Your History</a>
+										<a href="account.html" class="btn btn-banner1 my-sm-3 mb-3">Check Your Upcoming Appointments</a>
 									</div>
 								</div>
 							</li>
@@ -407,48 +408,50 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			<div class="col-lg-4 col-md-6">
 				<div class="ser1">
 					<div class="bg-layer">
-						<h4 class="">Service1</h4>
-						<p class="mt-3">Vestibulum ante ipsum primiss sed inorc faucibus orcit luctus ipsum et ultrices sede edt posuere cubiliater Curae nisl, Curabit ur quis luctu.</p>
+						<h4 class="">Symptom Checker</h4>
+						<p class="mt-3">We provide online symptom checking to diagnose your illnesses and direct you to the correct specialists.</p>
 					</div>
 				</div>
 			</div>
 			<div class="col-lg-4 col-md-6 mt-md-0 mt-4">
 				<div class="ser2">
 					<div class="bg-layer">
-						<h4 class="">Service2</h4>
-						<p class="mt-3">Vestibulum ante ipsum primiss sed inorc faucibus orcit luctus ipsum et ultrices sede edt posuere cubiliater Curae nisl, Curabit ur quis luctu.</p>
+						<h4 class="">Search for Panel Clinics</h4>
+						<p class="mt-3">We provide a one-stop place for you to search for panel clinics by name, location and specialty. We also provide the 
+							distance away from the clinics from where you are.
+						</p>
 					</div>
 				</div>
 			</div>
 			<div class="col-lg-4 col-md-6 mt-lg-0 mt-4">
 				<div class="ser3">
 					<div class="bg-layer">
-						<h4 class="">Service3</h4>
-						<p class="mt-3">Vestibulum ante ipsum primiss sed inorc faucibus orcit luctus ipsum et ultrices sede edt posuere cubiliater Curae nisl, Curabit ur quis luctu.</p>
+						<h4 class="">Booking Appointments</h4>
+						<p class="mt-3">Book your appointments with our panel of clinics in a few clicks of a button.</p>
 					</div>
 				</div>
 			</div>
 			<div class="col-lg-4 col-md-6 mt-4">
 				<div class="ser4">
 					<div class="bg-layer">
-						<h4 class="">Service4</h4>
-						<p class="mt-3">Vestibulum ante ipsum primiss sed inorc faucibus orcit luctus ipsum et ultrices sede edt posuere cubiliater Curae nisl, Curabit ur quis luctu.</p>
+						<h4 class="">Email and Telegram Notifications</h4>
+						<p class="mt-3">Get notified about your appointments via Email and Telegram.</p>
 					</div>
 				</div>
 			</div>
 			<div class="col-lg-4 col-md-6 mt-4">
 				<div class="ser5">
 					<div class="bg-layer">
-						<h4 class="">Service5</h4>
-						<p class="mt-3">Vestibulum ante ipsum primiss sed inorc faucibus orcit luctus ipsum et ultrices sede edt posuere cubiliater Curae nisl, Curabit ur quis luctu.</p>
+						<h4 class="">Directions to the Clinic</h4>
+						<p class="mt-3">Get directions to the clinic you have an appointment with via our website.</p>
 					</div>
 				</div>
 			</div>
 			<div class="col-lg-4 col-md-6 mt-4">
 				<div class="ser6">
 					<div class="bg-layer">
-						<h4 class="">Service6</h4>
-						<p class="mt-3">Vestibulum ante ipsum primiss sed inorc faucibus orcit luctus ipsum et ultrices sede edt posuere cubiliater Curae nisl, Curabit ur quis luctu.</p>
+						<h4 class="">Checking Your Appointment History</h4>
+						<p class="mt-3">Forgotten what medicine was previously prescribed? Not to worry as we record these details for you.</p>
 					</div>
 				</div>
 			</div>
@@ -467,16 +470,16 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					<div class="feedback-info">
 						<div class="feedback-top p-4">
 							<span class="fa fa-quote-right"></span> 
-							<p> Sed semper leo metus, a lacinia eros ut semper at. Etiam sodales orci sit amet vehicula pellentesque. blandit nec sed tellus. Nam pharetra.</p>
+							<p> Health Insurance really changed my life. Searching for clinics has never been easier. </p>
 							<div class="clearfix"></div>
 						</div>
 						<div class="feedback-grids">
 							<div class="feedback-img">
-								<img src="images/ser1.jpg" class="img-fluid" alt="">
+								<img src="images/testimonialJM.jpg" class="img-fluid" alt="">
 							</div>
 							<div class="feedback-img-info">
 								<h5>Mary Jane</h5>
-								<p class="font-italic">- March 3, 2019.</p>
+								<p class="font-italic">- April 2, 2020.</p>
 							</div>
 							<div class="clearfix"></div>
 						</div>
@@ -486,16 +489,16 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					<div class="feedback-info">
 						<div class="feedback-top p-4">
 							<span class="fa fa-quote-right"></span> 
-							<p> Sed semper leo metus, a lacinia eros ut semper at. Etiam sodales orci sit amet vehicula pellentesque. blandit nec sed tellus. Nam pharetra.</p>
+							<p> Health Insurance is a true LIFESAVER. I never need to wonder which specialist I should visit anymore.</p>
 							<div class="clearfix"></div>
 						</div>
 						<div class="feedback-grids">
 							<div class="feedback-img">
-								<img src="images/ser2.jpg" class="img-fluid" alt="">
+								<img src="images/testimonialJon.jpg" class="img-fluid" alt="">
 							</div>
 							<div class="feedback-img-info">
-								<h5>Mary Jane</h5>
-								<p class="font-italic">- March 3, 2019.</p>
+								<h5>John</h5>
+								<p class="font-italic">- April 3, 2020.</p>
 							</div>
 							<div class="clearfix"></div>
 						</div>
@@ -505,16 +508,16 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					<div class="feedback-info">
 						<div class="feedback-top p-4">
 							<span class="fa fa-quote-right"></span> 
-							<p> Sed semper leo metus, a lacinia eros ut semper at. Etiam sodales orci sit amet vehicula pellentesque. blandit nec sed tellus. Nam pharetra.</p>
+							<p> I have never felt so confident in looking for the clinic I need to go to. Health Insurance is purely amazing.</p>
 							<div class="clearfix"></div>
 						</div>
 						<div class="feedback-grids">
 							<div class="feedback-img">
-								<img src="images/ser3.jpg" class="img-fluid" alt="">
+								<img src="images/testimonialZN.jpg" class="img-fluid" alt="">
 							</div>
 							<div class="feedback-img-info">
-								<h5>Mary Jane</h5>
-								<p class="font-italic">- March 3, 2019.</p>
+								<h5>Jane</h5>
+								<p class="font-italic">- April 1, 2020.</p>
 							</div>
 							<div class="clearfix"></div>
 						</div>
@@ -527,7 +530,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!-- //testimonials -->
 
 <!-- blog -->
-<section class="blog py-5">
+<!-- <section class="blog py-5">
 	<div class="container py-md-5 py-3">
 		<h3 class="heading text-center mb-sm-5 mb-4">Latest News </h3>
 		<div class="row blog-grids">
@@ -558,25 +561,25 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		</div>
 	</div>
 </section>
-<!-- //blog -->
+//blog -->
 
 <!-- appointment -->
 <section class="appointment text-center py-5">
 	<div class="container py-sm-3">
-		<h4>make your dream smile a reality</h4>
-		<p class="mt-3">Call Us To Book Your Appointment Today</p>
+		<h4>Book Your Appointment Today</h4>
+		<!-- <p class="mt-3">Call Us To Book Your Appointment Today</p> -->
 		<a href="appointment.html">Book an Appointment</a>
 	</div>
 </section>
 <!-- //appointment -->
 
 <!-- footer -->
-<footer class="py-5">
+<!-- <footer class="py-5">
 	<div class="container py-sm-3">
 		<div class="row footer-grids">
 			<div class="col-lg-3 col-sm-6 mb-lg-0 mb-sm-5 mb-4">
 				<h4 class="mb-sm-4 mb-3"><span class="fa fa-stethoscope"></span> Health Insurance</h4>
-				<p class="mb-3">Onec Consequat sapien ut cursus rhoncus. Nullam dui mi, vulputate ac metus semper quis luctus sed.</p>
+				<p class="mb-3">Your One-Stop Health Insurance Provider.</p>
 				<h5>Trusted by <span>500+ People</span> </h5>
 			</div>
 			<div class="col-lg-3 col-sm-6 mb-lg-0 mb-sm-5 mb-4">
@@ -622,7 +625,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			</div>
 		</div>
 	</div>
-</footer>
+</footer> -->
 <!-- //footer -->
 
 <!-- copyright -->

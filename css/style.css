@@ -979,14 +979,14 @@ footer,.copyright{
 
 /*-- About page --*/
 .innerpage-banner {
-    background: url(../images/innerbg.jpg) no-repeat center;
+    background: url(../patient/images/innerbg.jpg) no-repeat center;
     background-size: cover;
-    min-height: 300px;
+    min-height: 100px;
 }
 
 .inner-page-layer {
     background: rgba(0, 0, 0, 0.2);
-    min-height: 300px;
+    min-height: 100px;
 }
 
 /* team */
@@ -1943,7 +1943,7 @@ a.move-top span{
 
 @media(max-width:1280px) {
 	.innerpage-banner, .inner-page-layer {
-		min-height: 200px;
+		min-height: 100px;
 	}
 }
 @media(max-width:1080px) {
@@ -2135,7 +2135,7 @@ a.move-top span{
 		font-size: 14px;
 	}
 	.innerpage-banner ,.inner-page-layer{
-		min-height: 180px;
+		min-height: 80px;
 	}
 	.join h4 {
 		font-size: 27px;
@@ -2168,7 +2168,7 @@ a.move-top span{
 		padding: 2px 0;
 	}
 	.innerpage-banner ,.inner-page-layer{
-		min-height: 150px;
+		min-height: 50px;
 	}
 	.banner-text-agile {
 		padding: 18vw 0vw 4vw;
@@ -2198,7 +2198,7 @@ a.move-top span{
 		font-size: 2.3em;
 	}
 	.innerpage-banner ,.inner-page-layer{
-		min-height: 180px;
+		min-height: 80px;
 	}
 	.team_grids{
 		width: 63%;
@@ -2288,7 +2288,7 @@ a.move-top span{
 		padding: 0 15px;
 	}
 	.innerpage-banner ,.inner-page-layer{
-		min-height: 120px;
+		min-height: 50px;
 	}
 	.appointment h4 {
 		font-size: 28px;
@@ -2331,7 +2331,7 @@ a.move-top span{
 		font-size: 16px;
 	}
 	.innerpage-banner, .inner-page-layer {
-		min-height: 150px;
+		min-height: 50px;
 	}
 	.team-title h5 {
 		font-size: 18px;
