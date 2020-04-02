@@ -80,11 +80,9 @@
 			<label for="drop" class="toggle"><span class="fa fa-bars"></span></label>
 			<input type="checkbox" id="drop" />
 			<ul class="menu mt-2 ml-auto">
-				<!-- <li class="active"><a href="index.html">Home</a></li> -->
 				<li class=""><a href="precheck.html">Symptoms Checker</a></li>
 				<li class=""><a href="search.php">Search Clinics </a></li>
 				<li class=""><a href="patient_history.html">Medical History</a></li>
-			<!-- 	<li class=""><a href="billing.html">Billing</a></li>-->
 				<li class=""><a href="account.html">Appointment Details</a></li>
 			</ul>
 			<div class="login-icon ml-2">
@@ -131,11 +129,6 @@
 
 <!-- //tables for claims --> 
 
-
-
-
-
-
 <!-- copyright -->
 <div class="copyright">
 	<div class="container py-4">
@@ -172,7 +165,7 @@
 		$(async() => {       
             // Change serviceURL to your own
             var serviceURL = "http://127.0.0.1:5008/patient_history/1998"; // hardcoded patient ID 1998
-			console.log(serviceURL);
+			// console.log(serviceURL);
 			//after that can change it to only display opening 
             try {
                 const response =
@@ -180,9 +173,9 @@
                    serviceURL, { method: 'GET' }
                 );
                 const data = await response.json();
-				console.log(data);
+				// console.log(data);
                 var records = data.patient_history; //the arr is in data.insurance_claims of the JSON data
-				console.log("record is"+records[0]);
+				// console.log("record is"+records[0]);
 				
                 // array or array.length are falsy
                 if (!records || !records.length) {
@@ -192,9 +185,9 @@
                     var rows = "";
                     for (const record of records) {
 						// console.log("PID is"+record.PID);
-						console.log("AID is"+record.AID);
-						console.log("Medication is"+record.Medication);
-						console.log("ClaimAmount is"+record.ClaimAmount);
+						// console.log("AID is"+record.AID);
+						// console.log("Medication is"+record.Medication);
+						// console.log("ClaimAmount is"+record.ClaimAmount);
                         eachRow =
                             // "<td>" + record.PID + "</td>" +
                             "<td>" + record.AID + "</td>" +

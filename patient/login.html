@@ -123,7 +123,7 @@
 
                             fetch(teleHandleLink).then(function(response) {
                                 response.json().then(teleHandle=> {
-                                    console.log(teleHandle);
+                                    // console.log(teleHandle);
                                     $.session.set("teleHandle", teleHandle);
 
                                     fetch(nameLink).then(function(response) {
