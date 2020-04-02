@@ -313,7 +313,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					var addAppointmentURL = "http://localhost:4444/appointment"
 					var mailURL = "http://localhost:5000/appointmentemail"
 					
-					var customerID = "jiamin";
+					var customerID = $.session.get('patientID');
 					var clinicID = clinicName;
 					var doctorID = 1;
 					var chatID = null;
