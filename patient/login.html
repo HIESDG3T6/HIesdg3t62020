@@ -119,7 +119,7 @@
                             // console.log($.session.get("userid"));
 
                             var teleHandleLink = "http://localhost:5555/patient/getTeleHandle/" + userid;
-                            var nameLink = "http://localhost:5555/patient/getName/" + userid;
+                            var nameLink = "http://localhost:5555/patient/login/" + userid;
 
                             fetch(teleHandleLink).then(function(response) {
                                 response.json().then(teleHandle=> {

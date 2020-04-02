@@ -26,9 +26,9 @@ class Patient(db.Model):
     patientname = db.Column(db.VARCHAR(255), nullable=False)
     email = db.Column(db.VARCHAR(100), nullable=True) #for when patient wants to use tele, should we make nullable?
     telehandle = db.Column(db.VARCHAR(100), nullable=True)
-    policynum = db.Column(db.VARCHAR(1000), nullable=False)
-    username = db.Column(db.VARCHAR(1000), nullable=False)
-    pw = db.Column(db.VARCHAR(1000), nullable=False)
+    policynum = db.Column(db.VARCHAR(100), nullable=False)
+    username = db.Column(db.VARCHAR(100), nullable=False)
+    pw = db.Column(db.VARCHAR(100), nullable=False)
 
     def __init__(self, patientid, patientname, email, telehandle, policynum, username, pw):
         self.patientid = patientid
@@ -81,14 +81,6 @@ def getTeleHandle(username):
     patient = Patient.query.filter_by(username=username).first()
     if patient:
         return jsonify(patient.json()['telehandle'])
-
-    return jsonify({"message": "Patient not found."}), 404
-
-@app.route("/patient/getName/<string:username>")
-def getPatientName(username):
-    patient = Patient.query.filter_by(username=username).first()
-    if patient:
-        return jsonify(patient.json()['patientname'])
 
     return jsonify({"message": "Patient not found."}), 404
 
