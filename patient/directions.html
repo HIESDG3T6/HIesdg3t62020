@@ -66,9 +66,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 				var name = $.session.get('name');
 				// console.log($.session.get('userid'));
-				console.log($.session.get('userid'));
-				console.log($.session.get('name'));
-				console.log($.session.get('teleHandle'));
+				// console.log($.session.get('name'));
+				// console.log($.session.get('teleHandle'));
 			</script>
 		</head>
 <body>
@@ -81,20 +80,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					<li class="mr-lg-3">
 						<p id="patientNameHeading"> Welcome! Patient </p>
 					</li>
-					<!-- <li>
-						<span class="fa fa-phone"></span>
-						<p class="d-inline">Call Us +12 345 678</p>
-					</li> -->
 				</ul>
 			</div>
 			<div class="col-sm-6 header-right-w3_pvt">
 				<ul class="d-lg-flex header-w3_pvt justify-content-lg-end">
-					<!-- <li class="mr-lg-3">
-						<span class=""><span class="fa fa-clock-o"></span>Mon - Fri : 8:30am to 9:30pm</span>
-					</li>
-					<li class="">
-						<span class=""><span class="fa fa-clock-o"></span>Sat & Sun : 9:00am to 6:00pm</span> -->
-					<!-- </li> -->
 					<li class="mr-lg-3"><a class="user" href="logout.html">Logout</a></li>
 				</ul>
 			</div>
@@ -135,13 +124,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 </header>
 <!-- //header -->
 
-<!-- banner -->
-<!-- <div class="innerpage-banner" id="home">
-	<div class="inner-page-layer">
-	</div>
-</div> -->
-<!-- //banner -->
-
 <div class="container py-lg-5">
 		<br><br>
 		<h2 class="heading text-center mb-sm-5 mb-4" id="directionTag">Get Directions to </h2>
@@ -151,7 +133,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			
 			var param = location.href.split('?')[1];
 			var clinicField = decodeURI(param.split('=')[1]);
-			console.log(clinicField);
+			// console.log(clinicField);
 			$("#directionTag").append(clinicField);
 
 		</script>
@@ -168,7 +150,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		$(async() => {
 			var getPostalCodeLink = "http://127.0.0.1:5111/clinic/getPostalCode/" + clinicField;
 
-			console.log(getPostalCodeLink);
+			// console.log(getPostalCodeLink);
 			const response = 
 				await fetch(
 					getPostalCodeLink, { method: 'GET' }
@@ -176,11 +158,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 			const postalCode = await response.json();
 
-			console.log(postalCode);
+			// console.log(postalCode);
 
 			mapLink = "map.html?location=" + String(postalCode);
 
-			console.log(mapLink);
+			// console.log(mapLink);
 
 			document.getElementById("mapFrame").src = mapLink;
 		});
@@ -188,65 +170,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 	</script>
 
 </div>
-
-
-
-
-
-<!-- footer -->
-<!-- <footer class="py-5">
-	<div class="container py-sm-3">
-		<div class="row footer-grids">
-			<div class="col-lg-3 col-sm-6 mb-lg-0 mb-sm-5 mb-4">
-				<h4 class="mb-sm-4 mb-3"><span class="fa fa-stethoscope"></span> Health Insurance</h4>
-				<p class="mb-3">Onec Consequat sapien ut cursus rhoncus. Nullam dui mi, vulputate ac metus semper quis luctus sed.</p>
-				<h5>Trusted by <span>500+ People</span> </h5>
-			</div>
-			<div class="col-lg-3 col-sm-6 mb-lg-0 mb-sm-5 mb-4">
-				<h4 class="mb-sm-4 mb-3">Address Info</h4>
-				<p><span class="fa mr-2 fa-map-marker"></span>64d canal street TT 3356 <span>Newyork, NY.</span></p>
-				<p class="phone py-2"><span class="fa mr-2 fa-phone"></span> +1(12) 123 456 789 </p>
-				<p><span class="fa mr-2 fa-envelope"></span><a href="mailto:info@example.com">info@example.com</a></p>
-			</div>
-			<div class="col-lg-2 col-sm-6 mb-sm-0 mb-4">
-				<h4 class="mb-sm-4 mb-3">Quick Links</h4>
-				<ul>
-					<li><a href="#">Terms & Conditions</a></li>
-					<li class="my-2"><a href="#">Support Helpline</a></li>
-					<li><a href="#">Healthy Tips</a></li>
-					<li class="mt-2"><a href="#">Privacy Ploicy</a></li>
-				</ul>
-			</div>
-			<div class="col-lg-4 col-sm-6">
-				<h4 class="mb-sm-4 mb-3">Subscribe Us</h4>
-				<p class="mb-3">Subscribe to our newsletter</p>
-				<form action="#" method="post" class="d-flex">
-					<input type="email" id="email" name="EMAIL" placeholder="Enter your email here" required="">
-					<button type="submit" class="btn">Subscribe</button>
-				</form>
-				<div class="icon-social mt-3">
-					<a href="#" class="button-footr">
-						<span class="fa mx-2 fa-facebook"></span>
-					</a>
-					<a href="#" class="button-footr">
-						<span class="fa mx-2 fa-twitter"></span>
-					</a>
-					<a href="#" class="button-footr">
-						<span class="fa mx-2 fa-dribbble"></span>
-					</a>
-					<a href="#" class="button-footr">
-						<span class="fa mx-2 fa-pinterest"></span>
-					</a>
-					<a href="#" class="button-footr">
-						<span class="fa mx-2 fa-google-plus"></span>
-					</a>
-
-				</div>
-			</div>
-		</div>
-	</div>
-</footer> -->
-<!-- //footer -->
 
 <!-- copyright -->
 <div class="copyright">
