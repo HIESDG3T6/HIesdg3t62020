@@ -116,35 +116,14 @@
                         if (password == returnedPassword){
                             $.session.set("userid", userid);
 
-                            // console.log($.session.get("userid"));
+                            name = data.patientname;
+                            teleHandle = data.telehandle;
 
-                            var teleHandleLink = "http://localhost:5555/patient/getTeleHandle/" + userid;
-                            var nameLink = "http://localhost:5555/patient/login/" + userid;
-
-                            fetch(teleHandleLink).then(function(response) {
-                                response.json().then(teleHandle=> {
-                                    // console.log(teleHandle);
-                                    $.session.set("teleHandle", teleHandle);
-
-                                    fetch(nameLink).then(function(response) {
-                                        response.json().then(name=> {
-                                            // console.log(name);
-                                            $.session.set("name", name);
-                                            window.location.replace("/esd/patient/index.html");
-                                        })
-                                
-                                    })
-
-                                })
-                                
-                            })
+                            // $.session.set("teleHandle", teleHandle);
+                            // $.session.set("name", name);                   
                           
-                            // window.location.replace("/esd/patient/index.html");
-                            // console.log($.session.get("name"));
-                            // console.log($.session.get("teleHandle"));
-                            
-
-                            
+                            window.location.replace("/esd/patient/index.html");
+                                                       
                         }
                         else{
                             alert('Username or Password is wrong.')
