@@ -24,7 +24,7 @@ import pika
 
 #for postman checking : stripe_base_url = 'https://api.stripe.com'
 
-hostname = '172.17.0.2'
+hostname = '172.17.0.2' # need to install the rabbitmq images (from docker), then get the container's ip address
 port = 5672 
 connection = pika.BlockingConnection(pika.ConnectionParameters(host=hostname, port=port))
 # Note: various network firewalls, filters, gateways (e.g., SMU VPN on wifi), may hinder the connections;
