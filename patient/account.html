@@ -150,8 +150,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 				}
 			
 				///////////// HARD CODED THE CUSTOMERID - TO BE RETRIEVED ////////////
-				$(async() => {           
-					var appointmentURL = "http://127.0.0.1:4444/get-appointment/jiamin";
+				$(async() => {
+					var patientID = $.session.get("patientID");
+					var appointmentURL = "http://127.0.0.1:4444/get-appointment/" + patientID;
 			
 					try {
 						const response =
