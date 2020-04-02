@@ -442,7 +442,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 								if (data['status'] != true) {
 									$("#bookButton").hide();
 									$("#plsStart").show();
-									fetch(startTelegram);
+									startBotLink = "https://telegram.me/HIesd_bot?start=check-this-out";
+									var win = window.open(startBotLink, '_blank');
+									win.focus();
 									fetchNow();
 								}
 							})
