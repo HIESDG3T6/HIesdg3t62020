@@ -66,20 +66,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						<p id="patientNameHeading"> Welcome! Patient </p>
 						
 					</li>
-					<!-- <li>
-						<span class="fa fa-phone"></span>
-						<p class="d-inline">Call Us +12 345 678</p>
-					</li> -->
 				</ul>
 			</div>
 			<div class="col-sm-6 header-right-w3_pvt">
 				<ul class="d-lg-flex header-w3_pvt justify-content-lg-end">
-					<!-- <li class="mr-lg-3">
-						<span class=""><span class="fa fa-clock-o"></span>Mon - Fri : 8:30am to 9:30pm</span>
-					</li>
-					<li class="">
-						<span class=""><span class="fa fa-clock-o"></span>Sat & Sun : 9:00am to 6:00pm</span> -->
-					<!-- </li> -->
 					<li class="mr-lg-3"><a class="user" href="logout.html">Logout</a></li>
 				</ul>
 			</div>
@@ -103,11 +93,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			<label for="drop" class="toggle"><span class="fa fa-bars"></span></label>
 			<input type="checkbox" id="drop" />
 			<ul class="menu mt-2 ml-auto">
-				<!-- <li class="active"><a href="index.html">Home</a></li> -->
 				<li class=""><a href="precheck.html">Symptoms Checker</a></li>
 				<li class=""><a href="search.php">Search Clinics </a></li>
 				<li class=""><a href="patient_history.html">Medical History</a></li>
-			<!-- 	<li class=""><a href="billing.html">Billing</a></li>-->
 				<li class=""><a href="account.html">Appointment Details</a></li>
 			</ul>
 			<div class="login-icon ml-2">
@@ -118,13 +106,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		<!-- //nav -->
 </header>
 <!-- //header -->
-
-<!-- banner -->
-<!-- <div class="innerpage-banner" id="home">
-	<div class="inner-page-layer">
-	</div>
-</div> -->
-<!-- //banner -->
 
 <br><br>
 <!-- contact -->
@@ -153,13 +134,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 									<option value="">Select an Area</option>
 								</select>								
 							</div>
-							<!-- <h4 class="mb-4">Address Information</h4>
-							<p><span class="fa mr-2 fa-map-marker"></span>64d canal street TT 3356 <span>Newyork, NY.</span></p>
-							<p class="phone py-2"><span class="fa mr-2 fa-phone"></span>Phone : +1 123 456 789 </p>
-							<p><span class="fa mr-2 fa-envelope"></span>Email : <a href="mailto:info@example.com">info@example.com</a></p>
-							
-							<h4 class="my-4">Book Your Appointment</h4>
-							<p class="phone"><span class="fa mr-2 fa-phone"></span>Call us at +1 123 456 789 </p> -->
 						</div>
 						<div class="col-md-12">
 							<div class="submit-buttons">
@@ -186,11 +160,15 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		if (isset($_GET['specialty'])){
 			$passedSpec = $_GET['specialty'];
 		}
-		// echo $passedSpec;
 	?>
 		
 	<script>
 		$('#clinics').hide();		
+		function showError(message) {
+			$('#clinics').hide();
+	
+			$('#main-container').append("<label>"+message+"</label>");
+		}
 
         $(document).ready(async() => {  
 			var passedspec = "<?php echo $passedSpec; ?>";
@@ -205,10 +183,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 );
                 const data = await response.json();
 
-				// array or array.length are falsy
                 if (response.ok) {
                     // console.log(data);
-					// for loop to setup all table rows with obtained book data
 					var rows = "";
 					var specarr = [];
 					var locarr = [];
@@ -247,7 +223,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						);
 						const data = await anotherresponse.json();
 						// var books = data.books; //the arr is in data.books of the JSON data
-						console.log(data);
+						// console.log(data);
 
 						// array or array.length are falsy
 						if (anotherresponse.ok) {
@@ -289,13 +265,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					$('#location').append(locrows);
                 } 
             } catch (error) {
-                // Errors when calling the service; such as network error, 
-                // service offline, etc
-            //     showError
-            //   ('There is a problem retrieving books data, please try again later.<br />'+error);
+                showError
+              ('There is a problem retrieving clinic data, please try again later.<br />'+error);
                
-            } // error
-		});	// for loop to setup all table rows with obtained book data
+            } 
+		});
 		
 		$('#searchBtn').click(async(event) => {  
         //Prevents screen from refreshing when submitting  
@@ -345,13 +319,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                    serviceURL, { method: 'GET' }
                 );
                 const data = await response.json();
-				// var books = data.books; //the arr is in data.books of the JSON data
-				console.log(data);
+				// console.log(data);
 
 				// array or array.length are falsy
                 if (response.ok) {
                     // console.log(data);
-					// for loop to setup all table rows with obtained book data
 					var rows = "";
 					$.each(data, function(index, value){
 							// console.log(value2);
@@ -367,7 +339,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 					});
 					// add all the rows to the table
-					console.log(rows);
+					// console.log(rows);
 					$('#clinicsSearch').empty().append(rows);
 					$('#clinicsSearch').show();
 				} 
@@ -375,14 +347,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					$('#clinicsSearch').empty().append('No Clinics Found');
 				}
             } catch (error) {
-                // Errors when calling the service; such as network error, 
-                // service offline, etc
-            //     showError
-            //   ('There is a problem retrieving books data, please try again later.<br />'+error);
+                showError
+              ('There is a problem retrieving clinic data, please try again later.<br />'+error);
                
             } // error
-		});	// for loop to setup all table rows with obtained book data
-		
+		});	
 
 	</script>
 
@@ -391,63 +360,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d50996.31320435244!2d-122.06676498187694!3d36.97949802442312!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808e441b7c36d549%3A0x52ca104b2ad7f985!2sSanta+Cruz%2C+CA%2C+USA!5e0!3m2!1sen!2sin!4v1469096018666"
 			style="border:0"></iframe>
 	</div> -->
-
-<!-- //contact -->
-
-<!-- footer -->
-<!-- <footer class="py-5">
-	<div class="container py-sm-3">
-		<div class="row footer-grids">
-			<div class="col-lg-3 col-sm-6 mb-lg-0 mb-sm-5 mb-4">
-				<h4 class="mb-sm-4 mb-3"><span class="fa fa-stethoscope"></span> Health Insurance</h4>
-				<p class="mb-3">Onec Consequat sapien ut cursus rhoncus. Nullam dui mi, vulputate ac metus semper quis luctus sed.</p>
-				<h5>Trusted by <span>500+ People</span> </h5>
-			</div>
-			<div class="col-lg-3 col-sm-6 mb-lg-0 mb-sm-5 mb-4">
-				<h4 class="mb-sm-4 mb-3">Address Info</h4>
-				<p><span class="fa mr-2 fa-map-marker"></span>64d canal street TT 3356 <span>Newyork, NY.</span></p>
-				<p class="phone py-2"><span class="fa mr-2 fa-phone"></span> +1(12) 123 456 789 </p>
-				<p><span class="fa mr-2 fa-envelope"></span><a href="mailto:info@example.com">info@example.com</a></p>
-			</div>
-			<div class="col-lg-2 col-sm-6 mb-sm-0 mb-4">
-				<h4 class="mb-sm-4 mb-3">Quick Links</h4>
-				<ul>
-					<li><a href="#">Terms & Conditions</a></li>
-					<li class="my-2"><a href="#">Support Helpline</a></li>
-					<li><a href="#">Healthy Tips</a></li>
-					<li class="mt-2"><a href="#">Privacy Ploicy</a></li>
-				</ul>
-			</div>
-			<div class="col-lg-4 col-sm-6">
-				<h4 class="mb-sm-4 mb-3">Subscribe Us</h4>
-				<p class="mb-3">Subscribe to our newsletter</p>
-				<form action="#" method="post" class="d-flex">
-					<input type="email" id="email" name="EMAIL" placeholder="Enter your email here" required="">
-					<button type="submit" class="btn">Subscribe</button>
-				</form>
-				<div class="icon-social mt-3">
-					<a href="#" class="button-footr">
-						<span class="fa mx-2 fa-facebook"></span>
-					</a>
-					<a href="#" class="button-footr">
-						<span class="fa mx-2 fa-twitter"></span>
-					</a>
-					<a href="#" class="button-footr">
-						<span class="fa mx-2 fa-dribbble"></span>
-					</a>
-					<a href="#" class="button-footr">
-						<span class="fa mx-2 fa-pinterest"></span>
-					</a>
-					<a href="#" class="button-footr">
-						<span class="fa mx-2 fa-google-plus"></span>
-					</a>
-
-				</div>
-			</div>
-		</div>
-	</div>
-</footer> -->
-<!-- //footer -->
 
 <!-- copyright -->
 <div class="copyright">

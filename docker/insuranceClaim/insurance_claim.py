@@ -116,7 +116,7 @@ def send_claim(claim):
     
     """inform Refund MS as needed"""
     # default username / password to the borker are both 'guest'
-    hostname = "localhost" # default broker hostname. Web management interface default at http://localhost:15672
+    hostname = "172.17.0.2" #  # need to install the rabbitmq images (from docker), then get the container's ip address
     port = 5672 
     connection = pika.BlockingConnection(pika.ConnectionParameters(host=hostname, port=port))
         # Note: various network firewalls, filters, gateways (e.g., SMU VPN on wifi), may hinder the connections;
