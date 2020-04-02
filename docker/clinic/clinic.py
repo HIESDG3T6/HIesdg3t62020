@@ -20,7 +20,6 @@ class Clinic(db.Model):
     __tablename__ = 'clinic'
  
     clinicName = db.Column(db.String(100), primary_key=True)
-    doctorName = db.Column(db.String(100), primary_key=True)
     groupedLocation = db.Column(db.String(100), nullable=False)
     address = db.Column(db.String(100), nullable=False)
     postalCode = db.Column(db.Integer, nullable=False)
@@ -28,9 +27,8 @@ class Clinic(db.Model):
     contactNumber = db.Column(db.String(15), nullable=False)
     opening = db.Column(db.String(200), nullable=False)
  
-    def __init__(clinicName, doctorName, groupedLocation, address, postalCode, specialty, contactNumber, opening):
+    def __init__(clinicName, groupedLocation, address, postalCode, specialty, contactNumber, opening):
         self.clinicName = clinicName
-        self.doctorName = doctorName
         self.groupedLocation = groupedLocation
         self.address = address
         self.postalCode = postalCode
@@ -39,7 +37,7 @@ class Clinic(db.Model):
         self.opening = opening
  
     def json(self):
-        return {"clinicName": self.clinicName, "doctorName": self.doctorName, "groupedLocation": self.groupedLocation, "address": self.address, "postalCode": self.postalCode, "specialty": self.specialty, "contactNumber": self.contactNumber, "opening": self.opening}
+        return {"clinicName": self.clinicName, "groupedLocation": self.groupedLocation, "address": self.address, "postalCode": self.postalCode, "specialty": self.specialty, "contactNumber": self.contactNumber, "opening": self.opening}
 
 
 
