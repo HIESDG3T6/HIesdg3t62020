@@ -11,8 +11,8 @@ CORS(app)
 @app.route("/telegramNotification/<string:TelegramHandle>/<string:errorMsg>")
 @app.route("/telegramNotification/<string:TelegramHandle>/<string:appointmentDate>/<string:appointmentTime>/<string:clinicName>")
 def sendTelegramNoti(TelegramHandle, appointmentDate=None, appointmentTime=None, clinicName=None, errorMsg=None):
-    getChatID = "http://localhost:4646/telegram/getChatID/" + TelegramHandle
-    sendToChat = "http://localhost:4646/telegram/sendMessage/"
+    getChatID = "http://172.17.0.4:4646/telegram/getChatID/" + TelegramHandle
+    sendToChat = "http://172.17.0.4:4646/telegram/sendMessage/"
 
     result = requests.get(getChatID).json()
     chatID = str(result['message'])
@@ -21,11 +21,9 @@ def sendTelegramNoti(TelegramHandle, appointmentDate=None, appointmentTime=None,
         sendToChat += chatID + "/" + errorMsg
 
     else:
-        sendToChat += chatID + "/" + appointmentDate + "/" + appointmentTime + "/" + clinicName
+        sendToChat += chatID + "/" + str(appointmentDate) + "/" + str(appointmentTime) + "/" + str(clinicName)
 
-    sendResult = requests.get(sendToChat)
-
-    print(sendResult)
+    sendResult = requests.get(sendToChat).json()
 
     return sendResult
 
