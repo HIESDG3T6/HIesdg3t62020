@@ -30,7 +30,7 @@
 			window.location.replace("/esd/patient/login.html");
 		}
 
-		var name = $.session.get('name');
+		var name = $.session.get('userid');
 		// console.log($.session.get('userid'));
 	</script>
 
@@ -50,15 +50,11 @@
 				<ul class="d-lg-flex header-w3_pvt">
 					<li class="mr-lg-3">
 						<p id="patientNameHeading"> Welcome! Patient </p>
-						
 					</li>
 
 				</ul>
 			</div>
 			<div class="col-sm-6 header-right-w3_pvt">
-				<ul class="d-lg-flex header-w3_pvt justify-content-lg-end">
-					<li class="mr-lg-3"><a class="user" href="logout.html">Logout</a></li>
-				</ul>
 			</div>
 		</div>
 	</div>
@@ -100,9 +96,9 @@
 <section class="table" id="claims">
 	<div class="table-layer py-5">
 		<div class="container py-lg-5">
-			<h3 class="heading text-center mb-sm-5 mb-4">Your Medical Claims History</h3>
-			<div class="table-block p-4">
-				<table id="HistoryTable" class='table table-striped' >
+			<h3 class="heading text-center mb-sm-5 mb-4" id='tableTitle'>Your Medical Claims History</h3>
+			<div class="table-block p-4" id="HistoryTable">
+				<table  class='table table-striped' >
 					<thead>
 						<tr>
 							<!-- <th>Patient ID</th> -->
@@ -122,7 +118,7 @@
 		</div>
 		
 	</div>
-
+	<h3 class="container py-lg-5" id="displayEmpty" style="text-align: center;"></h3>
 	
 
 </section>
@@ -152,20 +148,21 @@
 	<script>
 
 		// Helper function to display error message
-        function showError(message) {
+        function showError() {
             // Hide the table and button in the event of error
             $('#HistoryTable').hide(); 
+			$('#tableTitle').hide();
             // Display an error under the main container
-            $('#main-container')
-                .append("<label>"+message+"</label>");
+            $('#displayEmpty')
+                .append("<label> Your Claim History is not found!</label>");
         }
 
 		// anonymous async function 
         // - using await requires the function that calls it to be async
 		$(async() => {       
             // Change serviceURL to your own
-            var serviceURL = "http://127.0.0.1:5008/patient_history/1998"; // hardcoded patient ID 1998
-			// console.log(serviceURL);
+            var serviceURL = "http://127.0.0.1:5008/patient_history/123456780"; // hardcoded patient ID 1998
+			console.log(serviceURL);
 			//after that can change it to only display opening 
             try {
                 const response =
@@ -204,7 +201,7 @@
             } catch (error) {
                 // Errors when calling the service; such as network error, 
                 // service offline, etc
-                showError('There is a problem retrieving patient history data, please try again later.<br />'+error);
+                showError();
             } // error
         });
 
