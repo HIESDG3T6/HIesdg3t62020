@@ -182,7 +182,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 	//Get form data
 		// PID and Clinic ID passed through URL 
 		var PID = getvalue('pid');
-		var ClinicID = getvalue('clinicid');
+		var reg=/%20/g;
+		var ClinicID = getvalue('clinicid').replace(reg,' ');
 		var AID = getvalue('aid');
 
 		//set the value to the textinput from URL

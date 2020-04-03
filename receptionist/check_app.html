@@ -115,7 +115,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     
         ///////////// HARD CODED THE clinic ID - TO BE RETRIEVED ////////////
         $(async() => {           
-            var appointmentURL = "http://127.0.0.1:4444/get-clinic-appointment/12";
+            var appointmentURL = "http://127.0.0.1:4444/get-clinic-appointment/APOLLO MEDICAL CENTRE";
             console.log("url is "+appointmentURL);
             try {
                 const response =
@@ -141,7 +141,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             "<td>" + appointment.customerID + "</td>" +
                             "<td>" + appointment.appointmentDate + "</td>" +
                             "<td>" + appointment.appointmentTime + "</td>" +
-                            "<td>" + "<div><a class='user' id='updatebutton' href='submit_claim.html?pid="+appointment.customerID+"&clinicid=12&aid="+appointment.AID+"'> Update</a></div>" + "</td>";
+                            "<td>" + "<div><a class='user' id='updatebutton' href='submit_claim.html?pid="+appointment.customerID+"&clinicid=APOLLO MEDICAL CENTRE&aid="+appointment.AID+"'> Update</a></div>" + "</td>";
                             
                         rows += "<tbody><tr>" + eachRow + "</tr></tbody>";
                         
