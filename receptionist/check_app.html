@@ -74,8 +74,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!-- //header -->
 
 <body>
-    <section class="table" id="claims">
-        <div class="table-layer py-5">
+    <section class="table" >
+        <div class="table-layer py-5"id="appts">
             <div class="container py-lg-5">
                 <h3 class="heading text-center mb-sm-5 mb-4" id ="tableTitle">Appointment Listing</h3>
                 <div class="table-block p-4">
@@ -83,7 +83,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         <thead>
                             <tr>
                                 <th>Appointment ID</th>
-                                <th>DoctorID</th>
+                                <th>Customer ID</th>
                                 <th>Appointment Date</th>
                                 <th>Appointment Time</th>
                             </tr>
@@ -91,12 +91,13 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         <!--// END TO DISPLAY MESSAGE FROM DATABASE -->
                         
                     </table>
-    
-                </div>
-                
-            </div>
-            
+                </div>       
+            </div>     
         </div>
+        <div class="table-layer py-5"><h3 class="container py-lg-5" id="displayEmpty" style="text-align: center;"></h3></div>
+        
+    </section>
+    
 
     <script>
         // function showError(message) {
@@ -107,10 +108,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         function showError() {
             // Hide the table and button in the event of error
             $('#AppointmentTable').hide(); 
-			$('#tableTitle').hide();
+			$('#appts').hide();
             // Display an error under the main container
             $('#displayEmpty')
-                .append("<label> Appointment is not found!</label>");
+                .append("<label> Appointment is not found!</label>")};
     
         ///////////// HARD CODED THE clinic ID - TO BE RETRIEVED ////////////
         $(async() => {           
@@ -129,7 +130,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     
                 // array or array.length are falsy
                 if (!appointments || !appointments.length) {
-                    showError('No upcoming appointment or undefined.')
+                    showError()
                     console.log('error')
                 } else {
                     var rows = "";
@@ -137,7 +138,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         // console.log(appointment);
                         eachRow =
                             "<td>" + appointment.AID + "</td>" +
-                            "<td>" + appointment.doctorID + "</td>" +
+                            "<td>" + appointment.customerID + "</td>" +
                             "<td>" + appointment.appointmentDate + "</td>" +
                             "<td>" + appointment.appointmentTime + "</td>" +
                             "<td>" + "<div><a class='user' id='updatebutton' href='submit_claim.html?pid="+appointment.customerID+"&clinicid=12&aid="+appointment.AID+"'> Update</a></div>" + "</td>";

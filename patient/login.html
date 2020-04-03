@@ -118,8 +118,10 @@
 
                             name = data.patientname;
                             teleHandle = data.telehandle;
+                            patientID = data.patientid;
                             $.session.set("teleHandle", teleHandle);
-                            $.session.set("name", name);                   
+                            $.session.set("name", name);
+                            $.session.set("patientID", patientID);
                           
                             window.location.replace("/esd/patient/index.html");
                                                        

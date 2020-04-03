@@ -61,11 +61,13 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 				var name = $.session.get('name');
 				var teleHandle = $.session.get('teleHandle');
+				var patientID = $.session.get('patientID');
 				
 				// console.log($.session.get('userid'));
 				// console.log($.session.get('userid'));
 				// console.log($.session.get('name'));
 				// console.log($.session.get('teleHandle'));
+				console.log($.session.get('patientID'));
 			</script>
 		
 			<!-- CALENDAR -->
@@ -239,10 +241,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 				$('#clinicFieldName').append(clinicName);
 
-				var getChatID = "http://localhost:4646/telegram/getChatID/" + teleHandle ;
+				var getChatID = "http://localhost:5566/telegramNotification/getChatID/" + teleHandle ;
 				var sendToChat = "http://localhost:5566/telegramNotification/" + teleHandle;
-				var getUpdatesLink = "http://localhost:4646/telegram/getUpdates";
-				var startTelegram = "http://localhost:4646/telegram/start";
+				var getUpdatesLink = "http://localhost:5566/telegramNotification/update";
 				var submitButton = document.getElementById("bookButton");
 				var teleStarted = false;
 				var teleNeeded = false;
@@ -313,7 +314,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					var addAppointmentURL = "http://localhost:4444/appointment"
 					var mailURL = "http://localhost:5000/appointmentemail"
 					
-					var customerID = "jiamin";
+					var customerID = patientID;
 					var clinicID = clinicName;
 					var doctorID = 1;
 					var chatID = null;
