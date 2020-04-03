@@ -34,7 +34,6 @@ use clinic;
 DROP TABLE IF EXISTS `clinic`;
 CREATE TABLE IF NOT EXISTS `clinic` (
   `clinicName` varchar(100) NOT NULL,
-  `doctorName` varchar(100) NOT NULL,
   `groupedLocation` varchar(100) NOT NULL,
   `address` varchar(100) NOT NULL,
   `postalCode` int(6) NOT NULL,
