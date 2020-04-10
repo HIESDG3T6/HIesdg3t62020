@@ -20,15 +20,15 @@ class Appointment(db.Model):
     AID = db.Column(db.Integer, nullable= True)
     customerID = db.Column(db.String(10), primary_key = True)
     clinicID = db.Column(db.String(100), nullable= False)
-    # doctorID = db.Column(db.String(10), nullable= False)
+    doctorID = db.Column(db.String(10), nullable= False)
     appointmentDate = db.Column(db.Date, primary_key = True)
     appointmentTime = db.Column(db.Time, primary_key = True)
 
-    def __init__(self, AID, customerID, clinicID, doctorID, appointmentDate, appointmentTime):
-        self.AID = AID
+    def __init__(self, customerID, clinicID, doctorID, appointmentDate, appointmentTime):
+        self.AID = None
         self.customerID = customerID
         self.clinicID = clinicID
-        # self.doctorID = doctorID
+        self.doctorID = doctorID
         self.appointmentDate = appointmentDate
         self.appointmentTime = appointmentTime
 
@@ -37,7 +37,7 @@ class Appointment(db.Model):
             "AID": self.AID,
             "customerID" : self.customerID,
             "clinicID" : self.clinicID,
-            # "doctorID" : self.doctorID,
+            "doctorID" : self.doctorID,
             "appointmentDate" : self.appointmentDate.__str__(),
             "appointmentTime" : self.appointmentTime.__str__()
         }
