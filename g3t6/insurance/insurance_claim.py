@@ -18,7 +18,7 @@ from flask_cors import CORS
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/insurance_claim'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://g3t6@localhost:3306/insurance_claim'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -115,7 +115,7 @@ def send_claim(claim):
     
     """inform Refund MS as needed"""
     # default username / password to the borker are both 'guest'
-    hostname = "localhost" # default broker hostname. Web management interface default at http://localhost:15672
+    hostname = "0.0.0.0" # default broker hostname. Web management interface default at http://localhost:15672
     port = 5672 
     connection = pika.BlockingConnection(pika.ConnectionParameters(host=hostname, port=port))
         # Note: various network firewalls, filters, gateways (e.g., SMU VPN on wifi), may hinder the connections;
@@ -140,7 +140,7 @@ def send_claim(claim):
         row = {"ClaimID": claim['ClaimID'], "reply_Status": "none", "Approval_url": "none"}
         headers={"content-type": "application/json"}
         
-        service_url = "http://127.0.0.1:5001/refund/"+corrid
+        service_url = "http://0.0.0.0:5001/refund/"+corrid
 
         r = requests.post(service_url, json=row, headers=headers)
         #print(r.text)
@@ -173,7 +173,7 @@ def send_claim(claim):
 def receiveReply():
 
     # default username / password to the borker are both 'guest'
-    hostname = "localhost" # default broker hostname. Web management interface default at http://localhost:15672
+    hostname = "0.0.0.0" # default broker hostname. Web management interface default at http://localhost:15672
     port = 5672 
     connection = pika.BlockingConnection(pika.ConnectionParameters(host=hostname, port=port))
         # Note: various network firewalls, filters, gateways (e.g., SMU VPN on wifi), may hinder the connections;
@@ -208,7 +208,7 @@ def reply_callback(channel, method, properties, body):
     channel.basic_ack(delivery_tag=method.delivery_tag)
     channel.stop_consuming()
     
-    update_url = 'http://127.0.0.1:5001/refund/'+properties.correlation_id +'/'
+    update_url = 'http://0.0.0.0:5001/refund/'+properties.correlation_id +'/'
 
     r = requests.post(update_url, json=reply, headers=headers)
 

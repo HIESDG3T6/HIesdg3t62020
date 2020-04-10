@@ -24,7 +24,7 @@ import pika
 
 #for postman checking : stripe_base_url = 'https://api.stripe.com'
 
-hostname = '172.17.0.11' # need to install the rabbitmq images (from docker), then get the container's ip address
+hostname = '172.17.0.2' # need to install the rabbitmq images (from docker), then get the container's ip address
 port = 5672 
 connection = pika.BlockingConnection(pika.ConnectionParameters(host=hostname, port=port))
 # Note: various network firewalls, filters, gateways (e.g., SMU VPN on wifi), may hinder the connections;
@@ -131,8 +131,8 @@ def create_payment(claimbody):
             "payment_method": "paypal"
         },
         "redirect_urls": {
-            "return_url": "http://localhost:3000/refund/execute",
-            "cancel_url": "http://localhost:3000/"
+            "return_url": "http://0.0.0.0:3000/refund/execute",
+            "cancel_url": "http://0.0.0.0:3000/"
         },
         "transactions": [
             {

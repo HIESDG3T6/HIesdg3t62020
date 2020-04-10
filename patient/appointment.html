@@ -315,6 +315,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					var mailURL = "http://localhost:5000/appointmentemail"
 					
 					var customerID = patientID;
+					var customername = name;
 					var clinicID = clinicName;
 					var doctorID = 1;
 					var chatID = null;
@@ -331,7 +332,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 								method: 'POST',
 								headers: {"Content-Type": "application/json"},
 								body: JSON.stringify ({
-									customerID: customerID, clinicID : clinicID, doctorID : doctorID, 
+									customerID: name, clinicID : clinicID, doctorID : doctorID, 
 									appointmentDate : appointmentDate, appointmentTime : appointmentTime
 									})
 							},
