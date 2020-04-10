@@ -119,11 +119,15 @@
                             name = data.patientname;
                             teleHandle = data.telehandle;
                             patientID = data.patientid;
+                            // console.log(patientID);
+
                             $.session.set("teleHandle", teleHandle);
                             $.session.set("name", name);
                             $.session.set("patientID", patientID);
+
+                            // console.log($.session.get("patientID"));
                           
-                            window.location.replace("/g3t6/patient/index.html");
+                            window.location.replace("./index.html");
                                                        
                         }
                         else{
