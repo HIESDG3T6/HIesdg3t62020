@@ -77,7 +77,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 <!-- contact -->
 <section class="mail pt-lg-5 pt-4">
-	<div class="container pt-lg-5">
+	<div class="container pt-lg-5" id='main'>
 		<h2 class="heading text-center mb-sm-5 mb-4">Claim Information </h2>
 		<!-- <div class="row agileinfo_mail_grids"  >
 			<div class="col-lg-8 agileinfo_mail_grid_right"> -->
@@ -140,6 +140,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 <div class="container pt-lg-5">
                 </div>
 		</div>
+		<div class="table-layer py-5"><h3 class="container py-lg-5" id="displayError" style="text-align: center;"></h3></div>
 
 </section>
 
@@ -175,9 +176,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 	function showError(message) {
 			// Display an error under the the predefined label with error as the id
-			$('#main-container')
-					.append("<label>"+message+"</label>");
-		}
+            $('#info_form').hide(); 
+			$('#main').hide();
+            // Display an error under the main container
+            $('#displayError')
+                .append(message)};
 	
 	//Get form data
 		// PID and Clinic ID passed through URL 
@@ -217,8 +220,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		var BillAmount = $('#bill_amt').val();
 		var ClaimAmount = $('#claim_amt').val();
 		
-		var serviceURL_ph = "http://0.0.0.0:5008/patient_history/"+PID+"/";
-		var mailURL = "http://0.0.0.0:5000/paymentemail"
+		var serviceURL_ph = "http://127.0.0.1:5008/patient_history/"+PID+"/";
+		var mailURL = "http://localhost:5000/paymentemail"
 		// console.log(serviceURL_ph)
 		
 		var requestBody_ph = {
@@ -239,19 +242,19 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 				
 			);
-			// console.log(response)
-			// console.log(requestBody_ph)
+			console.log(response)
+			console.log(requestBody_ph)
 
-			// console.log('1')
+			console.log('1')
 
 			const data = await response.json();
-			// console.log('2')
-			// console.log(data)
+			console.log('2')
+			console.log(data)
 
 			if (!response.ok) {
 				var msg = data['message'];
 				showError(msg);
-				// console.log('3');
+				console.log('3');
 
 			} else {
 				//send email about payment amt
@@ -271,15 +274,15 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						showError(msg);
 					} 
 				} catch (error){
-					// console.log(error);
+					console.log(error);
 				} 
 				location.replace("check_app.html");
-				// console.log('4')
+				console.log('4')
 			} 
 
 		} catch (error) {
-			// console.log(error);
-			showError ('There is a problem adding the appointment, please try again later.');
+			console.log(error);
+			showError ('There is a problem in submission, please try again later.');
 		}
 	});
 
@@ -307,7 +310,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		var BillAmount = $('#bill_amt').val();
 		var ClaimAmount = $('#claim_amt').val();
 		
-		var serviceURL_claim = "http://172.17.0.3:5003/claims/create/";
+		var serviceURL_claim = "http://127.0.0.1:5003/claims/create/";
 
 		console.log(serviceURL_claim)
 		
@@ -334,7 +337,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 				
 			);
-			// console.log(response)
+			console.log(response)
 			console.log(requestBody_claim)
 
 			console.log('1')
@@ -355,7 +358,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 		} catch (error) {
 			console.log(error);
-			showError ('There is a problem adding the appointment, please try again later.');
+			showError ('There is a problem in submission, please try again later.');
 		}
 	});
 

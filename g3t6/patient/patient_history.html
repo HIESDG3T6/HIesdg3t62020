@@ -50,11 +50,15 @@
 				<ul class="d-lg-flex header-w3_pvt">
 					<li class="mr-lg-3">
 						<p id="patientNameHeading"> Welcome! Patient </p>
+						
 					</li>
-
 				</ul>
+
 			</div>
 			<div class="col-sm-6 header-right-w3_pvt">
+				<ul class="d-lg-flex header-w3_pvt justify-content-lg-end">
+					<li class="mr-lg-3"><a class="user" href="logout.html">Logout</a></li>
+				</ul>
 			</div>
 		</div>
 	</div>
@@ -98,7 +102,7 @@
 		<div class="container py-lg-5">
 			<h3 class="heading text-center mb-sm-5 mb-4" id='tableTitle'>Your Medical Claims History</h3>
 			<div class="table-block p-4" id="HistoryTable">
-				<table  class='table table-striped' >
+				<table  class='table table-striped' id='table' >
 					<thead>
 						<tr>
 							<!-- <th>Patient ID</th> -->
@@ -196,7 +200,7 @@
                     }
 					rows = "<tbody>"+rows+"</tbody>";
                     // add all the rows to the table
-                    $('#HistoryTable').append(rows);
+                    $('#table').append(rows);
                 }
             } catch (error) {
                 // Errors when calling the service; such as network error, 
