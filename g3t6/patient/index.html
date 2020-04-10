@@ -1,0 +1,364 @@
+<!--
+author: W3layouts
+author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!--Patient UI -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Patient Panel </title>
+<!-- for-mobile-apps -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <script>
+        addEventListener("load", function () {
+            setTimeout(hideURLbar, 0);
+        }, false);
+
+        function hideURLbar() {
+            window.scrollTo(0, 1);
+        }
+	</script>
+	
+	
+	<!-- css files -->
+	<link href="../css/css_slider.css" type="text/css" rel="stylesheet" media="all"><!-- slider css -->
+    <link href="../css/bootstrap.css" rel='stylesheet' type='text/css' /><!-- bootstrap css -->
+    <link href="../css/style.css" rel='stylesheet' type='text/css' /><!-- custom css -->
+   
+	<!-- //css files -->
+	
+	<!-- google fonts -->
+	<link href="//fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i&amp;subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese" rel="stylesheet">
+	<link href="//fonts.googleapis.com/css?family=Dosis:200,300,400,500,600,700,800&amp;subset=latin-ext" rel="stylesheet">
+	<!-- //google fonts -->
+	
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script 
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="js/jquerysession.js"></script>
+	<script src="js/site.js"></script>
+	<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+	integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+	crossorigin="anonymous"></script>
+
+	<!-- session -->
+	<script>
+		if ($.session.get('userid') == null){
+			window.location.replace("/esd/patient/login.html");
+		}
+
+		var name = $.session.get('name');
+		// console.log($.session.get('userid'));
+		// console.log($.session.get('name'));
+		// console.log($.session.get('teleHandle'));
+	</script>
+</head>
+<body>
+
+<!-- top header -->
+<div class="header-top">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-6">
+				<ul class="d-lg-flex header-w3_pvt">
+					<li class="mr-lg-3">
+						<p id="patientNameHeading"> Welcome! Patient </p>
+						
+					</li>
+				</ul>
+
+			</div>
+			<div class="col-sm-6 header-right-w3_pvt">
+				<ul class="d-lg-flex header-w3_pvt justify-content-lg-end">
+					<li class="mr-lg-3"><a class="user" href="logout.html">Logout</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		$('#patientNameHeading').append(name);	
+	</script>
+</div>
+<!-- //top header -->
+
+<!-- //header -->
+<header class="py-3">
+	<div class="container">
+			<div id="logo">
+				<h1> <a href="index.html"><span class="fa fa-stethoscope" aria-hidden="true"></span> Health Insurance </a></h1>
+			</div>
+		<!-- nav -->
+		<nav class="d-lg-flex">
+
+			<label for="drop" class="toggle"><span class="fa fa-bars"></span></label>
+			<input type="checkbox" id="drop" />
+			<ul class="menu mt-2 ml-auto">
+				<li class=""><a href="precheck.html">Symptoms Checker</a></li>
+				<li class=""><a href="search.php">Search Clinics </a></li>
+				<li class=""><a href="patient_history.html">Medical History</a></li>
+				<li class=""><a href="account.html">Appointment Details</a></li>
+			</ul>
+			<div class="login-icon ml-2">
+				<a class="user" href="appointment.html"> Book Appointment Now</a>
+			</div>
+		</nav>
+		<div class="clear"></div>
+		<!-- //nav -->
+</header>
+<!-- //header -->
+
+<!-- banner -->
+<div class="banner" id="home">
+	<div class="layer">
+		<div class="container">
+			<div class="banner-text-agile">
+				<div class="row">
+					<div class="col-lg-6 p-0">
+						<!-- banner slider-->
+					<div class="csslider infinity" id="slider1">
+						<input type="radio" name="slides" checked="checked" id="slides_1" />
+						<input type="radio" name="slides" id="slides_2" />
+						<input type="radio" name="slides" id="slides_3" />
+						<ul class="banner_slide_bg">
+							<li>
+								<div class="container-fluid">
+									<div class="w3ls_banner_txt">
+										<h3 class="b-w3ltxt text-capitalize mt-md-4"><span> Symptom Checker  </span> Avaliable Now</h3>
+										<p class="w3ls_pvt-title my-3">Get a diagnosis by selecting your symptoms here!</p>
+										<a href="precheck.html".html" class="btn btn-banner1 my-sm-3 mb-3">Check Your Symptoms Now</a>
+									</div>
+								</div>
+							</li>
+							<li>
+								<div class="container-fluid">
+									<div class="w3ls_banner_txt">
+										<h3 class="b-w3ltxt text-capitalize mt-md-4"><span>We care about your </span>Health</h3>
+										<p class="w3ls_pvt-title my-3">We believe that Health is Wealth. Feel free to search
+											for specialist clinics under our insurance coverage or make an appointment through us.
+										</p>
+										<a href="search.php" class="btn btn-banner my-sm-3 mb-3">Search for Clinics</a>
+										<a href="appointment.html" class="btn btn-banner1 my-sm-3 mb-3">Book an Appointment</a>
+									</div>
+								</div>
+							</li>
+							<li>
+								<div class="container-fluid">
+									<div class="w3ls_banner_txt">
+										<h3 class="b-w3ltxt text-capitalize mt-md-4"><span>Helping you </span>remember</h3>
+										<p class="w3ls_pvt-title my-3">Your appointment and medical details. 
+											You can check your appointment details, medicine taken as well as payment history here.</p>
+										<a href="patient_history.html" class="btn btn-banner my-sm-3 mb-3">Check Your History</a>
+										<a href="account.html" class="btn btn-banner1 my-sm-3 mb-3">Check Your Upcoming Appointments</a>
+									</div>
+								</div>
+							</li>
+						</ul>
+						<div class="navigation">
+							<div>
+								<label for="slides_1"></label>
+								<label for="slides_2"></label>
+								<label for="slides_3"></label>
+							</div>
+						</div>
+					</div>
+					<!-- //banner slider-->
+
+					</div>
+					<div class="col-lg-6 col-md-8">
+						<img src="images/banner2.jpg" alt="" class="img-fluid" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- //banner -->
+
+<!-- about -->
+
+<section class="about py-5">
+	<div class="container py-md-3">
+		<h2 class="heading text-center mb-sm-5 mb-4">About Us </h2>
+		<div class="row">
+			<div class="col-lg-8">
+				<h4 class="about-left">End to End solution for your clinic needs</h4>
+				<p class="mt-sm-4 mt-3">Our mission is Health is Wealth. We aim to be your one-stop solution for anything 
+					to do with checking your symptoms to finding a clinic and booking appointments. We want your experience
+					to be as painless as possible cause who needs more pain when they're already sick? 
+				</p>
+				<p>Services we offer include: Symptom Checking, Clinic Searching, Booking Appointments, Checking Previous Medical Histories</p>
+			</div>
+			<div class="col-lg-4 col-md-8 dental">
+				<img src="images/heartbeat.png" class="img-fluid" alt="" />
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- //about -->
+
+<!-- services -->
+<section class="services py-5">
+	<div class="container py-lg-5">
+		<h3 class="heading text-center mb-sm-5 mb-4">What we do </h3>
+		<div class="row offer-grids">
+			<div class="col-lg-4 col-md-6">
+				<div class="ser1">
+					<div class="bg-layer">
+						<h4 class="">Symptom Checker</h4>
+						<p class="mt-3">We provide online symptom checking to diagnose your illnesses and direct you to the correct specialists.</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-4 col-md-6 mt-md-0 mt-4">
+				<div class="ser2">
+					<div class="bg-layer">
+						<h4 class="">Search for Panel Clinics</h4>
+						<p class="mt-3">We provide a one-stop place for you to search for panel clinics by name, location and specialty. We also provide the 
+							distance away from the clinics from where you are.
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-4 col-md-6 mt-lg-0 mt-4">
+				<div class="ser3">
+					<div class="bg-layer">
+						<h4 class="">Booking Appointments</h4>
+						<p class="mt-3">Book your appointments with our panel of clinics in a few clicks of a button.</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-4 col-md-6 mt-4">
+				<div class="ser4">
+					<div class="bg-layer">
+						<h4 class="">Email and Telegram Notifications</h4>
+						<p class="mt-3">Get notified about your appointments via Email and Telegram.</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-4 col-md-6 mt-4">
+				<div class="ser5">
+					<div class="bg-layer">
+						<h4 class="">Directions to the Clinic</h4>
+						<p class="mt-3">Get directions to the clinic you have an appointment with via our website.</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-4 col-md-6 mt-4">
+				<div class="ser6">
+					<div class="bg-layer">
+						<h4 class="">Checking Your Appointment History</h4>
+						<p class="mt-3">Forgotten what medicine was previously prescribed? Not to worry as we record these details for you.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- //services -->	
+
+<!-- testimonials -->
+<section class="feedback" id="testimonials">
+	<div class="feedback-layer py-5">
+		<div class="container py-lg-5">
+		<h3 class="heading text-center mb-sm-5 mb-4">Testimonials</h3>
+			<div class="row">
+				<div class="col-lg-4 col-md-6">
+					<div class="feedback-info">
+						<div class="feedback-top p-4">
+							<span class="fa fa-quote-right"></span> 
+							<p> Health Insurance really changed my life. Searching for clinics has never been easier. </p>
+							<div class="clearfix"></div>
+						</div>
+						<div class="feedback-grids">
+							<div class="feedback-img">
+								<img src="images/testimonialJM.jpg" class="img-fluid" alt="">
+							</div>
+							<div class="feedback-img-info">
+								<h5>Mary Jane</h5>
+								<p class="font-italic">- April 2, 2020.</p>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6 mt-md-0 mt-5">
+					<div class="feedback-info">
+						<div class="feedback-top p-4">
+							<span class="fa fa-quote-right"></span> 
+							<p> Health Insurance is a true LIFESAVER. I never need to wonder which specialist I should visit anymore.</p>
+							<div class="clearfix"></div>
+						</div>
+						<div class="feedback-grids">
+							<div class="feedback-img">
+								<img src="images/testimonialJon.jpg" class="img-fluid" alt="">
+							</div>
+							<div class="feedback-img-info">
+								<h5>John</h5>
+								<p class="font-italic">- April 3, 2020.</p>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6 mt-lg-0 mt-5">
+					<div class="feedback-info">
+						<div class="feedback-top p-4">
+							<span class="fa fa-quote-right"></span> 
+							<p> I have never felt so confident in looking for the clinic I need to go to. Health Insurance is purely amazing.</p>
+							<div class="clearfix"></div>
+						</div>
+						<div class="feedback-grids">
+							<div class="feedback-img">
+								<img src="images/testimonialZN.jpg" class="img-fluid" alt="">
+							</div>
+							<div class="feedback-img-info">
+								<h5>Jane</h5>
+								<p class="font-italic">- April 1, 2020.</p>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- //testimonials -->
+
+<!-- appointment -->
+<section class="appointment text-center py-5">
+	<div class="container py-sm-3">
+		<h4>Book Your Appointment Today</h4>
+		<!-- <p class="mt-3">Call Us To Book Your Appointment Today</p> -->
+		<a href="appointment.html">Book an Appointment</a>
+	</div>
+</section>
+<!-- //appointment -->
+
+<!-- copyright -->
+<div class="copyright">
+	<div class="container py-4">
+		<div class=" text-center">
+			<p>© 2020 Health Insurance Inc. All Rights Reserved </a> </p>
+		</div>
+	</div>
+</div>
+<!-- //copyright -->
+		
+<!-- move top -->
+<div class="move-top text-right">
+	<a href="#home" class="move-top"> 
+		<span class="fa fa-angle-up  mb-3" aria-hidden="true"></span>
+	</a>
+</div>
+<!-- move top -->
+
+</body>
+</html>

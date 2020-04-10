@@ -1,0 +1,195 @@
+<!--
+author: W3layouts
+author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Patient Panel </title>
+		<!-- for-mobile-apps -->
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		
+			<script>
+				addEventListener("load", function () {
+					setTimeout(hideURLbar, 0);
+				}, false);
+		
+				function hideURLbar() {
+					window.scrollTo(0, 1);
+				}
+			</script>
+			
+			<!-- css files -->
+			<link href="../css/css_slider.css" type="text/css" rel="stylesheet" media="all"><!-- slider css -->
+			<link href="../css/bootstrap.css" rel='stylesheet' type='text/css' /><!-- bootstrap css -->
+			<link href="../css/style.css" rel='stylesheet' type='text/css' /><!-- custom css -->
+			
+			<!-- //css files -->
+			
+			<!-- google fonts -->
+			<link href="//fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i&amp;subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese" rel="stylesheet">
+			<link href="//fonts.googleapis.com/css?family=Dosis:200,300,400,500,600,700,800&amp;subset=latin-ext" rel="stylesheet">
+			<!-- //google fonts -->
+
+			<!-- Latest compiled and minified CSS -->
+			<link rel="stylesheet"
+			href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+			integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" 
+			crossorigin="anonymous">
+
+			<!-- Latest compiled and minified JavaScript -->
+			<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+			<script 
+			src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+			<script src="js/jquerysession.js"></script>
+			<script src="js/site.js"></script>
+
+			<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+			integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+			crossorigin="anonymous"></script>
+
+			<script 
+			src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+			integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+			crossorigin="anonymous"></script>
+
+			<!-- session -->
+			<script>
+				if ($.session.get('userid') == null){
+					window.location.replace("/esd/patient/login.html");
+				}
+
+				var name = $.session.get('name');
+				// console.log($.session.get('userid'));
+				// console.log($.session.get('name'));
+				// console.log($.session.get('teleHandle'));
+			</script>
+		</head>
+<body>
+<!-- top header -->
+<div class="header-top">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-6">
+				<ul class="d-lg-flex header-w3_pvt">
+					<li class="mr-lg-3">
+						<p id="patientNameHeading"> Welcome! Patient </p>
+					</li>
+				</ul>
+			</div>
+			<div class="col-sm-6 header-right-w3_pvt">
+				<ul class="d-lg-flex header-w3_pvt justify-content-lg-end">
+					<li class="mr-lg-3"><a class="user" href="logout.html">Logout</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<script>
+			$('#patientNameHeading').append(name);	
+	</script>
+</div>
+<!-- //top header -->
+
+<!-- //header -->
+<header class="py-3">
+	<div class="container">
+			<div id="logo">
+				<h1> <a href="index.html"><span class="fa fa-stethoscope" aria-hidden="true"></span> Health Insurance </a></h1>
+			</div>
+		<!-- nav -->
+		<nav class="d-lg-flex">
+
+			<label for="drop" class="toggle"><span class="fa fa-bars"></span></label>
+			<input type="checkbox" id="drop" />
+			<ul class="menu mt-2 ml-auto">
+				<!-- <li class="active"><a href="index.html">Home</a></li> -->
+				<li class=""><a href="precheck.html">Symptoms Checker</a></li>
+				<li class=""><a href="search.php">Search Clinics </a></li>
+				<li class=""><a href="patient_history.html">Medical History</a></li>
+			<!-- 	<li class=""><a href="billing.html">Billing</a></li>-->
+				<li class=""><a href="account.html">Appointment Details</a></li>
+			</ul>
+			<div class="login-icon ml-2">
+				<a class="user" href="appointment.html"> Book Appointment Now</a>
+			</div>
+		</nav>
+		<div class="clear"></div>
+		<!-- //nav -->
+
+</header>
+<!-- //header -->
+
+<div class="container py-lg-5">
+		<br><br>
+		<h2 class="heading text-center mb-sm-5 mb-4" id="directionTag">Get Directions to </h2>
+
+		<script>
+			var x = location.href;
+			
+			var param = location.href.split('?')[1];
+			var clinicField = decodeURI(param.split('=')[1]);
+			// console.log(clinicField);
+			$("#directionTag").append(clinicField);
+
+		</script>
+
+		
+</div>
+
+<div>
+	<iframe id="mapFrame" src="map.html" width=100% height="800"></iframe>
+
+	<script>
+		var mapLink = "";
+
+		$(async() => {
+			var getPostalCodeLink = "http://127.0.0.1:5111/clinic/getPostalCode/" + clinicField;
+
+			// console.log(getPostalCodeLink);
+			const response = 
+				await fetch(
+					getPostalCodeLink, { method: 'GET' }
+				);
+
+			const postalCode = await response.json();
+
+			// console.log(postalCode);
+
+			mapLink = "map.html?location=" + String(postalCode);
+
+			// console.log(mapLink);
+
+			document.getElementById("mapFrame").src = mapLink;
+		});
+		
+	</script>
+
+</div>
+
+<!-- copyright -->
+<div class="copyright">
+	<div class="container py-4">
+		<div class=" text-center">
+			<p>© 2020 Health Insurance Inc. All Rights Reserved </a> </p>
+		</div>
+	</div>
+</div>
+<!-- //copyright -->
+		
+<!-- move top -->
+<div class="move-top text-right">
+	<a href="#home" class="move-top"> 
+		<span class="fa fa-angle-up  mb-3" aria-hidden="true"></span>
+	</a>
+</div>
+<!-- move top -->
+
+
+
+</body>
+</html>

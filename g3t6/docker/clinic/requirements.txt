@@ -1,0 +1,7 @@
+Flask==1.1.1
+Flask-Cors==3.0.8
+Flask-SQLAlchemy==2.4.1
+mysql-connector-python==8.0.19
+pyTelegramBotAPI==3.6.7
+python-telegram-bot==12.4.2
+telebot==0.0.3

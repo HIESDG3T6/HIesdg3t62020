@@ -1,0 +1,213 @@
+
+<!--Insurance Agent UI Assume agent logged in already-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Patient Panel </title>
+
+	
+	<!-- css files -->
+	<link href="../css/css_slider.css" type="text/css" rel="stylesheet" media="all"><!-- slider css -->
+    <link href="../css/bootstrap.css" rel='stylesheet' type='text/css' /><!-- bootstrap css -->
+    <link href="../css/style.css" rel='stylesheet' type='text/css' /><!-- custom css -->
+
+	<!-- //css files -->
+    
+	<!-- //css files -->
+
+	<!-- jquery-->
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+	<script src="js/jquerysession.js"></script>
+	<script src="js/site.js"></script>
+	<!-- //jquery-->
+	<!-- session -->
+	<script>
+		if ($.session.get('userid') == null){
+			window.location.replace("/esd/patient/login.html");
+		}
+
+		var name = $.session.get('userid');
+		// console.log($.session.get('userid'));
+	</script>
+
+	<!-- google fonts -->
+	<link href="//fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i&amp;subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese" rel="stylesheet">
+	<link href="//fonts.googleapis.com/css?family=Dosis:200,300,400,500,600,700,800&amp;subset=latin-ext" rel="stylesheet">
+	<!-- //google fonts -->
+	
+</head>
+<body>
+
+<!-- top header -->
+<div class="header-top">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-6">
+				<ul class="d-lg-flex header-w3_pvt">
+					<li class="mr-lg-3">
+						<p id="patientNameHeading"> Welcome! Patient </p>
+					</li>
+
+				</ul>
+			</div>
+			<div class="col-sm-6 header-right-w3_pvt">
+			</div>
+		</div>
+	</div>
+	<script>
+			$('#patientNameHeading').append(name);	
+	</script>
+</div>
+<!-- //top header -->
+
+<!-- //header -->
+<header class="py-3">
+	<div class="container">
+			<div id="logo">
+				<h1> <a href="index.html"><span class="fa fa-stethoscope" aria-hidden="true"></span> Health Insurance </a></h1>
+			</div>
+		<!-- nav -->
+		<nav class="d-lg-flex">
+
+			<label for="drop" class="toggle"><span class="fa fa-bars"></span></label>
+			<input type="checkbox" id="drop" />
+			<ul class="menu mt-2 ml-auto">
+				<li class=""><a href="precheck.html">Symptoms Checker</a></li>
+				<li class=""><a href="search.php">Search Clinics </a></li>
+				<li class=""><a href="patient_history.html">Medical History</a></li>
+				<li class=""><a href="account.html">Appointment Details</a></li>
+			</ul>
+			<div class="login-icon ml-2">
+				<a class="user" href="appointment.html"> Book Appointment Now</a>
+			</div>
+		</nav>
+		<div class="clear"></div>
+		<!-- //nav -->
+</header>
+<!-- //header -->
+
+
+
+<!--tables for claims --> 
+<section class="table" id="claims">
+	<div class="table-layer py-5">
+		<div class="container py-lg-5">
+			<h3 class="heading text-center mb-sm-5 mb-4" id='tableTitle'>Your Medical Claims History</h3>
+			<div class="table-block p-4" id="HistoryTable">
+				<table  class='table table-striped' >
+					<thead>
+						<tr>
+							<!-- <th>Patient ID</th> -->
+							<th>Appointment ID</th>
+							<th>Medication</th>
+							<th>Bill Amount</th>
+							<th>Claimed Amount</th>
+
+						</tr>
+					</thead>
+					<!--// END TO DISPLAY MESSAGE FROM DATABASE -->
+					
+				</table>
+
+			</div>
+			
+		</div>
+		
+	</div>
+	<h3 class="container py-lg-5" id="displayEmpty" style="text-align: center;"></h3>
+	
+
+</section>
+
+<!-- //tables for claims --> 
+
+<!-- copyright -->
+<div class="copyright">
+	<div class="container py-4">
+		<div class=" text-center">
+			<p>© 2020 Health Insurance Inc. All Rights Reserved </a> </p>
+		</div>
+	</div>
+</div>
+<!-- //copyright -->
+		
+<!-- move top -->
+<div class="move-top text-right">
+	<a href="#home" class="move-top"> 
+		<span class="fa fa-angle-up  mb-3" aria-hidden="true"></span>
+	</a>
+</div>
+<!-- move top -->
+
+
+	<!-- START TO DISPLAY MESSAGE FROM DATABASE-->
+	<script>
+
+		// Helper function to display error message
+        function showError() {
+            // Hide the table and button in the event of error
+            $('#HistoryTable').hide(); 
+			$('#tableTitle').hide();
+            // Display an error under the main container
+            $('#displayEmpty')
+                .append("<label> Your Claim History is not found!</label>");
+        }
+
+		// anonymous async function 
+        // - using await requires the function that calls it to be async
+		$(async() => {       
+            // Change serviceURL to your own
+            var serviceURL = "http://127.0.0.1:5008/patient_history/123456780"; // hardcoded patient ID 1998
+			console.log(serviceURL);
+			//after that can change it to only display opening 
+            try {
+                const response =
+                 await fetch(
+                   serviceURL, { method: 'GET' }
+                );
+                const data = await response.json();
+				// console.log(data);
+                var records = data.patient_history; //the arr is in data.insurance_claims of the JSON data
+				// console.log("record is"+records[0]);
+				
+                // array or array.length are falsy
+                if (!records || !records.length) {
+                    showError('History list empty or undefined.')
+                } else {
+                    // for loop to setup all table rows with obtained insurance_claims data
+                    var rows = "";
+                    for (const record of records) {
+						// console.log("PID is"+record.PID);
+						// console.log("AID is"+record.AID);
+						// console.log("Medication is"+record.Medication);
+						// console.log("ClaimAmount is"+record.ClaimAmount);
+                        eachRow =
+                            // "<td>" + record.PID + "</td>" +
+                            "<td>" + record.AID + "</td>" +
+                            "<td>" + record.Medication + "</td>" +
+                            "<td>" + record.BillAmount + "</td>"+
+							"<td>" + record.ClaimAmount + "</td>";
+							// "<td>" + "<div class='login-icon2'><a class='user' id='updatebutton' href='edit.html?ClaimID="+claim.ClaimID+"'> Update</a></div>" + "</td>";
+                        rows += "<tr>" + eachRow + "</tr>";
+                    }
+					rows = "<tbody>"+rows+"</tbody>";
+                    // add all the rows to the table
+                    $('#HistoryTable').append(rows);
+                }
+            } catch (error) {
+                // Errors when calling the service; such as network error, 
+                // service offline, etc
+                showError();
+            } // error
+        });
+
+	</script>
+
+	<!--// END TO DISPLAY MESSAGE FROM DATABASE -->
+
+</body>
+</html>

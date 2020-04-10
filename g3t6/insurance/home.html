@@ -1,0 +1,208 @@
+
+<!--Insurance Agent UI Assume agent logged in already-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Insurance Agent Panel </title>
+
+	
+	<!-- css files -->
+	<link href="../css/css_slider.css" type="text/css" rel="stylesheet" media="all"><!-- slider css -->
+    <link href="../css/bootstrap.css" rel='stylesheet' type='text/css' /><!-- bootstrap css -->
+    <link href="../css/style.css" rel='stylesheet' type='text/css' /><!-- custom css -->
+    
+	<!-- //css files -->
+
+	<!-- jquery-->
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<!-- //jquery-->
+
+	<!-- google fonts -->
+	<link href="//fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i&amp;subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese" rel="stylesheet">
+	<link href="//fonts.googleapis.com/css?family=Dosis:200,300,400,500,600,700,800&amp;subset=latin-ext" rel="stylesheet">
+	<!-- //google fonts -->
+	
+</head>
+<body>
+
+<!-- top header -->
+<div class="header-top">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-6">
+				<ul class="d-lg-flex header-w3_pvt">
+					<li class="mr-lg-3">
+						<p> Welcome! Agent Wong</p>
+						
+					</li>
+
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- //top header -->
+
+<!-- //header -->
+<header class="py-3">
+	<div class="container">
+			<div id="logo">
+				<h1> <a href="home.html"><span class="fa fa-stethoscope" aria-hidden="true"></span> Health Insurance </a></h1>
+			</div>
+		<!-- nav -->
+		<nav class="d-lg-flex">
+
+			<label for="drop" class="toggle"><span class="fa fa-bars"></span></label>
+			<input type="checkbox" id="drop" />
+			<ul class="menu mt-2 ml-auto">
+				<li class="active"><a href="home.html">Home</a></li>
+			</ul>
+			<div class="login-icon ml-2">
+				<a class="user" href="claim_history.html">Claims History</a>
+			</div>
+		</nav>
+		<div class="clear"></div>
+		<!-- //nav -->
+	</div>
+</header>
+<!-- //header -->
+
+
+
+<!--tables for claims --> 
+<section class="table" id="claims">
+	<div class="table-layer py-5">
+		<div class="container py-lg-5">
+			<h3 class="heading text-center mb-sm-5 mb-4">Latest Claims to be processed</h3>
+			<div class="table-block p-4">
+				<table id="claimsTable" class='table table-striped' >
+					<thead>
+						<tr>
+							<th>Claim ID</th>
+							<th>Patient ID</th>
+							<th>Clinic ID</th>
+							<th>Claim Date</th>
+							<th>Prescription</th>
+							<th>Bill Amount</th>
+							<th>Claimed Amount</th>
+							<th>Claim Status</th>
+							<th>Refund Status</th>
+							<th>Edit</th>
+						</tr>
+					</thead>
+					<!--// END TO DISPLAY MESSAGE FROM DATABASE -->
+					
+				</table>
+
+			</div>
+			
+		</div>
+		
+	</div>
+
+	
+
+</section>
+
+<!-- //tables for claims --> 
+
+
+
+
+
+
+<!-- copyright -->
+<div class="copyright">
+	<div class="container py-4">
+		<div class=" text-center">
+			<p>© 2020 Health Insurance Inc. All Rights Reserved </a> </p>
+		</div>
+	</div>
+</div>
+<!-- //copyright -->
+		
+<!-- move top -->
+<div class="move-top text-right">
+	<a href="#home" class="move-top"> 
+		<span class="fa fa-angle-up  mb-3" aria-hidden="true"></span>
+	</a>
+</div>
+<!-- move top -->
+
+
+	<!-- START TO DISPLAY MESSAGE FROM DATABASE-->
+	<script>
+
+		// Helper function to display error message
+        function showError(message) {
+            // Hide the table and button in the event of error
+            $('#claimsTable').hide(); 
+            // Display an error under the main container
+            $('#main-container')
+                .append("<label>"+message+"</label>");
+        }
+
+		// anonymous async function 
+        // - using await requires the function that calls it to be async
+		$(async() => {       
+            // Change serviceURL to your own
+            var serviceURL = "http://127.0.0.1:5003/claims";
+			console.log(serviceURL);
+			//after that can change it to only display opening 
+            try {
+                const response =
+                 await fetch(
+                   serviceURL, { method: 'GET' }
+                );
+                const data = await response.json();
+                var claims = data.insurance_claims; //the arr is in data.insurance_claims of the JSON data
+				console.log(claims)
+                // array or array.length are falsy
+                if (!claims || !claims.length) {
+                    showError('Claims list empty or undefined.')
+                } else {
+                    // for loop to setup all table rows with obtained insurance_claims data
+                    var rows = "";
+
+					 
+                    for (const claim of claims) {
+						// only display the claims that need to be proccess
+						// closed tickets and waiting for refund will not show here
+						if( claim.RefundStatus =='Pending'){
+							eachRow =
+                            "<td>" + claim.ClaimID + "</td>" +
+                            "<td>" + claim.PatientID + "</td>" +
+                            "<td>" + claim.ClinicName + "</td>" +
+                            "<td>" + claim.ClaimDate + "</td>"+
+							"<td>" + claim.Medicine + "</td>"+
+							"<td>" + claim.BillAmount + "</td>"+
+							"<td>" + claim.ClaimedAmount + "</td>"+
+							"<td>" + claim.ClaimStatus + "</td>"+
+							"<td>" + claim.RefundStatus + "</td>"+
+							"<td>" + "<div class='login-icon2'><a class='user' id='updatebutton' href='edit.html?ClaimID="+claim.ClaimID+"'> Update</a></div>" + "</td>";
+                        	rows += "<tr>" + eachRow + "</tr>";
+						}
+                        
+                    }
+					rows = "<tbody>"+rows+"</tbody>";
+                    // add all the rows to the table
+                    $('#claimsTable').append(rows);
+                }
+            } catch (error) {
+                // Errors when calling the service; such as network error, 
+                // service offline, etc
+                showError('There is a problem retrieving insurance claims data, please try again later.<br />'+error);
+            } // error
+        });
+
+
+
+	</script>
+
+	<!--// END TO DISPLAY MESSAGE FROM DATABASE -->
+
+</body>
+</html>
