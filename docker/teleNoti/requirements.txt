@@ -1,5 +1,5 @@
 Flask==1.1.1
-Flask-Cors==3.0.8
+Flask-Cors==3.0.9
 pyTelegramBotAPI==3.6.7
 python-telegram-bot==12.4.2
 telebot==0.0.3
